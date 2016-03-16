@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>WebSocket Test</title>
+  <title>Echo client</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style type="text/css">
     body {
@@ -30,7 +30,7 @@
 <script language="javascript" type="text/javascript">
 
   var rooms = [];
-  var ws = new WebSocket('ws://' + location.host + '/ws');
+  var ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
   if (!window.console) { window.console = { log: function() {} } };
 
@@ -42,7 +42,6 @@
     var div = document.createElement('div');
     div.innerHTML = ev.data;
     document.getElementById('messages').appendChild(div);
-
   };
 
   window.onload = function() {
@@ -61,16 +60,14 @@
 </head>
 <body>
   <div class="content">
-    <h1>Websocket PubSub Demonstration</h1>
+    <h1>Websocket Minichat</h1>
 
     <p>
-      This page demonstrates how Mongoose could be used to implement
-      <a href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">
-       publish–subscribe pattern</a>. Open this page in several browser
-       windows. Each window initiates persistent
-       <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket</a>
-      connection with the server, making each browser window a websocket client.
-      Send messages, and see messages sent by other clients.
+      Esta página es un cliente de chat que usa websocket para
+      conectarse a un webserver mongoose. Aparece como ejemplo
+      en el repositorio de github.
+      Enviá mensajes ingresándolos más abajo, y podrás ver los que
+      envíen las otras conecciones.
     </p>
 
     <div id="messages">
@@ -78,7 +75,7 @@
 
     <p>
       <input type="text" id="send_input" />
-      <button id="send_button">Send Message</button>
+      <button id="send_button">Enviar</button>
     </p>
   </div>
 </body>
