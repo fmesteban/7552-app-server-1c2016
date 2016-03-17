@@ -1,0 +1,17 @@
+#Slack integration
+notifications:
+  slack: fiuba-studygroup:JCoNT2yk90mmc154Rh4nZgml
+    email: false
+##############################
+
+#language: c
+
+#compiler: gcc
+
+#script:
+#  - gcc -coverage -O0 hello.c -o hello
+#  - ./hello
+#  - gcov hello.c
+
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
