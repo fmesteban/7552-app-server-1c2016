@@ -3,7 +3,7 @@ App server del tp de taller2 1c2016
 
 Master
 [![Build Status](https://travis-ci.org/fmesteban/7552-app-server-1c2016.svg?branch=master)](https://travis-ci.org/fmesteban/7552-app-server-1c2016)
-
+[![codecov.io](https://codecov.io/github/fmesteban/7552-app-server-1c2016/coverage.svg?branch=master)](https://codecov.io/github/fmesteban/7552-app-server-1c2016?branch=master)
 
 ###Git Pre Commit Hook
 Se puede modificar el [pre-commit.sh](pre-commit.sh) script para que haga lo que se desee.
