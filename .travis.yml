@@ -4,14 +4,11 @@ notifications:
     email: false
 ##############################
 
-#language: c
+- Appserver/build/cmake
+- Appserver/build/make
+- Appserver/build/AppServer
+- gcov Appserver/src/main.cpp
 
-#compiler: gcc
-
-#script:
-#  - gcc -coverage -O0 hello.c -o hello
-#  - ./hello
-#  - gcov hello.c
-
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash)
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - bash execute.sh
