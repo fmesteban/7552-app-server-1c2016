@@ -1,14 +1,17 @@
 #Slack integration
 notifications:
   slack: fiuba-studygroup:JCoNT2yk90mmc154Rh4nZgml
-    email: false
-##############################
 
-- Appserver/build/cmake
-- Appserver/build/make
-- Appserver/build/AppServer
-- gcov Appserver/src/main.cpp
+language: c++
+
+script:
+- cd AppServer/build
+- cmake ../src
+- make
+- ./AppServer
+- cd ../..
+#- gcov AppServer/src/main.cpp
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  #- bash <(curl -s https://codecov.io/bash)
   - bash execute.sh
