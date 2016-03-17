@@ -8,10 +8,8 @@ script:
 - cd AppServer/build
 - cmake ../src
 - make
-- ./AppServer
 - cd ../..
-#- gcov AppServer/src/main.cpp
+- gcov AppServer/src/main.cpp
 
 after_success:
-  #- bash <(curl -s https://codecov.io/bash)
-  - bash execute.sh
+  - bash <(curl -s https://codecov.io/bash)
