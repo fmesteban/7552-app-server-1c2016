@@ -1,24 +1,18 @@
-#Define macro that lists the subdirectories
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-        LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
-
-
 cmake_minimum_required(VERSION 2.8.9)
 project(AppServer)
  
-file(GLOB_RECURSE SOURCES "./*.cpp" "./*.c")
- 
-#List the subdirectories
-SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
+add_definitions( -Wall -O3 -I".*" )
 
-include_directories(${SUBDIRS})
- 
-add_executable(AppServer ${SOURCES})
+file(GLOB_RECURSE SOURCES "./*.cpp" "./*.c")
+file(GLOB_RECURSE HEADERS "./*.h")
+
+set (DIRS "")
+foreach (_header ${HEADERS})
+    get_filename_component(_dir ${_header} PATH)
+    list (APPEND DIRS ${_dir})
+endforeach()
+list(REMOVE_DUPLICATES DIRS)
+
+include_directories(${DIRS})
+add_executable (AppServer ${SOURCES})
+set_target_properties(AppServer PROPERTIES LINKER_LANGUAGE CXX)

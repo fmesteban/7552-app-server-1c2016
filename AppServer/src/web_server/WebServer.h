@@ -9,10 +9,11 @@ private:
 	const std::string httpPort;
 	struct mg_mgr eventManager;
 	struct mg_connection *networkConnection;
-	static void eventHandler( struct mg_connection *nc, int ev, void *p );
-	static int is_websocket(const struct mg_connection *nc);
-	static void broadcast(struct mg_connection *nc, const char *msg, size_t len);
 public:
+	struct mg_serve_http_opts s_http_server_opts;
+	int is_websocket(const struct mg_connection *nc);
+	void broadcast(struct mg_connection *nc, const char *msg, size_t len);
+
 	WebServer();
 	void start();
 	~WebServer();
