@@ -98,44 +98,6 @@ depend:
 	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-external/CMakeFiles/external.dir/rule:
-	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(MAKE) -f CMakeFiles/Makefile2 external/CMakeFiles/external.dir/rule
-.PHONY : external/CMakeFiles/external.dir/rule
-
-# Convenience name for target.
-external: external/CMakeFiles/external.dir/rule
-.PHONY : external
-
-# fast build rule for target.
-external/fast:
-	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(MAKE) -f external/CMakeFiles/external.dir/build.make external/CMakeFiles/external.dir/build
-.PHONY : external/fast
-
-mongoose.o: mongoose.c.o
-.PHONY : mongoose.o
-
-# target to build an object file
-mongoose.c.o:
-	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(MAKE) -f external/CMakeFiles/external.dir/build.make external/CMakeFiles/external.dir/mongoose.c.o
-.PHONY : mongoose.c.o
-
-mongoose.i: mongoose.c.i
-.PHONY : mongoose.i
-
-# target to preprocess a source file
-mongoose.c.i:
-	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(MAKE) -f external/CMakeFiles/external.dir/build.make external/CMakeFiles/external.dir/mongoose.c.i
-.PHONY : mongoose.c.i
-
-mongoose.s: mongoose.c.s
-.PHONY : mongoose.s
-
-# target to generate assembly for a file
-mongoose.c.s:
-	cd /home/eze210/git/7552-app-server-1c2016/AppServer/build && $(MAKE) -f external/CMakeFiles/external.dir/build.make external/CMakeFiles/external.dir/mongoose.c.s
-.PHONY : mongoose.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -143,11 +105,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... external"
 	@echo "... rebuild_cache"
-	@echo "... mongoose.o"
-	@echo "... mongoose.i"
-	@echo "... mongoose.s"
 .PHONY : help
 
 
