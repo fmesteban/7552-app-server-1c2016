@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>RESTful API demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style type="text/css">
+    * { outline: none; }
+    body {
+      background-color: #789; margin: 0;
+      padding: 0; font: 16px/1.4 Helvetica, Arial, sans-serif;
+      font: 16px/1.4 Helvetica, Arial, sans-serif;
+    }
+    div.content {
+      width: 800px; margin: 2em auto; padding: 20px 50px;
+      background-color: #fff; border-radius: 1em;
+    }
+    label { display: inline-block; min-width: 7em; }
+    input { border: 1px solid #ccc; padding: 0.2em; }
+    a:link, a:visited { color: #69c; text-decoration: none; }
+    @media (max-width: 700px) {
+      body { background-color: #fff; }
+      div.content { width: auto; margin: 0 auto; padding: 1em; }
+    }
+</style>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script language="javascript" type="text/javascript">
+  jQuery(function() {
+
+    $(document).on('keyup', '#urlInput, #number', function() {
+   	  console.log("jQuery");
+
+      $.ajax({
+        url: 'http://192.168.1.41:8000/api/post/number',
+        method: 'POST',
+        dataType: 'json',
+        data: { 
+        	number: $('#number').val() 
+        },
+        success: function(json) {
+          $('#response').html(json.response);
+        }
+      });
+    });
+
+  });
+</script>
+</head>
+<body>
+  <div class="content">
+    <h1>RESTful API demo.</h1>
+
+    <p>
+      This page demonstrates how Mongoose could be used to implement
+      RESTful APIs. Start typing an url and a number into the text fields below.
+      Browser sends the number to the URI.
+      Web server calclulates number*number and returns the response.
+    </p>
+
+    <div>
+      <label>Write the url (write /api/post/number):</label> <input type="text" id="urlInput" />
+    </div><div>
+      <label>Number:</label> <input type="text" id="number" />
+    </div><div>
+     <label>response:</label> <span id="response">&nbsp;</span>
+    </div><div>
+
+  </div>
+</body>
+</html>
