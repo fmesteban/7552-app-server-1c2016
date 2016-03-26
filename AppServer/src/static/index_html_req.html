@@ -31,14 +31,18 @@
    	  console.log("jQuery");
 
       $.ajax({
-        url: 'http://192.168.1.41:8000/api/post/number',
+        url: 'http://localhost:8000/una/uri/representativa',
         method: 'POST',
         dataType: 'json',
         data: { 
         	number: $('#number').val() 
         },
         success: function(json) {
+        	console.log("success");
           $('#response').html(json.response);
+        },
+        error: function(json) {
+        	console.log("error");
         }
       });
     });

@@ -1,4 +1,3 @@
-/*
 #include "WebServer.h"
 #include "rocksdb/c.h"
 
@@ -7,7 +6,8 @@ int main(void) {
 	server.start();
 	return 0;
 }
-*/
+
+/*
 #include <cstdio>
 #include <string>
 
@@ -59,3 +59,4 @@ int main() {
 
   return 0;
 }
+*/

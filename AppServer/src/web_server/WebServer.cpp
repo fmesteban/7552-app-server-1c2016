@@ -27,20 +27,20 @@ static void eventHandler( struct mg_connection *nc, int ev, void *p ) {
 	{
 		std::string s1(httpMessage->uri.p);
 		std::string s = s1.substr(0, httpMessage->uri.len);
-		std::cout << "http" << s << std::endl;
-		if(mg_vcmp(&httpMessage->uri, "/api/post/number") == 0){
-			char buf[100];
-			/* Get form variables */
-			mg_get_http_var(&httpMessage->body, "number", buf, sizeof(buf));
-			std::cout << "receiving: " << buf << std::endl;
-			mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
-			mg_printf_http_chunk(nc, "{ \"response\": %lf }", strtod(buf, NULL)*strtod(buf, NULL));
-			mg_send_http_chunk(nc, "", 0);
-			break;
-		}
-		/* Usual HTTP request - serve static files */
-		mg_serve_http(nc, httpMessage, self->s_http_server_opts);
-		nc->flags |= MG_F_SEND_AND_CLOSE;
+		std::cout << "receiving http request with uri: " << s << std::endl;
+		//		if(mg_vcmp(&httpMessage->uri, "/una/uri/representativa") == 0){
+		//			char buf[100];
+		/* Get form variables */
+		//			mg_get_http_var(&httpMessage->body, "number", buf, sizeof(buf));
+		mg_printf(nc,
+				"HTTP/1.1 200 OK\r\n"
+				"Access-Control-Allow-Origin: *\r\n"
+				"Transfer-Encoding: chunked\r\n"
+				"\r\n");
+		mg_printf_http_chunk(nc, "{ \"response\": 200 }\r\n");
+		mg_send_http_chunk(nc, "", 0);
+		//			break;
+		//		}
 		break;
 	}
 	case MG_EV_WEBSOCKET_HANDSHAKE_DONE:
