@@ -3,64 +3,40 @@
 #include <string>
 
 
-int WebServer::is_websocket(const struct mg_connection *nc) {
-	return nc->flags & MG_F_IS_WEBSOCKET;
-}
+void WebServer::handleURI(	struct mg_connection *networkConnection,
+							const std::string& uri,
+							mg_str *body){
 
-void WebServer::broadcast(struct mg_connection *nc, const char *msg, size_t len) {
-	struct mg_connection *c;
-	char buf[500];
+	//pongo el valor en buf, correspondiente a la clave "number"
+	//	mg_get_http_var(body, "number", buf, sizeof(buf));
 
-	snprintf(buf, sizeof(buf), "%p %.*s", nc, (int) len, msg);
-	for (c = mg_next(nc->mgr, NULL); c != NULL; c = mg_next(nc->mgr, c)) {
-		mg_send_websocket_frame(c, WEBSOCKET_OP_TEXT, buf, strlen(buf));
-	}
-}
-
-static void eventHandler( struct mg_connection *nc, int ev, void *p ) {
-	WebServer* self = (WebServer *) nc->user_data;
-	struct http_message *httpMessage = (struct http_message *) p;
-	struct websocket_message *websocketMessage = (struct websocket_message *) p;
-
-	switch (ev) {
-	case MG_EV_HTTP_REQUEST:
-	{
-		std::string s1(httpMessage->uri.p);
-		std::string s = s1.substr(0, httpMessage->uri.len);
-		std::cout << "receiving http request with uri: " << s << std::endl;
-		//		if(mg_vcmp(&httpMessage->uri, "/una/uri/representativa") == 0){
-		//			char buf[100];
-		/* Get form variables */
-		//			mg_get_http_var(&httpMessage->body, "number", buf, sizeof(buf));
-		mg_printf(nc,
+	RequestHandler *hdlr = requestManager.getHanlder(uri);
+	if( hdlr ){
+		hdlr->run(networkConnection, body);
+	}else{
+		//si es null, por ahora devuelvo esto
+		mg_printf(networkConnection,
 				"HTTP/1.1 200 OK\r\n"
 				"Access-Control-Allow-Origin: *\r\n"
 				"Transfer-Encoding: chunked\r\n"
 				"\r\n");
-		mg_printf_http_chunk(nc, "{ \"response\": 200 }\r\n");
-		mg_send_http_chunk(nc, "", 0);
-		//			break;
-		//		}
-		break;
-	}
-	case MG_EV_WEBSOCKET_HANDSHAKE_DONE:
-		/* New websocket connection. Tell everybody. */
-		self->broadcast(nc, "joined", 6);
-		break;
-	case MG_EV_WEBSOCKET_FRAME:
-		/* New websocket message. Tell everybody. */
-		self->broadcast(nc, (char *) websocketMessage->data, websocketMessage->size);
-		break;
-	case MG_EV_CLOSE:
-		/* Disconnect. Tell everybody. */
-		if (self->is_websocket(nc)) {
-			self->broadcast(nc, "left", 4);
-		}
-		break;
-	default:
-		break;
+		mg_printf_http_chunk(networkConnection, "{ \"response\": 200 }\r\n");
+		mg_send_http_chunk(networkConnection, "", 0);
 	}
 }
+
+
+void WebServer::eventHandler( struct mg_connection *nc, int ev, void *p ) {
+	WebServer* self = (WebServer *) nc->user_data;
+	struct http_message *httpMessage = (struct http_message *) p;
+
+	if ( ev == MG_EV_HTTP_REQUEST ) {
+		std::string temp(httpMessage->uri.p);
+		std::string uri = temp.substr(0, httpMessage->uri.len);
+		self->handleURI(nc, uri, &httpMessage->body);
+	}
+}
+
 
 /**	WebServer constructor
  *	Wraps the mongoose server
@@ -79,10 +55,12 @@ WebServer::WebServer() : httpPort( "8000" ){
 	std::cout << "Starting web server on port "<< httpPort << std::endl;
 }
 
+
 void WebServer::start(){
 	while( true )
 		mg_mgr_poll( &eventManager, 1000 );
 }
+
 
 WebServer::~WebServer() {
 	mg_mgr_free( &eventManager );

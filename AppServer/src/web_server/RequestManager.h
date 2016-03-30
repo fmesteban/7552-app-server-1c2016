@@ -1,0 +1,21 @@
+#ifndef WEB_SERVER_REQUESTMANAGER_H_
+#define WEB_SERVER_REQUESTMANAGER_H_
+
+#include <map>
+#include "RequestHandler.h"
+#include "RequestHandlerExample.h"
+#include "RequestHandlerNotFound.h"
+
+class RequestManager {
+private:
+	std::map<std::string, RequestHandler*> handlerRefs;
+	RequestHandlerExample reqExample;
+	RequestHandlerNotFound hdlNotFound;
+	void insertDefaultHandlers();
+public:
+	RequestManager();
+	void addHandler(const std::string& uri, RequestHandler* reqHandler);
+	RequestHandler* getHanlder(const std::string& uri);
+};
+
+#endif
