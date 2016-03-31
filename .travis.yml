@@ -11,7 +11,7 @@ matrix:
     - os: linux
       addons:
          apt:
-            sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6']
+            sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6', 'tuleu/precise-backports']
             packages: ['libbz2-dev', 'libsnappy-dev', 'libgflags-dev']
 
 before_install:
