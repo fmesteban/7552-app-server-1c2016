@@ -15,8 +15,10 @@ before_install:
 - git clone https://github.com/facebook/rocksdb.git
 - cd rocksdb 
 - make static_lib
+- mkdir ../AppServer/src/third_party/rocksdb
 - sudo mv ./librocksdb.a ../AppServer/src/third_party/rocksdb/
 - sudo cp -R include ../AppServer/src/third_party/rocksdb/
+- cd ..
 
 script:
 - cd AppServer/build
