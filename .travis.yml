@@ -12,6 +12,11 @@ before_install:
 - sudo sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
 - sudo apt-get -qq update
 - sudo apt-get -y install gcc-4.7 libsnappy-dev zlib1g-dev libbz2-dev libgflags-dev
+- git clone https://github.com/facebook/rocksdb.git
+- cd rocksdb 
+- make static_lib
+- sudo mv ./librocksdb.a ../AppServer/src/third_party/rocksdb/
+- sudo cp -R include ../AppServer/src/third_party/rocksdb/
 
 script:
 - cd AppServer/build
