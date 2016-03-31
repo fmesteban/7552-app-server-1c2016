@@ -3,6 +3,7 @@ notifications:
   slack: fiuba-studygroup:JCoNT2yk90mmc154Rh4nZgml
 
 sudo: required
+dist: trusty
 
 language: cpp
 
