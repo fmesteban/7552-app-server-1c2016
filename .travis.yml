@@ -6,19 +6,11 @@ sudo: required
 
 language: cpp
 
-matrix:
-  include:
-    - os: linux
-      addons:
-         apt:
-            sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.6', 'tuleu/precise-backports']
-            packages: ['libbz2-dev', 'libsnappy-dev', 'libgflags-dev']
-
 before_install:
-- sudo apt-get install -y g++-4.8
-- sudo apt-get install -y libgflags-dev
-- sudo apt-get install -y libsnappy-dev
-- sudo apt-get install -y libbz2-dev
+- sudo sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
+- sudo sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
+- sudo apt-get update
+- sudo apt-get -y install gcc-4.7 libsnappy-dev zlib1g-dev libbz2-dev gflags
 
 script:
 - cd AppServer/build
