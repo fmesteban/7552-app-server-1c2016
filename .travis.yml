@@ -4,6 +4,15 @@ notifications:
 
 language: c++
 
+sudo: required
+
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y gcc
+- sudo apt-get install -y libgflags-dev
+- sudo apt-get install -y libsnappy-dev
+- sudo apt-get install -y libbz2-dev
+
 script:
 - cd AppServer/build
 - cmake ../src
