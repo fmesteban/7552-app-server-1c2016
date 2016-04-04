@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo 'Running cpplint'
-cpplint --exclude=AppServer/src/third_party/* `find -regextype posix-egrep -regex './AppServer/src/.*\.(h|hpp|c|cpp)'`
+python cpplint.py `find -regextype posix-egrep -regex './AppServer/src/web_server/.*\.(h|hpp|c|cpp)'`
 
 if [ $? -ne 0 ]
 then

@@ -1,6 +1,6 @@
 #Slack integration
 notifications:
-  slack: fiuba-studygroup:JCoNT2yk90mmc154Rh4nZgml
+  slack: 7552-tallerii-2016-1c:89hUK2dxHbxNfpi9gPglcba8
 
 sudo: required
 dist: trusty
@@ -11,21 +11,10 @@ before_install:
 - sudo sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
 - sudo sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
 - sudo apt-get -qq update
-- sudo apt-get -y install gcc-4.7 libsnappy-dev zlib1g-dev libbz2-dev libgflags-dev
-- git clone https://github.com/facebook/rocksdb.git
-- cd rocksdb 
-- make static_lib
-- mkdir ../AppServer/src/third_party/rocksdb
-- sudo mv ./librocksdb.a ../AppServer/src/third_party/rocksdb/
-- sudo cp -R include ../AppServer/src/third_party/rocksdb/
-- cd ..
+- sudo apt-get -y install gcc g++ docker.io libsnappy-dev zlib1g-dev libbz2-
 
 script:
-- cd AppServer/build
-- cmake ../src
-- make
-- cd ../..
-- gcov AppServer/src/main.cpp
+#- sudo ./run-server-docker.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
