@@ -24,6 +24,7 @@ include_directories(${DIRS})
 
 #includes directories without headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/rocksdb/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/jsoncpp)
 
 
 add_executable (AppServer ${SOURCES})
