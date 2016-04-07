@@ -9,6 +9,7 @@ RequestManager::RequestManager() {
  */
 void RequestManager::insertDefaultHandlers(){
 	addHandler(reqExample.getUri(), &reqExample);
+	addHandler(reqRegister.getUri(), &reqRegister);
 }
 
 

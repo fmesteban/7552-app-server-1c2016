@@ -3,6 +3,7 @@
 
 #include "mongoose.h"
 #include <string>
+#include <json/json.h>
 
 class RequestHandler {
 protected:

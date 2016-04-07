@@ -5,12 +5,14 @@
 #include "RequestHandler.h"
 #include "RequestHandlerExample.h"
 #include "RequestHandlerNotFound.h"
+#include "RequestHandlerRegister.h"
 
 class RequestManager {
 private:
 	std::map<std::string, RequestHandler*> handlerRefs;
 	RequestHandlerExample reqExample;
 	RequestHandlerNotFound hdlNotFound;
+	RequestHandlerRegister reqRegister;
 	void insertDefaultHandlers();
 public:
 	RequestManager();
