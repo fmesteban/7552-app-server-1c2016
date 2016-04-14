@@ -5,6 +5,12 @@
 #include <string>
 #include <json/json.h>
 
+#define STRING_FROM_FIELD( fieldName )                                              \
+	char fieldName ## Buf[ 256 ] = { 0 };                                           \
+	mg_get_http_var(body, #fieldName, fieldName ## Buf, sizeof(fieldName ## Buf));  \
+	std::string fieldName(fieldName ## Buf);
+
+
 class RequestHandler {
 protected:
 	const std::string uri;

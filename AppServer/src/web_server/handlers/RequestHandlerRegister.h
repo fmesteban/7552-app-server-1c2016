@@ -3,11 +3,14 @@
 
 
 #include "RequestHandler.h"
-
+#include "Database.h"
 
 class RequestHandlerRegister: public RequestHandler {
+private:
+	Database &db;
+	void sendHttpOk(struct mg_connection *nc, const std::string& response);
 public:
-	RequestHandlerRegister();
+	RequestHandlerRegister(Database& db);
 	void run(struct mg_connection *networkConnection, mg_str *body);
 };
 

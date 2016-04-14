@@ -1,7 +1,8 @@
 #include "RequestManager.h"
 
 
-RequestManager::RequestManager() {
+RequestManager::RequestManager() :
+	reqRegister(db) {
 	insertDefaultHandlers();
 }
 

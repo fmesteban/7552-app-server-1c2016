@@ -2,6 +2,7 @@
 #define WEB_SERVER_REQUESTMANAGER_H_
 
 #include <map>
+#include "Database.h"
 #include "RequestHandler.h"
 #include "RequestHandlerExample.h"
 #include "RequestHandlerNotFound.h"
@@ -9,6 +10,7 @@
 
 class RequestManager {
 private:
+	Database db;
 	std::map<std::string, RequestHandler*> handlerRefs;
 	RequestHandlerExample reqExample;
 	RequestHandlerNotFound hdlNotFound;

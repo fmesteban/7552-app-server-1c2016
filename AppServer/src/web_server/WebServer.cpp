@@ -10,6 +10,8 @@ void WebServer::handleURI(	struct mg_connection *networkConnection,
 	//pongo el valor en buf, correspondiente a la clave "number"
 	//	mg_get_http_var(body, "number", buf, sizeof(buf));
 
+	std::cout << "uri: " << uri << std::endl;
+
 	RequestHandler *hdlr = requestManager.getHanlder(uri);
 	if( hdlr ){
 		hdlr->run(networkConnection, body);
@@ -31,6 +33,7 @@ void WebServer::eventHandler( struct mg_connection *nc, int ev, void *p ) {
 	struct http_message *httpMessage = (struct http_message *) p;
 
 	if ( ev == MG_EV_HTTP_REQUEST ) {
+		std::cout << "an HTTP event..." << std::endl;
 		std::string temp(httpMessage->uri.p);
 		std::string uri = temp.substr(0, httpMessage->uri.len);
 		self->handleURI(nc, uri, &httpMessage->body);
