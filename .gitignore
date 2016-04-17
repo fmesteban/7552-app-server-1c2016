@@ -1,2 +1,3 @@
 #Ignore builds
 AppServer/build/*
+debug_db/*

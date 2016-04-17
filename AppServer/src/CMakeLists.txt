@@ -3,7 +3,7 @@ project(AppServer)
 
 
 #sets compile flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++11 -O0 -coverage")
+set(CMAKE_CXX_FLAGS "--coverage -fprofile-arcs -ftest-coverage -pthread -std=c++11 -O0 ${CMAKE_CXX_FLAGS}")
 
 #adds the ldflags needed to link rocksdb
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lrt -lsnappy -lgflags -lz -lbz2")
