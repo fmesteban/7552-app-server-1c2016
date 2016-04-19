@@ -30,7 +30,7 @@ void RequestHandlerRegister::run(struct mg_connection *networkConnection, mg_str
 	STRING_FROM_FIELD( userSex );
 
 	db.putTwoLvlKeyValue(userName, "userName", userName);
-	db.putTwoLvlKeyValue(userName, "password", userPassword);
+	db.putTwoLvlKeyValue(userName, "password", userPassword); // TODO cambiar por password
 	db.putTwoLvlKeyValue(userName, "realName", userRealName);
 	db.putTwoLvlKeyValue(userName, "email", userMail);
 	db.putTwoLvlKeyValue(userName, "birthday", userBirthday);
