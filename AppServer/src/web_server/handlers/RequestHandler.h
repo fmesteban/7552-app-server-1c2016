@@ -5,17 +5,26 @@
 #include <string>
 #include <json/json.h>
 
-#define STRING_FROM_FIELD( fieldName )                                              \
-	char fieldName ## Buf[ 256 ] = { 0 };                                           \
-	mg_get_http_var(body, #fieldName, fieldName ## Buf, sizeof(fieldName ## Buf));  \
-	std::string fieldName(fieldName ## Buf);
+
+#define INIT_JSON \
+	std::string payload(std::string(body->p).substr(0, body->len)); \
+	Json::Value root; \
+	Json::Reader reader; \
+	bool parsingSuccessful = reader.parse(payload, root); \
+	if(!parsingSuccessful){ \
+		/* malformed json data */ \
+	}
+
+
+#define STRING_FROM_FIELD(fieldName)     		\
+	std::string fieldName = root.get(#fieldName, "unavailable field").asString();
 
 
 class RequestHandler {
 protected:
 	const std::string uri;
 public:
-	RequestHandler(const std::string _uri);
+	explicit RequestHandler(const std::string _uri);
 	virtual void run(struct mg_connection *networkConnection, mg_str *body) = 0;
 	const std::string& getUri();
 	virtual ~RequestHandler();

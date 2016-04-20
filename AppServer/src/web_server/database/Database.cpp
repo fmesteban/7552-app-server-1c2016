@@ -1,4 +1,5 @@
 #include "Database.h"
+#include <string>
 
 Database::Database() :
 kDBPath("./debug_db") {

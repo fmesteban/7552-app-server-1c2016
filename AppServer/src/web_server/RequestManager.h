@@ -2,6 +2,7 @@
 #define WEB_SERVER_REQUESTMANAGER_H_
 
 #include <map>
+#include <string>
 #include "Database.h"
 #include "RequestHandler.h"
 #include "RequestHandlerExample.h"

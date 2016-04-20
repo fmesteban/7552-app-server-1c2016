@@ -34,14 +34,14 @@
         url: 'http://localhost:8000/register',
         method: 'POST',
         dataType: 'json',
-        data: { 
-          userName: "eze210",
-          userPassword: "210",
-          userRealName: "Ezequiel",
-          userMail: "eze210@gmail.com",
-          userBirthday: "02/10/1993",
-          userSex: "Male"
-        },
+        data: '{  \
+          "userName": "eze210", \
+          "userPassword": "210",  \
+          "userRealName": "Ezequiel", \
+          "userMail": "eze210@gmail.com", \
+          "userBirthday": "02/10/1993", \
+          "userSex": "Male" \
+        }',
         success: function(json) {
           $('#response').html(json.response);
         },

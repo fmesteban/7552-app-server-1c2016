@@ -1,4 +1,5 @@
 #include "RequestHandlerExample.h"
+#include <string>
 
 
 RequestHandlerExample::RequestHandlerExample() :
@@ -6,7 +7,11 @@ RequestHandler("/una/uri/representativa"){
 }
 
 
-void RequestHandlerExample::run(struct mg_connection *networkConnection, mg_str *body){
+/** It is just an example...
+ */
+void RequestHandlerExample::run(
+		struct mg_connection *networkConnection,
+		mg_str *body){
 	mg_printf(networkConnection,
 			"HTTP/1.1 201 OK\r\n"
 			"Access-Control-Allow-Origin: *\r\n"

@@ -1,4 +1,7 @@
 #include "RequestManager.h"
+#include <utility>
+#include <map>
+#include <string>
 
 
 RequestManager::RequestManager() :
@@ -14,7 +17,9 @@ void RequestManager::insertDefaultHandlers(){
 }
 
 
-void RequestManager::addHandler(const std::string& uri, RequestHandler* reqHandler){
+void RequestManager::addHandler(
+		const std::string& uri,
+		RequestHandler* reqHandler){
 	handlerRefs.insert(std::pair<std::string,RequestHandler*>(uri,reqHandler));
 }
 

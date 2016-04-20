@@ -3,17 +3,13 @@
 #include <string>
 
 
-void WebServer::handleURI(	struct mg_connection *networkConnection,
+void WebServer::handleURI(struct mg_connection *networkConnection,
 							const std::string& uri,
 							mg_str *body){
-
-	//pongo el valor en buf, correspondiente a la clave "number"
-	//	mg_get_http_var(body, "number", buf, sizeof(buf));
-
 	std::cout << "uri: " << uri << std::endl;
 
 	RequestHandler *hdlr = requestManager.getHanlder(uri);
-	if( hdlr ){
+	if(hdlr){
 		hdlr->run(networkConnection, body);
 	}else{
 		//si es null, por ahora devuelvo esto
@@ -28,11 +24,11 @@ void WebServer::handleURI(	struct mg_connection *networkConnection,
 }
 
 
-void WebServer::eventHandler( struct mg_connection *nc, int ev, void *p ) {
+void WebServer::eventHandler(struct mg_connection *nc, int ev, void *p){
 	WebServer* self = (WebServer *) nc->user_data;
 	struct http_message *httpMessage = (struct http_message *) p;
 
-	if ( ev == MG_EV_HTTP_REQUEST ) {
+	if (ev == MG_EV_HTTP_REQUEST){
 		std::cout << "an HTTP event..." << std::endl;
 		std::string temp(httpMessage->uri.p);
 		std::string uri = temp.substr(0, httpMessage->uri.len);
@@ -45,28 +41,27 @@ void WebServer::eventHandler( struct mg_connection *nc, int ev, void *p ) {
  *	Wraps the mongoose server
  *	Protects the resources using the RAII pattern
  */
-WebServer::WebServer() : httpPort( "8000" ){
-	mg_mgr_init( &eventManager, NULL );
-	networkConnection = mg_bind( &eventManager, httpPort.c_str(), eventHandler );
+WebServer::WebServer() : httpPort("8000"){
+	mg_mgr_init(&eventManager, NULL);
+	networkConnection = mg_bind(&eventManager, httpPort.c_str(), eventHandler);
 	networkConnection->user_data = this;
 
 	s_http_server_opts.document_root = ".";
 	s_http_server_opts.dav_document_root = ".";
 	s_http_server_opts.enable_directory_listing = "yes";
-	mg_set_protocol_http_websocket( networkConnection );
+	mg_set_protocol_http_websocket(networkConnection);
 
 	std::cout << "Starting web server on port "<< httpPort << std::endl;
 }
 
 
 void WebServer::start(){
-	while( true )
-		mg_mgr_poll( &eventManager, 1000 );
+	while(true)
+		mg_mgr_poll(&eventManager, 1000);
 }
 
 
-WebServer::~WebServer() {
-	mg_mgr_free( &eventManager );
+WebServer::~WebServer(){
+	mg_mgr_free(&eventManager);
 }
-
 

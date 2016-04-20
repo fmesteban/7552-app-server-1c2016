@@ -1,5 +1,6 @@
 #include "RequestHandlerRegister.h"
 #include <iostream>
+#include <string>
 
 
 RequestHandlerRegister::RequestHandlerRegister(Database& db) :
@@ -8,6 +9,9 @@ RequestHandler("/register") {
 }
 
 
+/** Sends an 201 OK response to \nc, appending the \extraLine
+ *
+ */
 void RequestHandlerRegister::sendHttpOk(struct mg_connection *nc,
 		const std::string &extraLine){
 	mg_printf(nc,
@@ -21,16 +25,23 @@ void RequestHandlerRegister::sendHttpOk(struct mg_connection *nc,
 }
 
 
-void RequestHandlerRegister::run(struct mg_connection *networkConnection, mg_str *body){
-	STRING_FROM_FIELD( userName );
-	STRING_FROM_FIELD( userPassword );
-	STRING_FROM_FIELD( userRealName );
-	STRING_FROM_FIELD( userMail );
-	STRING_FROM_FIELD( userBirthday );
-	STRING_FROM_FIELD( userSex );
+/** Parse the register uri input, and saves it in the app-server
+ * 	database. TODO: send the data to the shared-server
+ *
+ */
+void RequestHandlerRegister::run(
+		struct mg_connection *networkConnection,
+		mg_str *body){
+	INIT_JSON;
+	STRING_FROM_FIELD(userName);
+	STRING_FROM_FIELD(userPassword);
+	STRING_FROM_FIELD(userRealName);
+	STRING_FROM_FIELD(userMail);
+	STRING_FROM_FIELD(userBirthday);
+	STRING_FROM_FIELD(userSex);
 
 	db.putTwoLvlKeyValue(userName, "userName", userName);
-	db.putTwoLvlKeyValue(userName, "password", userPassword); // TODO cambiar por password
+	db.putTwoLvlKeyValue(userName, "password", userPassword);
 	db.putTwoLvlKeyValue(userName, "realName", userRealName);
 	db.putTwoLvlKeyValue(userName, "email", userMail);
 	db.putTwoLvlKeyValue(userName, "birthday", userBirthday);
@@ -39,5 +50,7 @@ void RequestHandlerRegister::run(struct mg_connection *networkConnection, mg_str
 	std::string nombre;
 	db.getTwoLvlValue(userName, "userName", nombre);
 
-	sendHttpOk(networkConnection, "{ \"response\": \"hello " + nombre + "\" }\r\n");
+	sendHttpOk(
+			networkConnection,
+			"{ \"response\": \"hello " + nombre + "\" }\r\n");
 }

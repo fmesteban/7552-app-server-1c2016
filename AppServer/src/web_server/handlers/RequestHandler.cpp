@@ -1,4 +1,5 @@
 #include "RequestHandler.h"
+#include <string>
 
 
 RequestHandler::RequestHandler(const std::string _uri):

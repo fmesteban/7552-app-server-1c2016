@@ -1,4 +1,5 @@
 #include "RequestHandlerNotFound.h"
+#include <string>
 
 
 RequestHandlerNotFound::RequestHandlerNotFound() :
@@ -6,7 +7,9 @@ RequestHandler(""){
 }
 
 
-void RequestHandlerNotFound::run(struct mg_connection *networkConnection, mg_str *body){
+void RequestHandlerNotFound::run(
+		struct mg_connection *networkConnection,
+		mg_str *body){
 //	mg_printf(networkConnection,
 //			"HTTP/1.1 404 Error Not Found\r\n"
 //			"Access-Control-Allow-Origin: *\r\n"
