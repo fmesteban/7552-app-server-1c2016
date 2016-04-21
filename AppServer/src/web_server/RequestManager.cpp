@@ -4,8 +4,9 @@
 #include <string>
 
 
-RequestManager::RequestManager() :
-	reqRegister(db) {
+RequestManager::RequestManager(UsersContainer &users) :
+	users(users),
+	reqRegister(users) {
 	insertDefaultHandlers();
 }
 

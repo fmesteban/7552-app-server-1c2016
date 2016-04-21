@@ -41,7 +41,8 @@ void WebServer::eventHandler(struct mg_connection *nc, int ev, void *p){
  *	Wraps the mongoose server
  *	Protects the resources using the RAII pattern
  */
-WebServer::WebServer() : httpPort("8000"){
+WebServer::WebServer() : httpPort("8000"),
+		requestManager(users){
 	mg_mgr_init(&eventManager, NULL);
 	networkConnection = mg_bind(&eventManager, httpPort.c_str(), eventHandler);
 	networkConnection->user_data = this;

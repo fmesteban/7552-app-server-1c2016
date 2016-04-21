@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "Database.h"
+#include "UsersContainer.h"
 #include "RequestHandler.h"
 #include "RequestHandlerExample.h"
 #include "RequestHandlerNotFound.h"
@@ -11,14 +11,14 @@
 
 class RequestManager {
 private:
-	Database db;
+	UsersContainer &users;
 	std::map<std::string, RequestHandler*> handlerRefs;
 	RequestHandlerExample reqExample;
 	RequestHandlerNotFound hdlNotFound;
 	RequestHandlerRegister reqRegister;
 	void insertDefaultHandlers();
 public:
-	RequestManager();
+	explicit RequestManager(UsersContainer &users);
 	void addHandler(const std::string& uri, RequestHandler* reqHandler);
 	RequestHandler* getHanlder(const std::string& uri);
 };

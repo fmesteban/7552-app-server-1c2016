@@ -3,8 +3,8 @@
 #include <string>
 
 
-RequestHandlerRegister::RequestHandlerRegister(Database& db) :
-db(db),
+RequestHandlerRegister::RequestHandlerRegister(UsersContainer &users) :
+users(users),
 RequestHandler("/register") {
 }
 
@@ -40,17 +40,15 @@ void RequestHandlerRegister::run(
 	STRING_FROM_FIELD(userBirthday);
 	STRING_FROM_FIELD(userSex);
 
-	db.putTwoLvlKeyValue(userName, "userName", userName);
-	db.putTwoLvlKeyValue(userName, "password", userPassword);
-	db.putTwoLvlKeyValue(userName, "realName", userRealName);
-	db.putTwoLvlKeyValue(userName, "email", userMail);
-	db.putTwoLvlKeyValue(userName, "birthday", userBirthday);
-	db.putTwoLvlKeyValue(userName, "sex", userSex);
-
-	std::string nombre;
-	db.getTwoLvlValue(userName, "userName", nombre);
+	users.add(
+			userName,
+			userPassword,
+			userRealName,
+			userMail,
+			userBirthday,
+			userSex);
 
 	sendHttpOk(
 			networkConnection,
-			"{ \"response\": \"hello " + nombre + "\" }\r\n");
+			"{ \"response\": \"hello " + userName + "\" }\r\n");
 }
