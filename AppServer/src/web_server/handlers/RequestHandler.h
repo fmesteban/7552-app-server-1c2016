@@ -23,7 +23,6 @@ protected:
 	void sendHttpOk(struct mg_connection *nc, const std::string &extraLine);
 public:
 	explicit RequestHandler(const std::string _uri);
-	void sendHttpOk(struct mg_connection *nc, const std::string &extraLine);
 	virtual void run(struct mg_connection *networkConnection, mg_str *body) = 0;
 	const std::string& getUri();
 	virtual ~RequestHandler();
