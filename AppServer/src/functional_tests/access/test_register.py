@@ -10,7 +10,7 @@ class TestRegistration(unittest.TestCase):
       data = {"userName": "usuario1", "passWord": "test", "userRealName": "Federico", "userMail": "example@domain.com", "userBirthday": "10/10/10", "userSex": "Male"}
       r = requests.post("http://localhost:8000/register", data = data)
       self.assertEqual(r.status_code, 201)
-      self.assertEqual("hello " + data["userName"], r.json()["response"])
+      self.assertEqual("OK", r.json()["response"])
 
     def test_create_existing_user(self):
       pass

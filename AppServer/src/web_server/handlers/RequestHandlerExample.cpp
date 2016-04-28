@@ -17,6 +17,6 @@ void RequestHandlerExample::run(
 			"Access-Control-Allow-Origin: *\r\n"
 			"Transfer-Encoding: chunked\r\n"
 			"\r\n");
-	mg_printf_http_chunk(networkConnection, "{ \"response\": 210 }\r\n");
+	mg_printf_http_chunk(networkConnection, "{ \"response\": OK }\r\n");
 	mg_send_http_chunk(networkConnection, "", 0);
 }

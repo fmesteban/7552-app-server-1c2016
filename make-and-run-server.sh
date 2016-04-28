@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-ls -R
 ./compile-server.sh $1
 compilationResult=$?
 

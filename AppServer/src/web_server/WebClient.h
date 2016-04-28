@@ -12,6 +12,7 @@ private:
 public:
 	WebClient();
 	void sendRegister(const std::string& data);
+    void sendLogin(const std::string& data);
 	void eventHandler(struct mg_connection *nc, int ev, void *ev_data);
 	~WebClient();
 };

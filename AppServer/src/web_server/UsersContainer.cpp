@@ -27,10 +27,13 @@ void UsersContainer::add(
 					"}"
 				"],"
 				"\"latitude\": ­121.45356,"
-				"\"location\": {"
 				"\"longitude\": 46.51119"
 			"}"
 		"}"
 	));
+}
+
+void UsersContainer::get(const std::string &userName){
+	client.sendLogin(std::string(""));
 }
 

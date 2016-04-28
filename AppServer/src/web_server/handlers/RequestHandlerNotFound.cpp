@@ -21,6 +21,6 @@ void RequestHandlerNotFound::run(
 			"Access-Control-Allow-Origin: *\r\n"
 			"Transfer-Encoding: chunked\r\n"
 			"\r\n");
-	mg_printf_http_chunk(networkConnection, "{ \"response\": 404 }\r\n");
+	mg_printf_http_chunk(networkConnection, "{ \"response\": \"Not Found\" }\r\n");
 	mg_send_http_chunk(networkConnection, "", 0);
 }

@@ -48,7 +48,6 @@ WebClient::WebClient(){
 #endif
 }
 
-
 void WebClient::sendRegister(const std::string& postData){
 #if WEB_CLIENT_LOG
 	std::cout << "WC sendRegister" << std::endl;
@@ -56,6 +55,7 @@ void WebClient::sendRegister(const std::string& postData){
 	struct mg_connection *nc = mg_connect_http(
 			&mgr,
 			ev_handler,
+			//"localhost:5000/users",
 			"http://shared-server.herokuapp.com/users",
 			NULL,
 			postData.c_str());
@@ -69,6 +69,21 @@ void WebClient::sendRegister(const std::string& postData){
 #endif
 }
 
+void WebClient::sendLogin(const std::string& data){
+#if WEB_CLIENT_LOG
+	std::cout << "WC sendRegister" << std::endl;
+#endif
+	struct mg_connection *nc = mg_connect_http(
+			&mgr,
+			ev_handler,
+			"localhost:5000/users/ID", //From data
+			NULL,
+			NULL);
+	// TODO: do something with response
+#if WEB_CLIENT_LOG
+	std::cout << "WC sendRegister after while" << std::endl;
+#endif	
+}
 
 WebClient::~WebClient(){
 	mg_mgr_free(&mgr);

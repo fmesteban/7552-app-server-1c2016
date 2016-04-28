@@ -8,23 +8,6 @@ users(users),
 RequestHandler("/register") {
 }
 
-
-/** Sends an 201 OK response to \nc, appending the \extraLine
- *
- */
-void RequestHandlerRegister::sendHttpOk(struct mg_connection *nc,
-		const std::string &extraLine){
-	mg_printf(nc,
-			"HTTP/1.1 201 OK\r\n"
-			"Access-Control-Allow-Origin: *\r\n"
-			"Transfer-Encoding: chunked\r\n"
-			"\r\n");
-
-	mg_printf_http_chunk(nc, extraLine.c_str());
-	mg_send_http_chunk(nc, "", 0);
-}
-
-
 /** Parse the register uri input, and saves it in the app-server
  * 	database. TODO: send the data to the shared-server
  *
@@ -48,7 +31,7 @@ void RequestHandlerRegister::run(
 			userBirthday,
 			userSex);
 
-	sendHttpOk(
+	RequestHandler::sendHttpOk(
 			networkConnection,
-			"{ \"response\": \"hello " + userName + "\" }\r\n");
+			"{ \"response\": \"OK\" }\r\n");
 }
