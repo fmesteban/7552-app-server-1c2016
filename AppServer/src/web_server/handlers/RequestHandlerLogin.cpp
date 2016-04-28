@@ -12,10 +12,9 @@ RequestHandler("/login") {
  *
  */
 void RequestHandlerLogin::run(
-        struct mg_connection *networkConnection,
-        mg_str *body){
-
-    RequestHandler::sendHttpOk(
-            networkConnection,
-            "{ \"response\": \"OK \" }\r\n");
+		struct mg_connection *networkConnection,
+		mg_str *body){
+	RequestHandler::sendHttpOk(
+			networkConnection,
+			"{ \"response\": \"OK \" }\r\n");
 }

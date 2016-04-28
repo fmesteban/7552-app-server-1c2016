@@ -7,10 +7,10 @@
 
 class RequestHandlerLogin: public RequestHandler {
 private:
-    UsersContainer &users;
+	UsersContainer &users;
 public:
-    explicit RequestHandlerLogin(UsersContainer &users);
-    void run(struct mg_connection *networkConnection, mg_str *body);
+	explicit RequestHandlerLogin(UsersContainer &users);
+	void run(struct mg_connection *networkConnection, mg_str *body);
 };
 
 #endif
