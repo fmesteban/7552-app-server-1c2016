@@ -5,7 +5,7 @@
 
 
 /**	Forms a json with specified values, and delegates the send
- *  in the web client.
+ *  in the web client. Adds a user to the system.
  *  TODO: some fields are hardcoded!
  */
 void UsersContainer::add(
@@ -38,3 +38,10 @@ void UsersContainer::add(
 	client.sendRegister(ss.str());
 }
 
+/** Forms a json with specified values, and delegates the send
+ *  in the web client. Gets the information of a user in the system.
+ *  TODO: some fields are hardcoded!
+ */
+void UsersContainer::get(const std::string &userName){
+	client.sendLogin(std::string(""));
+}

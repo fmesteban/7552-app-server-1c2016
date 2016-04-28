@@ -39,7 +39,6 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 	}
 }
 
-
 /**	Inits the web client resources. (RAII)
  */
 WebClient::WebClient() :
@@ -48,8 +47,7 @@ WebClient::WebClient() :
 	keepAlive = true;
 }
 
-
-/**	Sends a http post request
+/**	Sends a http post request to add a new user
  * TODO: a class Request, and another Response, che!
  */
 void WebClient::sendRegister(const std::string& postData){
@@ -79,6 +77,13 @@ void WebClient::sendRegister(const std::string& postData){
 		mg_mgr_poll(&mgr, 1000);
 }
 
+/** Sends a a http get request to get the information
+ * of an existing user.
+ * TODO: a class Request, and another Response, che!
+ */
+void WebClient::sendLogin(const std::string& postData){
+	// TODO: implement
+}
 
 WebClient::~WebClient(){
 	mg_mgr_free(&mgr);
