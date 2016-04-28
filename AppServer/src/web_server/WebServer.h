@@ -12,10 +12,11 @@ private:
 	struct mg_connection *networkConnection;
 	UsersContainer users;
 	RequestManager requestManager;
-	static void eventHandler(struct mg_connection *nc, int ev, void *p);
+	static void eventHandler(struct mg_connection *networkConnection,
+			int eventCode, void *dataPointer);
 
 public:
-	struct mg_serve_http_opts s_http_server_opts;
+	struct mg_serve_http_opts serverOptions;
 	void handleURI(struct mg_connection *networkConnection,
 					const std::string& uri,
 					mg_str *body);

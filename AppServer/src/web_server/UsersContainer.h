@@ -15,7 +15,7 @@ public:
 			const std::string &userMail,
 			const std::string &userBirthday,
 			const std::string &userSex);
-    // TODO: need ID to get user
+	// TODO: need ID to get user
     void get(
             const std::string &userName);
 };
