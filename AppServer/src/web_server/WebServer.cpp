@@ -3,6 +3,12 @@
 #include <string>
 
 
+/** Receives an http URI, gets the corresponding RequestHandler, and
+ * 	executes it.
+ * 	TODO: por ahora, cuando no hay handler devuelve un 200 OK hard,
+ * 		devolver NotFound
+ *
+ */
 void WebServer::handleURI(struct mg_connection *networkConnection,
 							const std::string& uri,
 							mg_str *body){
@@ -24,15 +30,18 @@ void WebServer::handleURI(struct mg_connection *networkConnection,
 }
 
 
-void WebServer::eventHandler(struct mg_connection *nc, int ev, void *p){
-	WebServer* self = (WebServer *) nc->user_data;
-	struct http_message *httpMessage = (struct http_message *) p;
+/** Static function: just call the current instance's uri handler function
+ */
+void WebServer::eventHandler(struct mg_connection *networkConnection,
+		int eventCode, void *dataPointer){
+	WebServer* self = (WebServer *) networkConnection->user_data;
+	struct http_message *httpMessage = (struct http_message *) dataPointer;
 
-	if (ev == MG_EV_HTTP_REQUEST){
-		std::cout << "an HTTP event..." << std::endl;
+	if (eventCode == MG_EV_HTTP_REQUEST){
 		std::string temp(httpMessage->uri.p);
 		std::string uri = temp.substr(0, httpMessage->uri.len);
-		self->handleURI(nc, uri, &httpMessage->body);
+		std::cout << "an HTTP event with uri: " << uri << std::endl;
+		self->handleURI(networkConnection, uri, &httpMessage->body);
 	}
 }
 
@@ -47,21 +56,25 @@ WebServer::WebServer() : httpPort("8000"),
 	networkConnection = mg_bind(&eventManager, httpPort.c_str(), eventHandler);
 	networkConnection->user_data = this;
 
-	s_http_server_opts.document_root = ".";
-	s_http_server_opts.dav_document_root = ".";
-	s_http_server_opts.enable_directory_listing = "yes";
+	serverOptions.document_root = ".";
+	serverOptions.dav_document_root = ".";
+	serverOptions.enable_directory_listing = "yes";
 	mg_set_protocol_http_websocket(networkConnection);
 
 	std::cout << "Starting web server on port "<< httpPort << std::endl;
 }
 
 
+/**	Starts the Server Polling loop.
+ */
 void WebServer::start(){
 	while(true)
 		mg_mgr_poll(&eventManager, 1000);
 }
 
 
+/** Releases the WebServer.
+ */
 WebServer::~WebServer(){
 	mg_mgr_free(&eventManager);
 }

@@ -1,7 +1,13 @@
 #include "UsersContainer.h"
 #include <string>
+#include <iostream>
+#include <sstream>
 
 
+/**	Forms a json with specified values, and delegates the send
+ *  in the web client.
+ *  TODO: some fields are hardcoded!
+ */
 void UsersContainer::add(
 		const std::string &userName,
 		const std::string &userPassword,
@@ -9,28 +15,26 @@ void UsersContainer::add(
 		const std::string &userMail,
 		const std::string &userBirthday,
 		const std::string &userSex){
-	client.sendRegister(std::string(
-		"{"
-			"\"user\": {"
-				"\"name\": \"usuario\","
-				"\"alias\": \"not a user\","
-				"\"email\": \"usuario@usuario.com\","
-				"\"interests\": [{"
-						"\"category\": \"music/band\","
-						"\"value\": \"radiohead\" "
-					"}, {"
-						"\"category\": \"music/band\", "
-						"\"value\": \"pearl jam\" "
-					"},{"
-						"\"category\": \"outdoors\", "
-						"\"value\": \"running\" "
+	std::stringstream ss;
+	ss <<
+			"{"
+				"\"user\":"
+				"{"
+					"\"interests\":["
+						"{\"category\":\"music\",\"value\":\"Pink Floyd\"}"
+					"],"
+					"\"name\": \"" 	<< userName 	<< "\","
+					"\"alias\": \"" << userRealName << "\","
+					"\"email\": \"" << userMail 	<< "\","
+					"\"sex\": \"" 	<<  userSex 	<< "\","
+					"\"location\":"
+					"{"
+						"\"latitude\": " << 213 << ","
+						"\"longitud\": " << 6 <<
 					"}"
-				"],"
-				"\"latitude\": ­121.45356,"
-				"\"location\": {"
-				"\"longitude\": 46.51119"
-			"}"
-		"}"
-	));
+				"}"
+			"}";
+
+	client.sendRegister(ss.str());
 }
 

@@ -17,6 +17,7 @@ void RequestHandlerRegister::sendHttpOk(struct mg_connection *nc,
 	mg_printf(nc,
 			"HTTP/1.1 201 OK\r\n"
 			"Access-Control-Allow-Origin: *\r\n"
+			"Access-Control-Allow-Headers: content-type\r\n"
 			"Transfer-Encoding: chunked\r\n"
 			"\r\n");
 
@@ -32,6 +33,8 @@ void RequestHandlerRegister::sendHttpOk(struct mg_connection *nc,
 void RequestHandlerRegister::run(
 		struct mg_connection *networkConnection,
 		mg_str *body){
+	std::cout << "body: " << body->p << std::endl;
+
 	INIT_JSON;
 	STRING_FROM_FIELD(userName);
 	STRING_FROM_FIELD(userPassword);
@@ -39,6 +42,13 @@ void RequestHandlerRegister::run(
 	STRING_FROM_FIELD(userMail);
 	STRING_FROM_FIELD(userBirthday);
 	STRING_FROM_FIELD(userSex);
+
+	std::cout << "name: " << userName << std::endl;
+	std::cout << "pass: " << userPassword << std::endl;
+	std::cout << "real: " << userRealName << std::endl;
+	std::cout << "mail: " << userMail << std::endl;
+	std::cout << "birth: " << userBirthday << std::endl;
+	std::cout << "sex: " << userSex << std::endl;
 
 	users.add(
 			userName,

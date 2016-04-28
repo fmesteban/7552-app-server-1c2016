@@ -3,34 +3,35 @@
 #include <string>
 
 
-#define WEB_CLIENT_LOG 1
-
-static void ev_handler(struct mg_connection *nc, int ev, void *ev_data) {
-	WebClient* self = (WebClient*)nc->user_data;
-	self->eventHandler(nc, ev, ev_data);
+/** Static function. Just calls the current instance's event handler.
+ */
+static void evHandler(struct mg_connection *networkConnection,
+		int eventCode, void *eventData) {
+	WebClient* self = (WebClient*)networkConnection->mgr->user_data;
+	self->eventHandler(networkConnection, eventCode, eventData);
 }
 
 
-void WebClient::eventHandler(struct mg_connection *nc, int ev, void *ev_data){
-	struct http_message *hm = (struct http_message *) ev_data;
+/** Handles an http response.
+ */
+void WebClient::eventHandler(struct mg_connection *networkConnection,
+		int eventCode, void *eventData){
+	struct http_message *hm = (struct http_message *) eventData;
+	int connect_status;
 
-	switch (ev) {
+	switch (eventCode) {
 	case MG_EV_CONNECT:
-		if (* (int *) ev_data != 0) {
-			std::cerr << "connect() failed: "<< strerror(* (int *) ev_data) << std::endl;
+		if (* (int *) eventData != 0) {
+			std::cerr << "connect() failed: " <<
+					strerror(* (int *) eventData) << std::endl;
 			keepAlive = false;
 		}
 		break;
 	case MG_EV_HTTP_REPLY:
-		nc->flags |= MG_F_CLOSE_IMMEDIATELY;
-#if WEB_CLIENT_LOG
+		networkConnection->flags |= MG_F_CLOSE_IMMEDIATELY;
 		std::cout << "WC response with headers:" << std::endl;
 		fwrite(hm->message.p, 1, hm->message.len, stdout);
 		putchar('\n');
-		//std::cout << "WC response without headers:" << std::endl;
-		//fwrite(hm->body.p, 1, hm->body.len, stdout);
-		putchar('\n');
-#endif
 		keepAlive = false;
 		break;
 	default:
@@ -39,34 +40,43 @@ void WebClient::eventHandler(struct mg_connection *nc, int ev, void *ev_data){
 }
 
 
-WebClient::WebClient(){
-	mg_mgr_init(&mgr, NULL);
-	s_show_headers = 0;
+/**	Inits the web client resources. (RAII)
+ */
+WebClient::WebClient() :
+		remoteHost("shared-server.herokuapp.com:80"){
+	mg_mgr_init(&mgr, this);
 	keepAlive = true;
-#if WEB_CLIENT_LOG
-	std::cout << "WC constructor" << std::endl;
-#endif
 }
 
 
+/**	Sends a http post request
+ * TODO: a class Request, and another Response, che!
+ */
 void WebClient::sendRegister(const std::string& postData){
-#if WEB_CLIENT_LOG
-	std::cout << "WC sendRegister" << std::endl;
-#endif
-	struct mg_connection *nc = mg_connect_http(
-			&mgr,
-			ev_handler,
-			"http://shared-server.herokuapp.com/users",
-			NULL,
-			postData.c_str());
-	nc->user_data = this;
-	keepAlive = true;
-	while (keepAlive) {
-		mg_mgr_poll(&mgr, 1000);
+	struct mg_connection *nc = NULL;
+
+	/* send the http request */
+	if ((nc = mg_connect(&mgr, remoteHost.c_str(), evHandler)) != NULL) {
+		mg_set_protocol_http_websocket(nc);
+		mg_printf(nc,
+				"POST /users HTTP/1.1\r\n"
+				"Host: %s\r\n"
+				"Accept: application/json, text/plain, "
+				"*/*; q=0.01\r\n"
+				"Accept-Language: en-US,en;q=0.5\r\n"
+				"Accept-Encoding: gzip, deflate\r\n"
+				"Connection: keep-alive\r\n"
+				"Content-Type: text/plain\r\n"
+				"Content-Length: %" SIZE_T_FMT "\r\n"
+				"\r\n%s\r\n",
+				remoteHost.c_str(),
+				postData.size(), postData.c_str());
 	}
-#if WEB_CLIENT_LOG
-	std::cout << "WC sendRegister after while" << std::endl;
-#endif
+
+	/* start waiting for response */
+	keepAlive = !!nc;
+	while (keepAlive)
+		mg_mgr_poll(&mgr, 1000);
 }
 
 
