@@ -11,10 +11,8 @@ RequestHandler("/login") {
  *  all the fields of the user.
  *
  */
-void RequestHandlerLogin::run(
-		struct mg_connection *networkConnection,
-		mg_str *body){
+void RequestHandlerLogin::run(Request &request){
 	RequestHandler::sendHttpOk(
-			networkConnection,
+			request.getNetworkConnection(),
 			"{ \"response\": \"OK \" }\r\n");
 }

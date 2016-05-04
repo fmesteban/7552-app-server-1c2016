@@ -10,6 +10,7 @@ RequestManager::RequestManager(UsersContainer &users) :
 	insertDefaultHandlers();
 }
 
+
 /** Associates the RequestHandlers with theirs URI.
  */
 void RequestManager::insertDefaultHandlers(){
@@ -25,15 +26,11 @@ void RequestManager::addHandler(
 }
 
 
-
-/**TODO: cambiar para devolver referencia, pero ojo porque asi no podria
- * devolver null
- */
-RequestHandler* RequestManager::getHanlder(const std::string& uri){
+RequestHandler& RequestManager::getHanlder(const std::string& uri){
 	std::map<std::string, RequestHandler*>::iterator hdlr = handlerRefs.find(uri);
 	if (hdlr != handlerRefs.end() )
-		return (hdlr->second);
+		return *(hdlr->second);
 	else
-		return &hdlNotFound;
+		return hdlNotFound;
 }
 

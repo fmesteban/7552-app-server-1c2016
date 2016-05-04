@@ -9,9 +9,8 @@ RequestHandler("/una/uri/representativa"){
 
 /** It is just an example...
  */
-void RequestHandlerExample::run(
-		struct mg_connection *networkConnection,
-		mg_str *body){
+void RequestHandlerExample::run(Request& request){
+	struct mg_connection *networkConnection = request.getNetworkConnection();
 	mg_printf(networkConnection,
 			"HTTP/1.1 201 OK\r\n"
 			"Access-Control-Allow-Origin: *\r\n"
@@ -20,3 +19,4 @@ void RequestHandlerExample::run(
 	mg_printf_http_chunk(networkConnection, "{ \"response\": OK }\r\n");
 	mg_send_http_chunk(networkConnection, "", 0);
 }
+

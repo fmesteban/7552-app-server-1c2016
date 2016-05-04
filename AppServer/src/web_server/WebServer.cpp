@@ -3,30 +3,9 @@
 #include <string>
 
 
-/** Receives an http URI, gets the corresponding RequestHandler, and
- * 	executes it.
- * 	TODO: por ahora, cuando no hay handler devuelve un 200 OK hard,
- * 		devolver NotFound
- *
- */
-void WebServer::handleURI(struct mg_connection *networkConnection,
-							const std::string& uri,
-							mg_str *body){
-	std::cout << "uri: " << uri << std::endl;
-
-	RequestHandler *hdlr = requestManager.getHanlder(uri);
-	if(hdlr){
-		hdlr->run(networkConnection, body);
-	}else{
-		//si es null, por ahora devuelvo esto
-		mg_printf(networkConnection,
-				"HTTP/1.1 200 OK\r\n"
-				"Access-Control-Allow-Origin: *\r\n"
-				"Transfer-Encoding: chunked\r\n"
-				"\r\n");
-		mg_printf_http_chunk(networkConnection, "{ \"response\": 200 }\r\n");
-		mg_send_http_chunk(networkConnection, "", 0);
-	}
+void WebServer::handleRequest(Request &request){
+	RequestHandler &hdlr = requestManager.getHanlder(request.getUri());
+	hdlr.run(request);
 }
 
 
@@ -34,14 +13,12 @@ void WebServer::handleURI(struct mg_connection *networkConnection,
  */
 void WebServer::eventHandler(struct mg_connection *networkConnection,
 		int eventCode, void *dataPointer){
-	WebServer* self = (WebServer *) networkConnection->user_data;
-	struct http_message *httpMessage = (struct http_message *) dataPointer;
-
 	if (eventCode == MG_EV_HTTP_REQUEST){
-		std::string temp(httpMessage->uri.p);
-		std::string uri = temp.substr(0, httpMessage->uri.len);
-		std::cout << "an HTTP event with uri: " << uri << std::endl;
-		self->handleURI(networkConnection, uri, &httpMessage->body);
+		WebServer* self = (WebServer *) networkConnection->user_data;
+		struct http_message *httpMessage = (struct http_message *) dataPointer;
+
+		Request request(*networkConnection, *httpMessage);
+		self->handleRequest(request);
 	}
 }
 

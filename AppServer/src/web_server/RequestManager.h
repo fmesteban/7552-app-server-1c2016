@@ -20,7 +20,7 @@ private:
 public:
 	explicit RequestManager(UsersContainer &users);
 	void addHandler(const std::string& uri, RequestHandler* reqHandler);
-	RequestHandler* getHanlder(const std::string& uri);
+	RequestHandler& getHanlder(const std::string& uri);
 };
 
 #endif

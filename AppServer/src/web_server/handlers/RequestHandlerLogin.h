@@ -11,6 +11,7 @@ private:
 public:
 	explicit RequestHandlerLogin(UsersContainer &users);
 	void run(struct mg_connection *networkConnection, mg_str *body);
+	void run(Request &request);
 };
 
 #endif

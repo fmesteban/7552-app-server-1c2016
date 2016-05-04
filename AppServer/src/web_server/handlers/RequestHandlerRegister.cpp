@@ -2,27 +2,37 @@
 #include <iostream>
 #include <string>
 
+
 RequestHandlerRegister::RequestHandlerRegister(UsersContainer &users) :
 users(users),
 RequestHandler("/register") {
 }
 
+
 /** Parse the register uri input, and saves it in the app-server
- * 	database. TODO: send the data to the shared-server
+ * 	database.
  *
  */
-void RequestHandlerRegister::run(
-		struct mg_connection *networkConnection,
-		mg_str *body){
-	std::cout << "body: " << body->p << std::endl;
+void RequestHandlerRegister::run(Request &request){
+	Json::Value root;
+	Json::Reader reader;
+	bool parsingSuccessful = reader.parse(request.getBody(), root);
+	if(!parsingSuccessful){
+		/* malformed json data */
+	}
 
-	INIT_JSON;
-	STRING_FROM_FIELD(userName);
-	STRING_FROM_FIELD(userPassword);
-	STRING_FROM_FIELD(userRealName);
-	STRING_FROM_FIELD(userMail);
-	STRING_FROM_FIELD(userBirthday);
-	STRING_FROM_FIELD(userSex);
+	std::string userName =
+			root.get("userName", "unavailable field").asString();
+	std::string userPassword =
+			root.get("userPassword", "unavailable field").asString();
+	std::string userRealName =
+			root.get("userRealName", "unavailable field").asString();
+	std::string userMail =
+			root.get("userMail", "unavailable field").asString();
+	std::string userBirthday =
+			root.get("userBirthday", "unavailable field").asString();
+	std::string userSex =
+			root.get("userSex", "unavailable field").asString();
 
 	std::cout << "name: " << userName << std::endl;
 	std::cout << "pass: " << userPassword << std::endl;
@@ -32,14 +42,14 @@ void RequestHandlerRegister::run(
 	std::cout << "sex: " << userSex << std::endl;
 
 	users.add(
-			userName,
-			userPassword,
-			userRealName,
-			userMail,
-			userBirthday,
-			userSex);
+				userName,
+				userPassword,
+				userRealName,
+				userMail,
+				userBirthday,
+				userSex);
 
 	RequestHandler::sendHttpOk(
-			networkConnection,
-			"{ \"response\": \"OK\" }\r\n");
+				request.getNetworkConnection(),
+				"{ \"response\": \"OK\" }\r\n");
 }

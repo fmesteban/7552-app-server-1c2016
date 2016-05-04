@@ -8,7 +8,7 @@
 class RequestHandlerNotFound: public RequestHandler {
 public:
 	RequestHandlerNotFound();
-	void run(struct mg_connection *networkConnection, mg_str *body);
+	void run(Request &request);
 };
 
 

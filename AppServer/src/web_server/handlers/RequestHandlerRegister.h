@@ -10,7 +10,7 @@ private:
 	UsersContainer &users;
 public:
 	explicit RequestHandlerRegister(UsersContainer &users);
-	void run(struct mg_connection *networkConnection, mg_str *body);
+	void run(Request &request);
 };
 
 #endif

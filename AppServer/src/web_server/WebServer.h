@@ -17,9 +17,7 @@ private:
 
 public:
 	struct mg_serve_http_opts serverOptions;
-	void handleURI(struct mg_connection *networkConnection,
-					const std::string& uri,
-					mg_str *body);
+	void handleRequest(Request &request);
 	WebServer();
 	void start();
 	virtual ~WebServer();
