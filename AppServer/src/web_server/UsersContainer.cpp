@@ -2,13 +2,14 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-
+#include "Response.h"
 
 /**	Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
  *  TODO: some fields are hardcoded!
  */
 void UsersContainer::add(
+		Response& responseToClient,
 		const std::string &userName,
 		const std::string &userPassword,
 		const std::string &userRealName,
@@ -35,7 +36,8 @@ void UsersContainer::add(
 				"}"
 			"}";
 
-	client.sendRegister(ss.str());
+	int id = client.sendRegister(ss.str());
+	std::cout << "new client id: " << id << std::endl;
 }
 
 /** Forms a json with specified values, and delegates the send

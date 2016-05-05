@@ -1,6 +1,7 @@
 #include "RequestHandlerRegister.h"
 #include <iostream>
 #include <string>
+#include "Response.h"
 
 
 RequestHandlerRegister::RequestHandlerRegister(UsersContainer &users) :
@@ -41,7 +42,12 @@ void RequestHandlerRegister::run(Request &request){
 	std::cout << "birth: " << userBirthday << std::endl;
 	std::cout << "sex: " << userSex << std::endl;
 
-	users.add(
+	/* TODO: decidir si deberia pasar por parametro la response al client, o la
+	 * del shared (para delegar el completado), o si se deberia completar aca
+	 * y no pasar ninguna.
+	 */
+	Response responseToClient;
+	users.add(responseToClient,
 				userName,
 				userPassword,
 				userRealName,

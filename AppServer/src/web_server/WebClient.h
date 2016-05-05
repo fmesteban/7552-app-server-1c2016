@@ -3,6 +3,7 @@
 
 #include <string>
 #include "mongoose.h"
+#include "Response.h"
 
 class WebClient{
 private:
@@ -11,7 +12,7 @@ private:
 	std::string remoteHost;
 public:
 	WebClient();
-	void sendRegister(const std::string& data);
+	int sendRegister(const std::string& data);
 	void sendLogin(const std::string& postData);
 	void eventHandler(struct mg_connection *nc, int ev, void *ev_data);
 	~WebClient();

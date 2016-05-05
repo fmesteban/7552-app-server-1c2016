@@ -3,12 +3,13 @@
 
 #include <string>
 #include "WebClient.h"
+#include "Response.h"
 
 class UsersContainer {
 private:
 	WebClient client;
 public:
-	void add(
+	void add(Response& response,
 			const std::string &userName,
 			const std::string &userPassword,
 			const std::string &userRealName,

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include "Request.h"
+#include "Response.h"
+#include <json/json.h>
 
 
 /** Static function. Just calls the current instance's event handler.
@@ -17,26 +19,20 @@ static void evHandler(struct mg_connection *networkConnection,
  */
 void WebClient::eventHandler(struct mg_connection *networkConnection,
 		int eventCode, void *eventData){
-	struct http_message *hm = (struct http_message *) eventData;
+	struct http_message *httpMessage = (struct http_message *) eventData;
 	int connect_status;
 
-	switch (eventCode) {
-	case MG_EV_CONNECT:
+	if (eventCode == MG_EV_CONNECT){
 		if (* (int *) eventData != 0) {
 			std::cerr << "connect() failed: " <<
 					strerror(* (int *) eventData) << std::endl;
 			keepAlive = false;
 		}
-		break;
-	case MG_EV_HTTP_REPLY:
+	} else if (eventCode == MG_EV_HTTP_REPLY){
+		Response &resp = *(Response *) networkConnection->user_data;
 		networkConnection->flags |= MG_F_CLOSE_IMMEDIATELY;
-		std::cout << "WC response with headers:" << std::endl;
-		fwrite(hm->message.p, 1, hm->message.len, stdout);
-		putchar('\n');
+		resp.parseMessage(*httpMessage);
 		keepAlive = false;
-		break;
-	default:
-		break;
 	}
 }
 
@@ -52,35 +48,46 @@ WebClient::WebClient() :
 
 /**	Sends a http post request to add a new user
  */
-void WebClient::sendRegister(const std::string& postData){
+int WebClient::sendRegister(const std::string& postData){
 	struct mg_connection *nc = NULL;
 
 	/* send the http request */
 	if ((nc = mg_connect(&mgr, remoteHost.c_str(), evHandler)) != NULL) {
 		mg_set_protocol_http_websocket(nc);
-		Request request(*nc);
+		Request requestToShared(*nc);
+		Response responseFromShared;
 
 		/* POST /users HTTP/1.1 */
-		request.setMethod("POST");
-		request.setUri("/users");
+		requestToShared.setMethod("POST");
+		requestToShared.setUri("/users");
 
 		/* setting headers */
-		request.insertHeader("Host", remoteHost);
-		request.insertHeader("Accept", "application/json, "
+		requestToShared.insertHeader("Host", remoteHost);
+		requestToShared.insertHeader("Accept", "application/json, "
 				"text/plain, */*; q=0.01");
-		request.insertHeader("Accept-Language", "en-US,en;q=0.5");
-		request.insertHeader("Accept-Encoding", "gzip, deflate");
-		request.insertHeader("Connection", "keep-alive");
-		request.insertHeader("Content-Type", "text/plain");
+		requestToShared.insertHeader("Accept-Language", "en-US,en;q=0.5");
+		requestToShared.insertHeader("Accept-Encoding", "gzip, deflate");
+		requestToShared.insertHeader("Connection", "keep-alive");
+		requestToShared.insertHeader("Content-Type", "text/plain");
 
 		/* sending the content */
-		request.send(postData);
+		requestToShared.send(postData);
 
 		/* start waiting for response */
 		keepAlive = true;
+		nc->user_data = &responseFromShared;
 		while (keepAlive)
 			mg_mgr_poll(&mgr, 1000);
+
+		if(responseFromShared.getStatus() == 201){
+			Json::Value root;
+			Json::Reader reader;
+			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
+			return root.get("id", -1).asInt();
+		}
 	}
+
+	return -1;
 }
 
 
