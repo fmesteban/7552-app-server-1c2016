@@ -23,8 +23,26 @@ User::User(const std::string &name,
 	photoProfile(photoProfile){
 }
 
+
+User::User(Database &db, const std::string &email){
+}
+
+
+/* db registers: (email, id) */
+void User::saveIn(Database &db){
+	std::stringstream ss;
+	ss << id;
+	db.putKeyValue(email, ss.str());
+}
+
+
 void User::addInterest(const std::string& category, const std::string &value){
 	interests.push_back(new Interest(category, value));
+}
+
+
+void User::setId(int id){
+	this->id = id;
 }
 
 

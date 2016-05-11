@@ -16,6 +16,12 @@ bool UsersContainer::add(User &newUser){
 
 	int id = client.sendRegister(ss.str());
 	std::cout << "new client id: " << id << std::endl;
+
+	if(id != -1){
+		newUser.setId(id);
+		newUser.saveIn(db);
+	}
+
 	return id != -1;
 }
 

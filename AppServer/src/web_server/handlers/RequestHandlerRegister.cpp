@@ -1,8 +1,8 @@
 #include "RequestHandlerRegister.h"
-#include <iostream>
-#include <string>
 #include "Response.h"
 #include "User.h"
+#include <iostream>
+#include <string>
 
 
 RequestHandlerRegister::RequestHandlerRegister(UsersContainer &users) :
@@ -26,7 +26,7 @@ void RequestHandlerRegister::run(Request &request){
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
 	if (!parsingSuccessful){
-		/* malformed json data */
+		/* Bad Request */
 	}
 
 	std::string name = root.get("name", "unavailable").asString();
@@ -40,9 +40,20 @@ void RequestHandlerRegister::run(Request &request){
 	Json::Value location;
 	reader.parse(root.get("location", "unavailable").asString(), location);
 	
-	std::string longitudeStr = location.get("longitude", "0.5").asString();
-	std::string latitudeStr = location.get("latitude", "0.5").asString();
-	std::cout << "latitudeStr: " << latitudeStr << std::endl;
+	std::string longitudeStr = location.get("longitude", "unavailable").asString();
+	std::string latitudeStr = location.get("latitude", "unavailable").asString();
+	
+	if(name == "unavailable" || 
+		alias == "unavailable" || 
+		password == "unavailable" || 
+		email == "unavailable" || 
+		birthday == "unavailable" || 
+		sex == "unavailable" || 
+		photoProfile == "unavailable" || 
+		longitudeStr == "unavailable" || 
+		latitudeStr == "unavailable"){
+		/* Bad Request */
+	}
 
 	std::stringstream aux;
 	float longitude, latitude;
@@ -51,7 +62,7 @@ void RequestHandlerRegister::run(Request &request){
 	aux.clear();
 	aux << latitudeStr;
 	aux >> latitude;
-
+/*
 	std::cout << "name: " << name << std::endl;
 	std::cout << "alias: " << alias << std::endl;
 	std::cout << "password: " << password << std::endl;
@@ -61,7 +72,7 @@ void RequestHandlerRegister::run(Request &request){
 	std::cout << "photoProfile: " << photoProfile << std::endl;
 	std::cout << "longitude: " << longitude << std::endl;
 	std::cout << "latitude: " << latitude << std::endl;
-
+*/
 	User newUser(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
 	newUser.addInterest("music", "Foo Fighters");
