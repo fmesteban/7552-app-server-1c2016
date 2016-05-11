@@ -4,8 +4,9 @@
 #include "mongoose.h"
 #include <string>
 #include "RequestManager.h"
+#include "Thread.h"
 
-class WebServer {
+class WebServer : public Thread{
 private:
 	const std::string httpPort;
 	struct mg_mgr eventManager;
@@ -14,12 +15,14 @@ private:
 	RequestManager requestManager;
 	static void eventHandler(struct mg_connection *networkConnection,
 			int eventCode, void *dataPointer);
+	bool keepAlive;
 
 public:
 	struct mg_serve_http_opts serverOptions;
 	void handleRequest(Request &request);
 	WebServer();
-	void start();
+	void run();
+	void stop();
 	virtual ~WebServer();
 };
 

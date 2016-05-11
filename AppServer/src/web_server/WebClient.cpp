@@ -62,14 +62,8 @@ int WebClient::sendRegister(const std::string& postData){
 		requestToShared.setUri("/users");
 
 		/* setting headers */
-		requestToShared.insertHeader("Host", remoteHost);
-		requestToShared.insertHeader("Accept", "application/json, "
-				"text/plain, */*; q=0.01");
-		requestToShared.insertHeader("Accept-Language", "en-US,en;q=0.5");
-		requestToShared.insertHeader("Accept-Encoding", "gzip, deflate");
-		requestToShared.insertHeader("Connection", "keep-alive");
-		requestToShared.insertHeader("Content-Type", "text/plain");
-
+		insertDefaultHeaders(requestToShared);
+		
 		/* sending the content */
 		requestToShared.send(postData);
 
@@ -96,6 +90,17 @@ int WebClient::sendRegister(const std::string& postData){
  */
 void WebClient::sendLogin(const std::string& postData){
 	// TODO: implement
+}
+
+
+void WebClient::insertDefaultHeaders(Request &request){
+	request.insertHeader("Host", remoteHost);
+	request.insertHeader("Accept", "application/json, "
+			"text/plain, */*; q=0.01");
+	request.insertHeader("Accept-Language", "en-US,en;q=0.5");
+	request.insertHeader("Accept-Encoding", "gzip, deflate");
+	request.insertHeader("Connection", "keep-alive");
+	request.insertHeader("Content-Type", "application/json");
 }
 
 

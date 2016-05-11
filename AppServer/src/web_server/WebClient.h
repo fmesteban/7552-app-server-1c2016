@@ -4,12 +4,14 @@
 #include <string>
 #include "mongoose.h"
 #include "Response.h"
+#include "Request.h"
 
 class WebClient{
 private:
 	struct mg_mgr mgr;
 	int keepAlive;
 	std::string remoteHost;
+	void insertDefaultHeaders(Request &request);
 public:
 	WebClient();
 	int sendRegister(const std::string& data);

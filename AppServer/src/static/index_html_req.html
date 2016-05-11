@@ -31,10 +31,17 @@
    	  if( event.keyCode != 13 )
         return;
 
-      var userName = document.getElementById('userName').value;
-      var realName = document.getElementById('realName').value;
-      var userMail = document.getElementById('userMail').value;
-      var userSex = document.getElementById('userSex').value;
+
+
+      var name = document.getElementById('name').value;
+      var alias = document.getElementById('alias').value;
+      var password = document.getElementById('password').value;
+      var email = document.getElementById('email').value;
+      var birthday = document.getElementById('birthday').value;
+      var sex = document.getElementById('sex').value;
+      var latitude = document.getElementById('latitude').value;
+      var longitude = document.getElementById('longitude').value;
+      var photo_profile = document.getElementById('photo_profile').value;
 
       $.ajax({
         url: 'http://localhost:8000/register',
@@ -42,12 +49,18 @@
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({ 
-          userName: userName,
-          userPassword: "210",
-          userRealName: realName,
-          userMail: userMail,
-          userBirthday: "02/10/1993",
-          userSex: userSex
+          name: name,
+          alias: alias,
+          password: password,
+          email: email,
+          birthday: birthday,
+          sex: sex,
+          photo_profile: photo_profile,
+          location: JSON.stringify({
+            latitude: latitude,
+            longitude: longitude
+          }),
+          interests: []
         }),
         success: function(json) {
           $('#response').html(json.response);
@@ -71,16 +84,31 @@
     </p>
 
     <div>
-      <label>NickName:</label> <input type="text" id="userName" />
+      <label>Name:</label> <input type="text" id="name" />
     </div><div>
     <div>
-      <label>RealName:</label> <input type="text" id="realName" />
+      <label>Alias:</label> <input type="text" id="alias" />
     </div><div>
     <div>
-      <label>email:</label> <input type="text" id="userMail" />
+      <label>Password:</label> <input type="text" id="password" />
     </div><div>
     <div>
-      <label>Your genre:</label> <input type="text" id="userSex" />
+      <label>email:</label> <input type="text" id="email" />
+    </div><div>
+    <div>
+      <label>Birthday:</label> <input type="text" id="birthday" />
+    </div><div>
+    <div>
+      <label>Your genre:</label> <input type="text" id="sex" />
+    </div><div>
+    <div>
+      <label>Latitude:</label> <input type="float" id="latitude" />
+    </div><div>
+    <div>
+      <label>Longitude:</label> <input type="float" id="longitude" />
+    </div><div>
+    <div>
+      <label>Photo:</label> <input type="text" id="photo_profile" />
     </div><div>
      <label>response:</label> <span id="response">&nbsp;</span>
     </div><div>

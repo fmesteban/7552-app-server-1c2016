@@ -20,6 +20,7 @@ public:
 	void setMethod(const std::string &method);
 	void setUri(const std::string &uri);
 	void insertHeader(const std::string &name, const std::string &value);
+	std::string &getMethod();
 	std::string &getUri();
 	std::string &getBody();
 	void send(const std::string &content);

@@ -23,6 +23,7 @@ void RequestHandler::sendHttpOk(struct mg_connection *nc,
 	mg_send_http_chunk(nc, "", 0);
 }
 
+
 const std::string& RequestHandler::getUri(){
 	return uri;
 }

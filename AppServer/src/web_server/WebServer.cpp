@@ -29,6 +29,7 @@ void WebServer::eventHandler(struct mg_connection *networkConnection,
  */
 WebServer::WebServer() : httpPort("8000"),
 		requestManager(users){
+	keepAlive = true;
 	mg_mgr_init(&eventManager, NULL);
 	networkConnection = mg_bind(&eventManager, httpPort.c_str(), eventHandler);
 	networkConnection->user_data = this;
@@ -44,9 +45,13 @@ WebServer::WebServer() : httpPort("8000"),
 
 /**	Starts the Server Polling loop.
  */
-void WebServer::start(){
-	while(true)
+void WebServer::run(){
+	while(keepAlive)
 		mg_mgr_poll(&eventManager, 1000);
+}
+
+void WebServer::stop(){
+	keepAlive = false;
 }
 
 

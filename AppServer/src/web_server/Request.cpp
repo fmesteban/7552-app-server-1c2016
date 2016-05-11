@@ -7,6 +7,7 @@
 Request::Request(
 		struct mg_connection &networkConnection,
 		struct http_message &httpMessage):
+	method(httpMessage.method.p, httpMessage.method.len),
 	uri(httpMessage.uri.p, httpMessage.uri.len),
 	body(httpMessage.body.p, httpMessage.body.len),
 	networkConnection(networkConnection) {
@@ -30,6 +31,11 @@ void Request::setUri(const std::string &uri){
 
 void Request::insertHeader(const std::string &name, const std::string &value){
 	headers.insert(std::pair<std::string,std::string>(name,value));
+}
+
+
+std::string& Request::getMethod(){
+	return method;
 }
 
 
