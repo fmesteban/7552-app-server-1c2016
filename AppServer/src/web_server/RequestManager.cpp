@@ -6,7 +6,8 @@
 
 RequestManager::RequestManager(UsersContainer &users) :
 	users(users),
-	reqRegister(users) {
+	reqRegister(users),
+	reqLogin(users) {
 	insertDefaultHandlers();
 }
 
@@ -16,6 +17,7 @@ RequestManager::RequestManager(UsersContainer &users) :
 void RequestManager::insertDefaultHandlers(){
 	addHandler(reqExample.getUri(), &reqExample);
 	addHandler(reqRegister.getUri(), &reqRegister);
+	addHandler(reqLogin.getUri(), &reqLogin);
 }
 
 

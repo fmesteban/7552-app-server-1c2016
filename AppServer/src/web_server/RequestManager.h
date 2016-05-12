@@ -8,6 +8,7 @@
 #include "RequestHandlerExample.h"
 #include "RequestHandlerNotFound.h"
 #include "RequestHandlerRegister.h"
+#include "RequestHandlerLogin.h"
 
 class RequestManager {
 private:
@@ -16,6 +17,7 @@ private:
 	RequestHandlerExample reqExample;
 	RequestHandlerNotFound hdlNotFound;
 	RequestHandlerRegister reqRegister;
+	RequestHandlerLogin reqLogin;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(UsersContainer &users);

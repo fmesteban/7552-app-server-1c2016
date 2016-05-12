@@ -15,7 +15,7 @@ private:
 public:
 	WebClient();
 	int sendRegister(const std::string& data);
-	void sendLogin(const std::string& postData);
+	std::string sendLogin(const std::string& userID);
 	void eventHandler(struct mg_connection *nc, int ev, void *ev_data);
 	~WebClient();
 };

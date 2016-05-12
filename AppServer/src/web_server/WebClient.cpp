@@ -40,7 +40,7 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 /**	Inits the web client resources. (RAII)
  */
 WebClient::WebClient() :
-		remoteHost("shared-server.herokuapp.com:80"){
+				remoteHost("shared-server.herokuapp.com:80"){
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
@@ -63,7 +63,7 @@ int WebClient::sendRegister(const std::string& postData){
 
 		/* setting headers */
 		insertDefaultHeaders(requestToShared);
-		
+
 		/* sending the content */
 		requestToShared.send(postData);
 
@@ -88,8 +88,38 @@ int WebClient::sendRegister(const std::string& postData){
 /** Sends a a http get request to get the information
  * of an existing user.
  */
-void WebClient::sendLogin(const std::string& postData){
-	// TODO: implement
+std::string WebClient::sendLogin(const std::string& userID){
+	struct mg_connection *nc = NULL;
+
+	/* send the http request */
+	if ((nc = mg_connect(&mgr, remoteHost.c_str(), evHandler)) != NULL) {
+		mg_set_protocol_http_websocket(nc);
+		Request requestToShared(*nc);
+		Response responseFromShared;
+
+		/* POST /users HTTP/1.1 */
+		requestToShared.setMethod("GET");
+		requestToShared.setUri("/users/" + userID);
+
+		/* setting headers */
+		insertDefaultHeaders(requestToShared);
+
+		/* sending the content */
+		requestToShared.send("");
+
+		/* start waiting for response */
+		keepAlive = true;
+		nc->user_data = &responseFromShared;
+
+		while (keepAlive)
+			mg_mgr_poll(&mgr, 1000);
+
+		if(responseFromShared.getStatus() == 200){
+			return responseFromShared.getBody();
+		}
+	}
+
+	return "{}";
 }
 
 
