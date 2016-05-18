@@ -23,6 +23,18 @@ void RequestHandler::sendHttpOk(struct mg_connection *nc,
 	mg_send_http_chunk(nc, "", 0);
 }
 
+void RequestHandler::sendResponse(Response r, struct mg_connection *nc){
+	std::stringstream ss;
+	ss << "HTTP/1.1 " << std::to_string(r.getStatus()) << " OK\r\n";
+	ss << "Access-Control-Allow-Origin: *\r\n";
+	ss << "Access-Control-Allow-Headers: content-type\r\n";
+	ss << "Transfer-Encoding: chunked\r\n";
+	ss << "\r\n";
+	mg_printf(nc, ss.str().c_str());
+	const char * c = r.getBody().c_str();
+	mg_printf_http_chunk(nc, c);
+	mg_send_http_chunk(nc, "", 0);
+}
 
 const std::string& RequestHandler::getUri(){
 	return uri;

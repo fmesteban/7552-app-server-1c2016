@@ -8,13 +8,24 @@
 
 typedef int httpStatus;
 #define UNDEFINED_STATUS -1
+#define BAD_REQUEST_STATUS 400
+#define SERVER_ERROR_STATUS 500 
+#define OK_STATUS 200
+#define ACCEPTED_STATUS 201
+
+#define BAD_REQUEST_MSG "Bad Request"
+#define SERVER_ERROR_MSG "Internal Server Error"
+#define OK_MSG "OK"
+#define ACCEPTED_MSG "Accepted"
+
 
 class Response {
-private:
+protected:
 	std::string body;
 	httpStatus status;
 public:
 	Response();
+	Response(httpStatus status, std::string msg);
 	void parseMessage(struct http_message &httpMessage);
 	std::string &getBody();
 	httpStatus getStatus();

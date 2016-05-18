@@ -1,5 +1,6 @@
 #include "Database.h"
 #include <string>
+#include <iostream>
 
 Database::Database() :
 kDBPath("./debug_db") {
@@ -16,6 +17,8 @@ kDBPath("./debug_db") {
 // TODO: don't use assert, throw exceptions instead
 void Database::putKeyValue(const std::string& key, const std::string& value){
 	s = db->Put(rocksdb::WriteOptions(), key, value);
+	std::cerr << "Mensaje de error" << std::endl;
+	std::cerr << s.ToString() << std::endl;
 	assert(s.ok());
 }
 
@@ -39,6 +42,7 @@ bool Database::getTwoLvlValue(
 
 bool Database::getValue(const std::string& key, std::string& value){
 	s = db->Get(rocksdb::ReadOptions(), key, &value);
+	std::cerr << s.ToString();
 	assert(s.ok());
 	return !s.IsNotFound();
 }

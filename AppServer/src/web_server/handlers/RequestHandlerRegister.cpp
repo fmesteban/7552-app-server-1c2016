@@ -10,7 +10,6 @@ users(users),
 RequestHandler("/register") {
 }
 
-
 /** Parse the /register uri input, and saves it in the app-server
  * 	database.
  *
@@ -26,7 +25,9 @@ void RequestHandlerRegister::run(Request &request){
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
 	if (!parsingSuccessful){
-		/* Bad Request */
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		return;
 	}
 
 	std::string name = root.get("name", "unavailable").asString();
@@ -52,7 +53,7 @@ void RequestHandlerRegister::run(Request &request){
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
-		/* Bad Request */
+		// ??
 	}
 
 	std::stringstream aux;
@@ -62,24 +63,13 @@ void RequestHandlerRegister::run(Request &request){
 	aux.clear();
 	aux << latitudeStr;
 	aux >> latitude;
-/*
-	std::cout << "name: " << name << std::endl;
-	std::cout << "alias: " << alias << std::endl;
-	std::cout << "password: " << password << std::endl;
-	std::cout << "email: " << email << std::endl;
-	std::cout << "birthday: " << birthday << std::endl;
-	std::cout << "sex: " << sex << std::endl;
-	std::cout << "photoProfile: " << photoProfile << std::endl;
-	std::cout << "longitude: " << longitude << std::endl;
-	std::cout << "latitude: " << latitude << std::endl;
-*/
+
 	User newUser(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
 	newUser.addInterest("Music", "Foo Fighters");
 
 	users.add(newUser);
 
-	RequestHandler::sendHttpOk(
-		request.getNetworkConnection(),
-		"{ \"response\": \"OK\" }\r\n");
+	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }
