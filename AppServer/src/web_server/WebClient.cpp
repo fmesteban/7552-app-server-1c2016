@@ -40,8 +40,8 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 /**	Inits the web client resources. (RAII)
  */
 WebClient::WebClient() :
-//						remoteHost("shared-server.herokuapp.com:80"){
-						remoteHost("localhost:5000"){
+						remoteHost("shared-server.herokuapp.com:80"){
+//						remoteHost("localhost:5000"){
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
@@ -88,7 +88,8 @@ int WebClient::sendRegister(const std::string& postData){
 
 /**	Sends a http put request to edit an existing user
  */
-bool WebClient::sendEditProfile(const std::string& putData, const std::string &userID){
+bool WebClient::sendEditProfile(const std::string& putData,
+		const std::string &userID){
 	struct mg_connection *nc = NULL;
 
 	/* send the http request */

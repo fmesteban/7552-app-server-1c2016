@@ -20,7 +20,7 @@ private:
 public:
 	struct mg_serve_http_opts serverOptions;
 	void handleRequest(Request &request);
-	WebServer(const std::string &port);
+	explicit WebServer(const std::string &port);
 	void run();
 	void stop();
 	virtual ~WebServer();
