@@ -1,11 +1,14 @@
 #include "Response.h"
 #include <string>
 
-
 Response::Response(){
 	status = UNDEFINED_STATUS;
 }
 
+Response::Response(httpStatus st, std::string msg){
+	status = st;
+	body = msg;
+}
 
 /*TODO: parse needed headers, etc...*/
 void Response::parseMessage(struct http_message &httpMessage){
@@ -15,11 +18,9 @@ void Response::parseMessage(struct http_message &httpMessage){
 	std::cout << "resp_code: " << httpMessage.resp_code << std::endl;
 }
 
-
 std::string &Response::getBody(){
 	return body;
 }
-
 
 httpStatus Response::getStatus(){
 	return status;

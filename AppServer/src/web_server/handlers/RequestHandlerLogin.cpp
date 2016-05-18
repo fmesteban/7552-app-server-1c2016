@@ -1,4 +1,5 @@
 #include "RequestHandlerLogin.h"
+#include "Response.h"
 #include <iostream>
 #include <string>
 
@@ -30,7 +31,6 @@ void RequestHandlerLogin::run(Request &request){
 
 	std::string userAsString = users.login(email, password);
 
-	RequestHandler::sendHttpOk(
-			request.getNetworkConnection(),
-			userAsString + "\r\n");
+	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }
