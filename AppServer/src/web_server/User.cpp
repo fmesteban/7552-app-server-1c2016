@@ -21,6 +21,7 @@ User::User(const std::string &name,
 	longitude(longitude),
 	latitude(latitude),
 	photoProfile(photoProfile){
+	id = -1;
 }
 
 
@@ -45,10 +46,21 @@ void User::setId(int id){
 	this->id = id;
 }
 
+void User::setId(const std::string& id){
+	std::stringstream ss;
+	ss << id;
+	int idAsInt;
+	ss >> idAsInt;
+	setId(idAsInt);
+}
+
 
 std::ostream& operator<<(std::ostream &os, const User& self) {
 	os << "{\"user\":{";
 	self.printInterests(os);
+	if(self.id != -1)
+		os << "\"id\": " 	<< self.id			<< ",";
+
 	os <<
 			"\"name\": \"" 	<< self.name 		<< "\","
 			"\"alias\": \"" << self.alias 	<< "\","
@@ -83,6 +95,10 @@ void User::printInterests(std::ostream &os) const{
 		os << *interests[interests.size() - 1];
 	}
 	os << "],";
+}
+
+const std::string &User::getEmail() const{
+	return email;
 }
 
 

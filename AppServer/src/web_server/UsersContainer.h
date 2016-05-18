@@ -12,6 +12,7 @@ private:
 	Database db;
 public:
 	bool add(User &newUser);
+	void edit(User &newProfile);
 	std::string login(const std::string &email, const std::string &password);
 };
 

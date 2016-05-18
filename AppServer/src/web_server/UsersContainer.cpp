@@ -25,6 +25,24 @@ bool UsersContainer::add(User &newUser){
 	return id != -1;
 }
 
+void UsersContainer::edit(User &newProfile){
+	std::stringstream ss;
+
+	std::string userID;
+	if(!db.getValue(newProfile.getEmail(), userID)){
+		std::cerr << "email not found" << std::endl;
+		return;
+	}
+
+	ss.clear();
+	newProfile.setId(userID);
+	ss << newProfile;
+
+	std::cout << ss.str();
+
+	client.sendEditProfile(ss.str(), userID);
+}
+
 std::string UsersContainer::login(
 		const std::string &email,
 		const std::string &password){

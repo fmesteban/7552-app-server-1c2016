@@ -33,7 +33,9 @@ public:
 	User(Database &db, const std::string &email);
 	void addInterest(const std::string& category, const std::string &value);
 	void setId(int id);
+	void setId(const std::string& id);
 	void saveIn(Database &db);
+	const std::string &getEmail() const;
 	friend std::ostream & operator<<(std::ostream &os, const User& self);
 	~User();
 };
