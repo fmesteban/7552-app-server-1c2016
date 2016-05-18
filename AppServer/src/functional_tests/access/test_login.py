@@ -8,8 +8,9 @@ import inspect, os
 class TestLogin(unittest.TestCase):
 
 	def test_login_existing_user(self):
-		data = {"name": "TestLogin", "alias": "usuario_login", "password": "test", "email": "example_login3@domain.com", "birthday": "10/10/10", "sex": "Male", "latitude": 45, "longitude": 46, "photo_profile": "base64photo" }
-		requests.post("http://localhost:8000/register", data = json.dumps(data))
+		data = json.dumps({"name": "TestLogin", "alias": "usuario_login", "password": "test", "email": "example_login3@domain.com", 
+			"birthday": "10/10/10", "sex": "Male", "location": json.dumps({ "latitude": 45, "longitude": 46 }), "photo_profile": "base64photo" })
+		requests.post("http://localhost:8000/register", data = data)
 
 		data = {"email": "example_login3@domain.com", "password": "test"}
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))

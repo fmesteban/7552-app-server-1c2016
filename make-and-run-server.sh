@@ -7,4 +7,4 @@ then
     exit 1
 fi
 
-chmod a+rwx -R AppServer/build && ./AppServer/build/AppServer
+chmod a+rwx -R AppServer/build && ./AppServer/build/AppServer 8000

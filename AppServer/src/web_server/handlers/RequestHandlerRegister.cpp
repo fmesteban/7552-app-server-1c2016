@@ -53,8 +53,20 @@ void RequestHandlerRegister::run(Request &request){
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
-		// ??
+			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+			RequestHandler::sendResponse(response, request.getNetworkConnection());
+			return;
 	}
+
+	std::cout << "name: " << name << std::endl;
+	std::cout << "alias: " << alias << std::endl;
+	std::cout << "password: " << password << std::endl;
+	std::cout << "email: " << email << std::endl;
+	std::cout << "birthday: " << birthday << std::endl;
+	std::cout << "sex: " << sex << std::endl;
+	std::cout << "photoProfile: " << photoProfile << std::endl;
+	std::cout << "longitude: " << longitudeStr << std::endl;
+	std::cout << "latitude: " << latitudeStr << std::endl;
 
 	std::stringstream aux;
 	float longitude, latitude;
