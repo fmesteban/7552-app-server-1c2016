@@ -27,7 +27,7 @@ void WebServer::eventHandler(struct mg_connection *networkConnection,
  *	Wraps the mongoose server
  *	Protects the resources using the RAII pattern
  */
-WebServer::WebServer() : httpPort("8000"),
+WebServer::WebServer(const std::string &port) : httpPort(port),
 		requestManager(users){
 	keepAlive = true;
 	mg_mgr_init(&eventManager, NULL);
