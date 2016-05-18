@@ -75,7 +75,7 @@ void RequestHandlerRegister::run(Request &request){
 */
 	User newUser(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
-	newUser.addInterest("music", "Foo Fighters");
+	newUser.addInterest("Music", "Foo Fighters");
 
 	users.add(newUser);
 

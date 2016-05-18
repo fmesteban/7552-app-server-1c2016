@@ -17,7 +17,7 @@ bool UsersContainer::add(User &newUser){
 	int id = client.sendRegister(ss.str());
 	std::cout << "new client id: " << id << std::endl;
 
-	if(id != -1){
+	if (id != -1){
 		newUser.setId(id);
 		newUser.saveIn(db);
 	}
@@ -34,11 +34,3 @@ std::string UsersContainer::login(
 	return client.sendLogin(userID);
 }
 
-
-/** Forms a json with specified values, and delegates the send
- *  in the web client. Gets the information of a user in the system.
- *  TODO: some fields are hardcoded!
- */
-void UsersContainer::get(const std::string &userName){
-	client.sendLogin(std::string(""));
-}

@@ -13,8 +13,6 @@ private:
 public:
 	bool add(User &newUser);
 	std::string login(const std::string &email, const std::string &password);
-	// TODO: need ID to get user
-    void get(const std::string &userName);
 };
 
 #endif
