@@ -34,7 +34,8 @@ void User::saveIn(Database &db){
 	std::stringstream ss;
 	ss << id;
 	db.putKeyValue(email, ss.str());
-	Log::instance()->append("User with email " + email + "saved in DB.", Log::INFO);
+	Log::instance()->append("User with email " + email + " saved in DB.",
+			Log::INFO);
 }
 
 
@@ -84,10 +85,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 void User::printInterests(std::ostream &os) const{
 	os << 
 	"\"interests\":[";
-	if (interests.empty()){
-		/* the json output list should not be empty */
-		os << "{\"category\":\"music\",\"value\":\"none\"}";
-	}else{
+	if (!interests.empty()){
 		for (size_t i=0; i < interests.size() - 1; ++i){
 			/* with comma */
 			os << *interests[i] << ",";

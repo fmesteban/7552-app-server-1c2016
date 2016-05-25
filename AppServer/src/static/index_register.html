@@ -60,7 +60,12 @@
             latitude: latitude,
             longitude: longitude
           }),
-          interests: []
+          interests: [
+            {
+              category: 'music',
+              value: 'arbol'
+            }
+          ]
         }),
         success: function(json) {
           $('#response').html(json.response);

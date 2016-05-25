@@ -42,7 +42,9 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 WebClient::WebClient() :
 						remoteHost("shared-server.herokuapp.com:80"){
 //						remoteHost("localhost:5000"){
-	Log::instance()->append("Initiating connection with shared-server.herokuapp.com:80", Log::INFO);
+	Log::instance()->append(
+			"Initiating connection with " + remoteHost,
+			Log::INFO);
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
@@ -68,7 +70,9 @@ int WebClient::sendRegister(const std::string& postData){
 
 		/* sending the content */
 		requestToShared.send(postData);
-		Log::instance()->append("Sending register request to shared server.", Log::INFO);
+		Log::instance()->append(
+				"Sending register request to shared server.",
+				Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;
@@ -109,7 +113,9 @@ bool WebClient::sendEditProfile(const std::string& putData,
 
 		/* sending the content */
 		requestToShared.send(putData);
-		Log::instance()->append("Sending update profile request to shared server.", Log::INFO);
+		Log::instance()->append(
+				"Sending update profile request to shared server.",
+				Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;
@@ -143,7 +149,9 @@ std::string WebClient::sendLogin(const std::string& userID){
 
 		/* sending the content */
 		requestToShared.send("");
-		Log::instance()->append("Sending get user information request to shared server.", Log::INFO);
+		Log::instance()->append(
+				"Sending get user information request to shared server.",
+				Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;

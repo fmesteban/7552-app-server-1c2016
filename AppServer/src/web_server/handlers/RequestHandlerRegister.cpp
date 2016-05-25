@@ -23,13 +23,18 @@ void RequestHandlerRegister::run(Request &request){
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
+
+	std::cout << "body: " << request.getBody() << std::endl;
+
 	Json::Value root;
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
 	if (!parsingSuccessful){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append("Received a BAD (malformed) REQUEST. Rejected.", Log::INFO);
+		Log::instance()->append(
+				"Received a BAD (malformed) REQUEST. Rejected.",
+				Log::INFO);
 		return;
 	}
 
@@ -58,7 +63,9 @@ void RequestHandlerRegister::run(Request &request){
 		latitudeStr == "unavailable"){
 			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 			RequestHandler::sendResponse(response, request.getNetworkConnection());
-			Log::instance()->append("Received a BAD (incomplete) REQUEST. Rejected.", Log::INFO);
+			Log::instance()->append(
+					"Received a BAD (incomplete) REQUEST. Rejected.",
+					Log::INFO);
 			return;
 	}
 
@@ -82,7 +89,18 @@ void RequestHandlerRegister::run(Request &request){
 
 	User newUser(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
-	newUser.addInterest("Music", "Foo Fighters");
+
+	Json::Value& interests = root["interests"];
+	Json::ValueConstIterator it = interests.begin();
+	for (; it != interests.end(); ++it)
+	{
+		const Json::Value& interest = *it;
+		std::string category = interest.get("category", "unavailable").asString();
+		std::string value = interest.get("value", "unavailable").asString();
+		if(category == "unavailable" || value == "unavailable")
+			continue;
+		newUser.addInterest(category, value);
+	}
 
 	users.add(newUser);
 

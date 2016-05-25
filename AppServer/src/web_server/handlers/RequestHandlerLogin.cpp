@@ -27,7 +27,9 @@ void RequestHandlerLogin::run(Request &request){
 	if (!parsingSuccessful){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append("Received a BAD (malformed) REQUEST. Rejected.", Log::INFO);
+		Log::instance()->append(
+				"Received a BAD (malformed) REQUEST. Rejected.",
+				Log::INFO);
 		return;
 	}
 
@@ -37,7 +39,9 @@ void RequestHandlerLogin::run(Request &request){
 	if(email == "unavailable" || password == "unavailable"){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append("Received a BAD (incomplete) REQUEST. Rejected.", Log::INFO);
+		Log::instance()->append(
+				"Received a BAD (incomplete) REQUEST. Rejected.",
+				Log::INFO);
 		return;		
 	}
 

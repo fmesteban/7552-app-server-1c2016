@@ -30,7 +30,9 @@ void RequestHandlerEditProfile::run(Request &request){
 	if (!parsingSuccessful){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append("Received a BAD (malformed) REQUEST. Rejected.", Log::INFO);
+		Log::instance()->append(
+				"Received a BAD (malformed) REQUEST. Rejected.",
+				Log::INFO);
 	}
 
 	std::string name = root.get("name", "unavailable").asString();
@@ -57,8 +59,11 @@ void RequestHandlerEditProfile::run(Request &request){
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
 			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
-			RequestHandler::sendResponse(response, request.getNetworkConnection());
-			Log::instance()->append("Received a BAD (incomplete) REQUEST. Rejected.", Log::INFO);
+			RequestHandler::sendResponse(response,
+					request.getNetworkConnection());
+			Log::instance()->append(
+					"Received a BAD (incomplete) REQUEST. Rejected.",
+					Log::INFO);
 			return;
 	}
 
@@ -72,7 +77,20 @@ void RequestHandlerEditProfile::run(Request &request){
 
 	User newProfile(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
-	newProfile.addInterest("Music", "Pink Floyd");
+
+	Json::Value& interests = root["interests"];
+	Json::ValueConstIterator it = interests.begin();
+	for (; it != interests.end(); ++it)
+	{
+		const Json::Value& interest = *it;
+		std::string category = interest.get(
+				"category", "unavailable").asString();
+		std::string value = interest.get("value", "unavailable").asString();
+		if(category == "unavailable" || value == "unavailable")
+			continue;
+		newProfile.addInterest(category, value);
+	}
+
 
 	users.edit(newProfile);
 
