@@ -16,17 +16,21 @@ RequestHandler("/updateprofile") {
  *
  */
 void RequestHandlerEditProfile::run(Request &request){
+	Log::instance()->append("Received a profile update request", Log::INFO);
 	if (request.getMethod() != "POST"){
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
 			"{ \"response\": \"POST\" }\r\n");
+		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
 	Json::Value root;
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
 	if (!parsingSuccessful){
-		/* Bad Request */
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append("Received a BAD (malformed) REQUEST. Rejected.", Log::INFO);
 	}
 
 	std::string name = root.get("name", "unavailable").asString();
@@ -52,7 +56,10 @@ void RequestHandlerEditProfile::run(Request &request){
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
-		/* Bad Request */
+			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+			RequestHandler::sendResponse(response, request.getNetworkConnection());
+			Log::instance()->append("Received a BAD (incomplete) REQUEST. Rejected.", Log::INFO);
+			return;
 	}
 
 	std::stringstream aux;
@@ -69,7 +76,7 @@ void RequestHandlerEditProfile::run(Request &request){
 
 	users.edit(newProfile);
 
-	RequestHandler::sendHttpOk(
-		request.getNetworkConnection(),
-		"{ \"response\": \"OK\" }\r\n");
+	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
+	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);
 }

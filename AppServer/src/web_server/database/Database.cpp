@@ -12,6 +12,7 @@ kDBPath("./debug_db") {
 	/** open DB */
 	s = rocksdb::DB::Open(options, kDBPath, &db);
 	assert(s.ok());
+	Log::instance()->append("DB openes correctly.", Log::INFO);
 }
 
 // TODO: don't use assert, throw exceptions instead
@@ -50,6 +51,7 @@ bool Database::getValue(const std::string& key, std::string& value){
 void Database::eraseKey(const std::string& key){
 	s = db->Delete(rocksdb::WriteOptions(), key);
 	assert(s.ok());
+	Log::instance()->append("Deleted key: " + key + " from DB.", Log::INFO);
 }
 
 void Database::wrapKeys(std::string& resultKey,
@@ -59,5 +61,6 @@ void Database::wrapKeys(std::string& resultKey,
 }
 
 Database::~Database(){
+	Log::instance()->append("Closing DB.", Log::INFO);
 	delete db;
 }

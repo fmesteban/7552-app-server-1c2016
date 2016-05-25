@@ -15,10 +15,12 @@ RequestHandler("/register") {
  *
  */
 void RequestHandlerRegister::run(Request &request){
+	Log::instance()->append("Received a register request", Log::INFO);
 	if (request.getMethod() != "POST"){
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
 			"{ \"response\": \"POST\" }\r\n");
+		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
 	Json::Value root;
@@ -27,6 +29,7 @@ void RequestHandlerRegister::run(Request &request){
 	if (!parsingSuccessful){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append("Received a BAD (malformed) REQUEST. Rejected.", Log::INFO);
 		return;
 	}
 
@@ -55,6 +58,7 @@ void RequestHandlerRegister::run(Request &request){
 		latitudeStr == "unavailable"){
 			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 			RequestHandler::sendResponse(response, request.getNetworkConnection());
+			Log::instance()->append("Received a BAD (incomplete) REQUEST. Rejected.", Log::INFO);
 			return;
 	}
 
@@ -84,4 +88,5 @@ void RequestHandlerRegister::run(Request &request){
 
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
+	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);
 }

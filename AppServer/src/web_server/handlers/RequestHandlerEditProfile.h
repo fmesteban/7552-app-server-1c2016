@@ -3,6 +3,7 @@
 
 #include "RequestHandler.h"
 #include "UsersContainer.h"
+#include "log.h"
 #include <string>
 
 class RequestHandlerEditProfile: public RequestHandler {

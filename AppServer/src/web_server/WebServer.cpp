@@ -8,7 +8,6 @@ void WebServer::handleRequest(Request &request){
 	hdlr.run(request);
 }
 
-
 /** Static function: just call the current instance's uri handler function
  */
 void WebServer::eventHandler(struct mg_connection *networkConnection,
@@ -21,7 +20,6 @@ void WebServer::eventHandler(struct mg_connection *networkConnection,
 		self->handleRequest(request);
 	}
 }
-
 
 /**	WebServer constructor
  *	Wraps the mongoose server
@@ -38,10 +36,8 @@ WebServer::WebServer(const std::string &port) : httpPort(port),
 	serverOptions.dav_document_root = ".";
 	serverOptions.enable_directory_listing = "yes";
 	mg_set_protocol_http_websocket(networkConnection);
-
-	std::cout << "Starting web server on port "<< httpPort << std::endl;
+	Log::instance()->append("Starting web server on port " + httpPort, Log::INFO);
 }
-
 
 /**	Starts the Server Polling loop.
  */
@@ -50,10 +46,12 @@ void WebServer::run(){
 		mg_mgr_poll(&eventManager, 1000);
 }
 
+/** Stops the Server Polling loop.
+ */
 void WebServer::stop(){
 	keepAlive = false;
+	Log::instance()->append("Shutting down server.", Log::INFO);
 }
-
 
 /** Releases the WebServer.
  */

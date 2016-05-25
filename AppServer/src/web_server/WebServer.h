@@ -5,6 +5,7 @@
 #include <string>
 #include "RequestManager.h"
 #include "Thread.h"
+#include "log.h"
 
 class WebServer : public Thread{
 private:

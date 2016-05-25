@@ -4,6 +4,7 @@
 #include "mongoose.h"
 #include <string>
 #include <json/json.h>
+#include "log.h"
 #include "Request.h"
 #include "Response.h"
 

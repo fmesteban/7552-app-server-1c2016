@@ -7,6 +7,7 @@
 #include "rocksdb/db.h"
 #include "rocksdb/slice.h"
 #include "rocksdb/options.h"
+#include "log.h"
 
 class Database {
 private:

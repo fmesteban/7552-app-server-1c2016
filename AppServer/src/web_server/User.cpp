@@ -34,6 +34,7 @@ void User::saveIn(Database &db){
 	std::stringstream ss;
 	ss << id;
 	db.putKeyValue(email, ss.str());
+	Log::instance()->append("User with email " + email + "saved in DB.", Log::INFO);
 }
 
 

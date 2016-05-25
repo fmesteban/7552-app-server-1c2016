@@ -4,6 +4,7 @@
 #include "RequestHandler.h"
 #include "UsersContainer.h"
 #include <string>
+#include "log.h"
 
 class RequestHandlerRegister: public RequestHandler {
 private:

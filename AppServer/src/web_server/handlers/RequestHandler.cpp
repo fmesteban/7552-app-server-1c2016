@@ -24,6 +24,7 @@ void RequestHandler::sendHttpOk(struct mg_connection *nc,
 }
 
 void RequestHandler::sendResponse(Response &r, struct mg_connection *nc){
+	Log::instance()->append("Sending response to client's request.", Log::INFO);
 	std::stringstream ss;
 	ss << "HTTP/1.1 " << r.getStatus() << " OK\r\n";
 	ss << "Access-Control-Allow-Origin: *\r\n";

@@ -42,6 +42,7 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 WebClient::WebClient() :
 						remoteHost("shared-server.herokuapp.com:80"){
 //						remoteHost("localhost:5000"){
+	Log::instance()->append("Initiating connection with shared-server.herokuapp.com:80", Log::INFO);
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
@@ -67,6 +68,7 @@ int WebClient::sendRegister(const std::string& postData){
 
 		/* sending the content */
 		requestToShared.send(postData);
+		Log::instance()->append("Sending register request to shared server.", Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;
@@ -75,13 +77,13 @@ int WebClient::sendRegister(const std::string& postData){
 			mg_mgr_poll(&mgr, 1000);
 
 		if(responseFromShared.getStatus() == 201){
+			Log::instance()->append("Received OK from shared server.", Log::INFO);
 			Json::Value root;
 			Json::Reader reader;
 			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
 			return root.get("id", -1).asInt();
 		}
 	}
-
 	return -1;
 }
 
@@ -107,19 +109,18 @@ bool WebClient::sendEditProfile(const std::string& putData,
 
 		/* sending the content */
 		requestToShared.send(putData);
+		Log::instance()->append("Sending update profile request to shared server.", Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;
 		nc->user_data = &responseFromShared;
 		while (keepAlive)
 			mg_mgr_poll(&mgr, 1000);
-
+		// TODO: capture possible error here.
 		return (responseFromShared.getStatus() == 200);
 	}
-
 	return false;
 }
-
 
 /** Sends a a http get request to get the information
  * of an existing user.
@@ -142,6 +143,7 @@ std::string WebClient::sendLogin(const std::string& userID){
 
 		/* sending the content */
 		requestToShared.send("");
+		Log::instance()->append("Sending get user information request to shared server.", Log::INFO);
 
 		/* start waiting for response */
 		keepAlive = true;
@@ -151,15 +153,12 @@ std::string WebClient::sendLogin(const std::string& userID){
 			mg_mgr_poll(&mgr, 1000);
 
 		if(responseFromShared.getStatus() == 200){
+			Log::instance()->append("Received OK from shared server.", Log::INFO);
 			return responseFromShared.getBody();
 		}
 	}
-
 	return "{}";
 }
-
-
-
 
 void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Host", remoteHost);
@@ -170,7 +169,6 @@ void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Connection", "keep-alive");
 	request.insertHeader("Content-Type", "application/json");
 }
-
 
 WebClient::~WebClient(){
 	mg_mgr_free(&mgr);

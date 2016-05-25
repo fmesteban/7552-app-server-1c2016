@@ -5,6 +5,7 @@
 #include "mongoose.h"
 #include "Response.h"
 #include "Request.h"
+#include "log.h"
 
 class WebClient{
 private:
