@@ -16,7 +16,7 @@ class TestLogin(unittest.TestCase):
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
 		self.assertEqual(r.status_code, 200)
 		response = r.json()["response"]
-		self.assertEqual(response["userName"], "usuario1")
+		self.assertEqual(response["alias"], "usuario_login")
 
 	def test_login_nonexisting_user(self):
 		pass
