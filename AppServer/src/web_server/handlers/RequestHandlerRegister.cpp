@@ -16,7 +16,9 @@ RequestHandler("/register") {
  */
 void RequestHandlerRegister::run(Request &request){
 	Log::instance()->append("Received a register request", Log::INFO);
+
 	if (request.getMethod() != "POST"){
+		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
 			"{ \"response\": \"POST\" }\r\n");
@@ -24,8 +26,7 @@ void RequestHandlerRegister::run(Request &request){
 		return;
 	}
 
-	std::cout << "body: " << request.getBody() << std::endl;
-
+	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
@@ -69,16 +70,6 @@ void RequestHandlerRegister::run(Request &request){
 			return;
 	}
 
-	std::cout << "name: " << name << std::endl;
-	std::cout << "alias: " << alias << std::endl;
-	std::cout << "password: " << password << std::endl;
-	std::cout << "email: " << email << std::endl;
-	std::cout << "birthday: " << birthday << std::endl;
-	std::cout << "sex: " << sex << std::endl;
-	std::cout << "photoProfile: " << photoProfile << std::endl;
-	std::cout << "longitude: " << longitudeStr << std::endl;
-	std::cout << "latitude: " << latitudeStr << std::endl;
-
 	std::stringstream aux;
 	float longitude, latitude;
 	aux << longitudeStr;
@@ -90,6 +81,7 @@ void RequestHandlerRegister::run(Request &request){
 	User newUser(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
 
+	/* Parse interests array */
 	Json::Value& interests = root["interests"];
 	Json::ValueConstIterator it = interests.begin();
 	for (; it != interests.end(); ++it)
@@ -102,8 +94,10 @@ void RequestHandlerRegister::run(Request &request){
 		newUser.addInterest(category, value);
 	}
 
+	/* Adds the built user to users container */
 	users.add(newUser);
 
+	/* Sends response to the client */
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);

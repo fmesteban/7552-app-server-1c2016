@@ -129,7 +129,7 @@ bool WebClient::sendEditProfile(const std::string& putData,
 }
 
 /** Sends a a http get request to get the information
- * of an existing user.
+ *  of an existing user.
  */
 std::string WebClient::sendLogin(const std::string& userID){
 	struct mg_connection *nc = NULL;
@@ -168,6 +168,9 @@ std::string WebClient::sendLogin(const std::string& userID){
 	return "{}";
 }
 
+
+/** Inserts a group of default headers to request.
+ */
 void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Host", remoteHost);
 	request.insertHeader("Accept", "application/json, "

@@ -6,9 +6,8 @@ RequestHandler::RequestHandler(const std::string _uri):
 uri(_uri){
 }
 
+
 /** Sends an 201 OK response to \nc, appending the \extraLine
- * TODO: refactor to take status_code and text so to generalize
- * for any kind of message.
  */
 void RequestHandler::sendHttpOk(struct mg_connection *nc,
 		const std::string &extraLine){
@@ -23,6 +22,10 @@ void RequestHandler::sendHttpOk(struct mg_connection *nc,
 	mg_send_http_chunk(nc, "", 0);
 }
 
+
+/** Sends a Response to a network connection.
+ *
+ */
 void RequestHandler::sendResponse(Response &r, struct mg_connection *nc){
 	Log::instance()->append("Sending response to client's request.", Log::INFO);
 	std::stringstream ss;
@@ -36,6 +39,10 @@ void RequestHandler::sendResponse(Response &r, struct mg_connection *nc){
 	mg_send_http_chunk(nc, "", 0);
 }
 
+
+/** Returns Request uri. Requests handlers who inherit from it class,
+ *  must handle a specific uri.
+ */
 const std::string& RequestHandler::getUri(){
 	return uri;
 }
