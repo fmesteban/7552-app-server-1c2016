@@ -7,6 +7,10 @@ Interest::Interest(const std::string &category, const std::string &value) :
 	value(value) {
 }
 
+
+/** Overloads the operator << from std::ostream
+ *
+ */
 std::ostream& operator<<(std::ostream &os, const Interest& self) {
 	return os << 
 		"{"

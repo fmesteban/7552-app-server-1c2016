@@ -14,13 +14,17 @@ RequestHandler("/login") {
  */
 void RequestHandlerLogin::run(Request &request){
 	Log::instance()->append("Received a login request", Log::INFO);
+
 	if (request.getMethod() != "POST"){
+		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 				request.getNetworkConnection(),
 				"{ \"response\": \"POST\" }\r\n");
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
+
+	/* Loads body parameters */
 	Json::Value root;
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
@@ -45,11 +49,10 @@ void RequestHandlerLogin::run(Request &request){
 		return;		
 	}
 
-	std::cout << "email: " << email << std::endl;
-	std::cout << "password: " << password << std::endl;
-	
+	/* Gets the pre-existent user from users container */
 	std::string userAsString = users.login(email, password);
 
+	/* Sends response to the client containing its data */
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);

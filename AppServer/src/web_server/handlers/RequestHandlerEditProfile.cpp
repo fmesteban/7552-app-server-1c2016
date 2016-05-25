@@ -17,13 +17,17 @@ RequestHandler("/updateprofile") {
  */
 void RequestHandlerEditProfile::run(Request &request){
 	Log::instance()->append("Received a profile update request", Log::INFO);
+
 	if (request.getMethod() != "POST"){
+		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
 			"{ \"response\": \"POST\" }\r\n");
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
+
+	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
 	bool parsingSuccessful = reader.parse(request.getBody(), root);
@@ -78,6 +82,7 @@ void RequestHandlerEditProfile::run(Request &request){
 	User newProfile(name, alias, password, email, birthday, sex, 
 					longitude, latitude, photoProfile);
 
+	/* Parse interests array */
 	Json::Value& interests = root["interests"];
 	Json::ValueConstIterator it = interests.begin();
 	for (; it != interests.end(); ++it)
@@ -91,9 +96,10 @@ void RequestHandlerEditProfile::run(Request &request){
 		newProfile.addInterest(category, value);
 	}
 
-
+	/* Edits the pre-existent user in users container */
 	users.edit(newProfile);
 
+	/* Sends response to the client */
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);

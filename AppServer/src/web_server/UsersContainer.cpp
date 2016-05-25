@@ -4,9 +4,8 @@
 #include <sstream>
 
 
-/**	Forms a json with specified values, and delegates the send
+/** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
- *  TODO: some fields are hardcoded!
  */
 bool UsersContainer::add(User &newUser){
 	std::stringstream ss;
@@ -25,6 +24,10 @@ bool UsersContainer::add(User &newUser){
 	return id != -1;
 }
 
+
+/** Loads user from db, and sends an edit profile request to
+ *  shared server.
+ */
 void UsersContainer::edit(User &newProfile){
 	std::stringstream ss;
 
@@ -43,6 +46,10 @@ void UsersContainer::edit(User &newProfile){
 	client.sendEditProfile(ss.str(), userID);
 }
 
+
+/** Loads user id from db, and gets its data from shared server.
+ *
+ */
 std::string UsersContainer::login(
 		const std::string &email,
 		const std::string &password){

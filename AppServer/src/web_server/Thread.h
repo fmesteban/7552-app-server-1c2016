@@ -3,6 +3,9 @@
 
 #include <pthread.h>
 
+/** pthread Wrapper
+ * 	User must inherit from Thread, and implement run function.
+ */
 class Thread {
 private:
 	pthread_t thread;

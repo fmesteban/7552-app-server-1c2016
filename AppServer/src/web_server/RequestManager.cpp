@@ -23,6 +23,9 @@ void RequestManager::insertDefaultHandlers(){
 }
 
 
+/**	Adds a individual handler to hdlrs list.
+ *
+ */
 void RequestManager::addHandler(
 		const std::string& uri,
 		RequestHandler* reqHandler){
@@ -30,6 +33,9 @@ void RequestManager::addHandler(
 }
 
 
+/** Gets the handler corresponding to passed uri.
+ *
+ */
 RequestHandler& RequestManager::getHanlder(const std::string& uri){
 	std::map<std::string, RequestHandler*>::iterator hdlr = handlerRefs.find(uri);
 	if (hdlr != handlerRefs.end() )
