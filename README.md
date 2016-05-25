@@ -27,3 +27,7 @@ Por ahora, el mismo correra cpplint a todo el src de la aplicacion. De encontrar
 
 
 ###How to Run Tests
+
+
+### Para mas informacion
+[Visitar la wiki!] (https://github.com/fmesteban/7552-app-server-1c2016/wiki)
