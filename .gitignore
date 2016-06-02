@@ -1,3 +1,4 @@
 #Ignore builds
 AppServer/build/*
 debug_db/*
+Server-Log.txt

@@ -36,7 +36,6 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 	}
 }
 
-
 /**	Inits the web client resources. (RAII)
  */
 WebClient::WebClient() :
@@ -48,7 +47,6 @@ WebClient::WebClient() :
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
-
 
 /**	Sends a http post request to add a new user
  */
@@ -85,12 +83,20 @@ int WebClient::sendRegister(const std::string& postData){
 			Json::Value root;
 			Json::Reader reader;
 			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
+			Log::instance()->append("New user ID set to " + std::to_string(root.get("id", -1).asInt()), Log::INFO);
 			return root.get("id", -1).asInt();
 		}
+		if(responseFromShared.getStatus() == 500){
+			Log::instance()->append("Received Internal Server Error from shared server.", Log::ERROR);
+		}
+		else{
+			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+		}
+		return -1;
 	}
+	Log::instance()->append("Unknown error while sending information to shared server.", Log::ERROR);
 	return -1;
 }
-
 
 /**	Sends a http put request to edit an existing user
  */
@@ -123,7 +129,16 @@ bool WebClient::sendEditProfile(const std::string& putData,
 		while (keepAlive)
 			mg_mgr_poll(&mgr, 1000);
 		// TODO: capture possible error here.
-		return (responseFromShared.getStatus() == 200);
+		if(responseFromShared.getStatus() == 200){
+			Log::instance()->append("Received OK from shared server.", Log::INFO);
+			return true;
+		}
+		if(responseFromShared.getStatus() == 500){
+			Log::instance()->append("Received internal server error from shared server.", Log::INFO);
+		}
+		else{
+			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+		}
 	}
 	return false;
 }
@@ -164,10 +179,15 @@ std::string WebClient::sendLogin(const std::string& userID){
 			Log::instance()->append("Received OK from shared server.", Log::INFO);
 			return responseFromShared.getBody();
 		}
+		if(responseFromShared.getStatus() == 500){
+			Log::instance()->append("Received internal server error from shared server.", Log::INFO);
+		}
+		else{
+			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+		}
 	}
 	return "{}";
 }
-
 
 /** Inserts a group of default headers to request.
  */

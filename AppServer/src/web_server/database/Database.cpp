@@ -18,7 +18,6 @@ kDBPath("./debug_db") {
 // TODO: don't use assert, throw exceptions instead
 void Database::putKeyValue(const std::string& key, const std::string& value){
 	s = db->Put(rocksdb::WriteOptions(), key, value);
-	std::cerr << "Mensaje de error" << std::endl;
 	std::cerr << s.ToString() << std::endl;
 	assert(s.ok());
 }
@@ -44,14 +43,21 @@ bool Database::getTwoLvlValue(
 bool Database::getValue(const std::string& key, std::string& value){
 	s = db->Get(rocksdb::ReadOptions(), key, &value);
 	std::cerr << s.ToString();
-	assert(s.ok());
+	//assert(s.ok());
+	if (s.IsNotFound())
+		Log::instance()->append("Key not found: " + key + " in DB.", Log::ERROR);
+	else
+		Log::instance()->append("Key found: " + key + ", value: " + value +" in DB.", Log::INFO);
 	return !s.IsNotFound();
 }
 
 void Database::eraseKey(const std::string& key){
 	s = db->Delete(rocksdb::WriteOptions(), key);
-	assert(s.ok());
-	Log::instance()->append("Deleted key: " + key + " from DB.", Log::INFO);
+	//assert(s.ok());
+	if (s.ok())
+		Log::instance()->append("Deleted key: " + key + " from DB.", Log::INFO);
+	else
+		Log::instance()->append("Key not deleted: " + key + " in DB.", Log::ERROR);
 }
 
 void Database::wrapKeys(std::string& resultKey,

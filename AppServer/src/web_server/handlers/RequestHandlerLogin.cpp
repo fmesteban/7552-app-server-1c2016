@@ -55,5 +55,4 @@ void RequestHandlerLogin::run(Request &request){
 	/* Sends response to the client containing its data */
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
-	Log::instance()->append("Received an OK REQUEST. Accepted.", Log::INFO);
 }
