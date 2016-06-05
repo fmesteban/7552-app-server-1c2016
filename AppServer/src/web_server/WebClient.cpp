@@ -84,8 +84,9 @@ int WebClient::sendRegister(const std::string& postData){
 			Log::instance()->append("Received OK from shared server.", Log::INFO);
 			Json::Value root;
 			Json::Reader reader;
+			std::cout << responseFromShared.getBody() << std::endl;
 			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
-			return root.get("id", -1).asInt();
+			return root.get("user", root).get("id", -1).asInt();
 		}
 	}
 	return -1;
