@@ -3,7 +3,32 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cstdio>
+#include <ctime>
 
+
+static int calculateAge(const std::string &strBirthday){
+	int day, month, year;
+	sscanf(strBirthday.c_str(), "%d/%d/%d", &day, &month, &year);
+
+	time_t timer;
+	struct tm birthday = {0};
+	double lifeSeconds;
+	birthday.tm_year = year - 1900; /* years since 1900 */
+	birthday.tm_mon = month - 1;	/* months since January */
+	birthday.tm_mday = 1;			/* day of the month */
+
+	time(&timer);
+
+	lifeSeconds = difftime(timer,mktime(&birthday));
+	int age = lifeSeconds;
+	age /= 60; /* seconds per minute */
+	age /= 60; /* minutes per hour */
+	age /= 24; /* hours per day */
+	age /= 365.25; /* days per year */
+
+	return age;
+}
 
 /** User constructor
  *
@@ -88,6 +113,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"email\": \"" << self.email 		<< "\","
 			"\"sex\": \"" 	<< self.sex 		<< "\","
 			"\"photo_profile\": \"" << self.photoProfile << "\","
+			"\"age\": " << calculateAge(self.birthday) << ","
 			"\"location\":"
 			"{"
 				"\"latitud\": " << self.latitude << ","

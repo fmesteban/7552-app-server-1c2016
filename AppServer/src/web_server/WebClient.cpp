@@ -82,9 +82,10 @@ int WebClient::sendRegister(const std::string& postData){
 			Log::instance()->append("Received OK from shared server.", Log::INFO);
 			Json::Value root;
 			Json::Reader reader;
+			std::cout << responseFromShared.getBody() << std::endl;
 			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
 			Log::instance()->append("New user ID set to " + std::to_string(root.get("id", -1).asInt()), Log::INFO);
-			return root.get("id", -1).asInt();
+			return root.get("user", root).get("id", -1).asInt();
 		}
 		if(responseFromShared.getStatus() == 500){
 			Log::instance()->append("Received Internal Server Error from shared server.", Log::ERROR);
