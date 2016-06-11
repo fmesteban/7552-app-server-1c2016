@@ -95,9 +95,9 @@ void RequestHandlerRegister::run(Request &request){
 	}
 
 	/* Adds the built user to users container */
-	users.add(newUser);
+	int status_code = users.add(newUser);
 
 	/* Sends response to the client */
-	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	Response response(status_code, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

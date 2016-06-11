@@ -11,7 +11,7 @@ private:
 	WebClient client;
 	Database db;
 public:
-	bool add(User &newUser);
+	int add(User &newUser);
 	void edit(User &newProfile);
 	std::string login(const std::string &email, const std::string &password);
 };

@@ -1,6 +1,7 @@
-#include "WebClient.h"
 #include <iostream>
 #include <string>
+#include <utility>
+#include "WebClient.h"
 #include "Request.h"
 #include "Response.h"
 #include <json/json.h>
@@ -49,10 +50,12 @@ WebClient::WebClient() :
 }
 
 /**	Sends a http post request to add a new user
+ *  Returns a pair with the ID of the new user (-1 if error) and the
+ *  status code of the shared server response.
  */
-int WebClient::sendRegister(const std::string& postData){
+std::pair<int, int> WebClient::sendRegister(const std::string& postData){
 	struct mg_connection *nc = NULL;
-
+	int user_id;
 	/* send the http request */
 	if ((nc = mg_connect(&mgr, remoteHost.c_str(), evHandler)) != NULL) {
 		mg_set_protocol_http_websocket(nc);
@@ -84,8 +87,8 @@ int WebClient::sendRegister(const std::string& postData){
 			Json::Reader reader;
 			std::cout << responseFromShared.getBody() << std::endl;
 			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
-			Log::instance()->append("New user ID set to " + std::to_string(root.get("id", -1).asInt()), Log::INFO);
-			return root.get("user", root).get("id", -1).asInt();
+			Log::instance()->append("New user ID set to " + std::to_string(root.get("user", root).get("id", -1).asInt()), Log::INFO);
+			return std::pair<int, int> (root.get("user", root).get("id", -1).asInt(), 201);
 		}
 		if(responseFromShared.getStatus() == 500){
 			Log::instance()->append("Received Internal Server Error from shared server.", Log::ERROR);
@@ -93,10 +96,10 @@ int WebClient::sendRegister(const std::string& postData){
 		else{
 			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
 		}
-		return -1;
+		return std::pair<int, int> (-1, responseFromShared.getStatus());
 	}
 	Log::instance()->append("Unknown error while sending information to shared server.", Log::ERROR);
-	return -1;
+	return std::pair<int, int> (-1, -1);
 }
 
 /**	Sends a http put request to edit an existing user

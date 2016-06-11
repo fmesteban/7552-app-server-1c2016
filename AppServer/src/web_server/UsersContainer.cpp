@@ -6,22 +6,24 @@
 
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
+ *  Returns the error message from the shared server.
  */
-bool UsersContainer::add(User &newUser){
+int UsersContainer::add(User &newUser){
 	std::stringstream ss;
 	ss << newUser;
 
 	std::cout << ss.str();
 
-	int id = client.sendRegister(ss.str());
+	std::pair<int, int> status_pair = client.sendRegister(ss.str());
+	int id = status_pair.first;
 	std::cout << "new client id: " << id << std::endl;
 
-	if (id != -1){
+	if (status_pair.first != -1){
 		newUser.setId(id);
 		newUser.saveIn(db);
 	}
 
-	return id != -1;
+	return status_pair.second;
 }
 
 

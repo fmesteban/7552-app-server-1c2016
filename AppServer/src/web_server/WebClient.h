@@ -15,7 +15,7 @@ private:
 	void insertDefaultHeaders(Request &request);
 public:
 	WebClient();
-	int sendRegister(const std::string& data);
+	std::pair<int, int> sendRegister(const std::string& data);
 	std::string sendLogin(const std::string& userID);
 	void eventHandler(struct mg_connection *nc, int ev, void *ev_data);
 	bool sendEditProfile(const std::string& putData, const std::string &userID);
