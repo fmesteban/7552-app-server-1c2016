@@ -8,14 +8,15 @@ import inspect, os
 class TestUpdateUser(unittest.TestCase):
 	def test_update_profile_valid(self):
 		# First we register
-		data = json.dumps({"name": "TestUpdate", "alias": "usuario_update", "password": "test", "email": "example_update1@domain.com", 
+		data = json.dumps({"name": "TestUpdate", "alias": "usuario_update", "password": "test", "email": "example_update6@domain.com", 
 			"birthday": "10/10/10", "sex": "Male", "location": json.dumps({ "latitude": 45, "longitude": 46 }), "photo_profile": "base64photo" })
-		requests.post("http://localhost:8000/register", data = data)
+		r = requests.post("http://localhost:8000/register", data = data)
+		self.assertEqual(r.status_code, 201)
 
 		# Then we update
 		data = json.dumps({"name": "TestUpdateUpdated", "alias": "usuario_update", "password": "test", "email": "example_update1@domain.com", 
 			"birthday": "10/10/10", "sex": "Female", "location": json.dumps({ "latitude": 45, "longitude": 46 }), "photo_profile": "base64photo" })
-		requests.post("http://localhost:8000/updateprofile", data = json.dumps(data))
+		r = requests.post("http://localhost:8000/updateprofile", data = json.dumps(data))
 		self.assertEqual(r.status_code, 200)
 
 		# Finally we retrieve to check updated data

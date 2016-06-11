@@ -50,9 +50,15 @@ void RequestHandlerLogin::run(Request &request){
 	}
 
 	/* Gets the pre-existent user from users container */
-	std::string userAsString = users.login(email, password);
+	std::string userAsString = users.login(email);
+	int status = ACCEPTED_STATUS;
+
+	if (userAsString == ""){
+		Log::instance()->append("User with email " + email + " was not found.", Log::ERROR);
+		status = 500;
+	}
 
 	/* Sends response to the client containing its data */
-	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	Response response(status, userAsString);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

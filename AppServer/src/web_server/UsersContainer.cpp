@@ -35,7 +35,6 @@ void UsersContainer::edit(User &newProfile){
 
 	std::string userID;
 	if(!db.getValue(newProfile.getEmail(), userID)){
-		std::cerr << "email not found" << std::endl;
 		return;
 	}
 
@@ -52,12 +51,11 @@ void UsersContainer::edit(User &newProfile){
 /** Loads user id from db, and gets its data from shared server.
  *
  */
-std::string UsersContainer::login(
-		const std::string &email,
-		const std::string &password){
+std::string UsersContainer::login(const std::string &email){
 	std::string userID;
-	db.getValue(email, userID);
-
+	if(!db.getValue(email, userID)){
+		return "";
+	}
 	return client.sendLogin(userID);
 }
 

@@ -181,6 +181,7 @@ std::string WebClient::sendLogin(const std::string& userID){
 
 		if(responseFromShared.getStatus() == 200){
 			Log::instance()->append("Received OK from shared server.", Log::INFO);
+			std::cerr << "Response from body: " << std::endl << responseFromShared.getBody() << std::endl;
 			return responseFromShared.getBody();
 		}
 		if(responseFromShared.getStatus() == 500){

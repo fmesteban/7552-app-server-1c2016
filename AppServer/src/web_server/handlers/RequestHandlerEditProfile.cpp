@@ -26,7 +26,7 @@ void RequestHandlerEditProfile::run(Request &request){
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
-
+	std::cerr << "Step 1" << std::endl;
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
@@ -38,7 +38,7 @@ void RequestHandlerEditProfile::run(Request &request){
 				"Received a BAD (malformed) REQUEST. Rejected.",
 				Log::INFO);
 	}
-
+	std::cerr << "Step 2" << std::endl;
 	std::string name = root.get("name", "unavailable").asString();
 	std::string alias = root.get("alias", "unavailable").asString();
 	std::string password = root.get("password", "unavailable").asString();
@@ -47,9 +47,11 @@ void RequestHandlerEditProfile::run(Request &request){
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 
+	std::cerr << "Step 2.1" << std::endl;
 	Json::Value location;
 	reader.parse(root.get("location", "unavailable").asString(), location);
 	
+	std::cerr << "Step 2.2" << std::endl;
 	std::string longitudeStr = location.get("longitude", "unavailable").asString();
 	std::string latitudeStr = location.get("latitude", "unavailable").asString();
 	
@@ -62,15 +64,17 @@ void RequestHandlerEditProfile::run(Request &request){
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
+			std::cerr << "Step 2.3" << std::endl;
 			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 			RequestHandler::sendResponse(response,
 					request.getNetworkConnection());
+			std::cerr << "Step 2.4" << std::endl;
 			Log::instance()->append(
 					"Received a BAD (incomplete) REQUEST. Rejected.",
 					Log::INFO);
 			return;
 	}
-
+	std::cerr << "Step 3" << std::endl;
 	std::stringstream aux;
 	float longitude, latitude;
 	aux << longitudeStr;
@@ -95,10 +99,10 @@ void RequestHandlerEditProfile::run(Request &request){
 			continue;
 		newProfile.addInterest(category, value);
 	}
-
+	std::cout << "Step 4" << std::endl;
 	/* Edits the pre-existent user in users container */
 	users.edit(newProfile);
-
+	std::cout << "Step 5" << std::endl;
 	/* Sends response to the client */
 	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
