@@ -14,7 +14,7 @@ class TestLogin(unittest.TestCase):
 
 		data = {"email": "example_login3@domain.com", "password": "test"}
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
-		self.assertEqual(r.status_code, 200)
+		self.assertEqual(r.status_code, 201)
 		response = r.json()["response"]
 		self.assertEqual(response["alias"], "usuario_login")
 
