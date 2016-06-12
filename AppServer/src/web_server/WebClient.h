@@ -2,6 +2,7 @@
 #define WEB_CLIENT_WEBCLIENT_H_
 
 #include <string>
+#include <utility>
 #include "mongoose.h"
 #include "Response.h"
 #include "Request.h"

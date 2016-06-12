@@ -54,7 +54,8 @@ void RequestHandlerLogin::run(Request &request){
 	int status = ACCEPTED_STATUS;
 
 	if (userAsString == ""){
-		Log::instance()->append("User with email " + email + " was not found.", Log::ERROR);
+		Log::instance()->append(
+				"User with email " + email + " was not found.", Log::ERROR);
 		status = 500;
 	}
 

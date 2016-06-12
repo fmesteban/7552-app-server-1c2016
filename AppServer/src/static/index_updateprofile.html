@@ -60,7 +60,12 @@
             latitude: latitude,
             longitude: longitude
           }),
-          interests: []
+          interests: [
+            {
+              category: 'music',
+              value: 'manu chao'
+            }
+          ]
         }),
         success: function(json) {
           $('#response').html(json.response);

@@ -82,23 +82,33 @@ std::pair<int, int> WebClient::sendRegister(const std::string& postData){
 			mg_mgr_poll(&mgr, 1000);
 
 		if(responseFromShared.getStatus() == 201){
-			Log::instance()->append("Received OK from shared server.", Log::INFO);
+			Log::instance()->append("Received OK from shared server.",
+					Log::INFO);
 			Json::Value root;
 			Json::Reader reader;
-			std::cout << responseFromShared.getBody() << std::endl;
-			bool parsingSuccessful = reader.parse(responseFromShared.getBody(), root);
-			Log::instance()->append("New user ID set to " + std::to_string(root.get("user", root).get("id", -1).asInt()), Log::INFO);
-			return std::pair<int, int> (root.get("user", root).get("id", -1).asInt(), 201);
+			bool parsingSuccessful = reader.parse(
+				responseFromShared.getBody(),
+				root);
+			Log::instance()->append("New user ID set to " +
+				std::to_string(root.get("user", root).get("id", -1).asInt()),
+				Log::INFO);
+			return std::pair<int, int> (
+					root.get("user", root).get("id", -1).asInt(), 201);
 		}
 		if(responseFromShared.getStatus() == 500){
-			Log::instance()->append("Received Internal Server Error from shared server.", Log::ERROR);
-		}
-		else{
-			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+			Log::instance()->append(
+					"Received Internal Server Error from shared server.",
+					Log::ERROR);
+		}else{
+			Log::instance()->append("Unknown error from shared server. Got " +
+				std::to_string(responseFromShared.getStatus()),
+				Log::ERROR);
 		}
 		return std::pair<int, int> (-1, responseFromShared.getStatus());
 	}
-	Log::instance()->append("Unknown error while sending information to shared server.", Log::ERROR);
+	Log::instance()->append(
+			"Unknown error while sending information to shared server.",
+			Log::ERROR);
 	return std::pair<int, int> (-1, -1);
 }
 
@@ -134,14 +144,20 @@ bool WebClient::sendEditProfile(const std::string& putData,
 			mg_mgr_poll(&mgr, 1000);
 		// TODO: capture possible error here.
 		if(responseFromShared.getStatus() == 200){
-			Log::instance()->append("Received OK from shared server.", Log::INFO);
+			Log::instance()->append(
+					"Received OK from shared server.",
+					Log::INFO);
 			return true;
 		}
 		if(responseFromShared.getStatus() == 500){
-			Log::instance()->append("Received internal server error from shared server.", Log::INFO);
-		}
-		else{
-			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+			Log::instance()->append(
+					"Received internal server error from shared server.",
+					Log::INFO);
+		}else{
+			Log::instance()->append(
+					"Unknown error from shared server. Got " +
+					std::to_string(responseFromShared.getStatus()),
+					Log::ERROR);
 		}
 	}
 	return false;
@@ -179,16 +195,24 @@ std::string WebClient::sendLogin(const std::string& userID){
 		while (keepAlive)
 			mg_mgr_poll(&mgr, 1000);
 
-		if(responseFromShared.getStatus() == 200){
-			Log::instance()->append("Received OK from shared server.", Log::INFO);
-			std::cerr << "Response from body: " << std::endl << responseFromShared.getBody() << std::endl;
+		if (responseFromShared.getStatus() == 200){
+			Log::instance()->append(
+					"Received OK from shared server.",
+					Log::INFO);
 			return responseFromShared.getBody();
-		}
-		if(responseFromShared.getStatus() == 500){
-			Log::instance()->append("Received internal server error from shared server.", Log::INFO);
-		}
-		else{
-			Log::instance()->append("Unknown error from shared server. Got " + std::to_string(responseFromShared.getStatus()), Log::ERROR);
+		}else if (responseFromShared.getStatus() == 404){
+			Log::instance()->append(
+					"Received not found error from shared server.",
+					Log::INFO);
+		}else if (responseFromShared.getStatus() == 500){
+			Log::instance()->append(
+					"Received internal server error from shared server.",
+					Log::INFO);
+		}else{
+			Log::instance()->append(
+					"Unknown error from shared server. Got " +
+					std::to_string(responseFromShared.getStatus()),
+					Log::ERROR);
 		}
 	}
 	return "{}";

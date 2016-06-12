@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 
 /** Forms a json with specified values, and delegates the send
@@ -12,11 +13,8 @@ int UsersContainer::add(User &newUser){
 	std::stringstream ss;
 	ss << newUser;
 
-	std::cout << ss.str();
-
 	std::pair<int, int> status_pair = client.sendRegister(ss.str());
 	int id = status_pair.first;
-	std::cout << "new client id: " << id << std::endl;
 
 	if (status_pair.first != -1){
 		newUser.setId(id);
@@ -34,15 +32,12 @@ void UsersContainer::edit(User &newProfile){
 	std::stringstream ss;
 
 	std::string userID;
-	if(!db.getValue(newProfile.getEmail(), userID)){
+	if(!db.getValue(newProfile.getEmail(), userID))
 		return;
-	}
 
 	ss.clear();
 	newProfile.setId(userID);
 	ss << newProfile;
-
-	std::cout << ss.str();
 
 	client.sendEditProfile(ss.str(), userID);
 }
@@ -53,9 +48,8 @@ void UsersContainer::edit(User &newProfile){
  */
 std::string UsersContainer::login(const std::string &email){
 	std::string userID;
-	if(!db.getValue(email, userID)){
+	if(!db.getValue(email, userID))
 		return "";
-	}
 	return client.sendLogin(userID);
 }
 

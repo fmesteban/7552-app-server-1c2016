@@ -117,7 +117,9 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"location\":"
 			"{"
 				"\"latitud\": " << self.latitude << ","
-				"\"longitud\": " << self.longitude <<
+				"\"latitude\": " << self.latitude << ","
+				"\"longitud\": " << self.longitude << ","
+				"\"longitude\": " << self.longitude <<
 			"}"
 		"}"
 	"}";

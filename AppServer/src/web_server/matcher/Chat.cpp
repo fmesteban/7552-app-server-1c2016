@@ -1,4 +1,5 @@
 #include "Chat.h"
+#include <vector>
 
 Chat::Chat() {
 }
