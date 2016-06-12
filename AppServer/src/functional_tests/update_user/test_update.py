@@ -7,7 +7,7 @@ import inspect, os
 
 class TestUpdateUser(unittest.TestCase):
 	def test_update_profile_valid(self):
-		n = 43
+		n = 45
 		mail = "example_update" + str(n) + "@mail.com"
 		interests = [ { "category": "music", "value": "manu chao"} ]
 
@@ -27,16 +27,17 @@ class TestUpdateUser(unittest.TestCase):
 		data = json.dumps({"email": mail, "password": "test"})
 		r = requests.post("http://localhost:8000/login", data = data)
 		self.assertEqual(r.status_code, 201)
-		response = r.json()["user"]
-		self.assertEqual(response["name"], "TestUpdateUpdated")
+		# Check name is changed
+		response = r.json()[u'user']
+		self.assertEqual(response[u'name'], "TestUpdateUpdated")
 		# Check sex is not changed
-		self.assertEqual(response["sex"], "male")
+		self.assertEqual(response[u'sex'], "male")
 
-#	def test_update_profile_malformed(self):
-#		data = json.dumps({"name": "TestUpdateUpdated", "alias": "usuario_update", "password": "test", "email": "example_update1@domain.com", 
-#			"birthday": "10/10/10", "sex": "Female", "location": json.dumps({ "latitude": 45, "longitude": 46 }), "photo_profile": "base64photo" })
-#		requests.post("http://localhost:8000/updateprofile", data = json.dumps(data))
-#		self.assertEqual(r.status_code, 400)
+	def test_update_profile_malformed(self):
+		data = json.dumps({"name": "TestUpdateUpdated", "alias": "usuario_update", "password": "test", "email": "example_update1@domain.com", 
+			"birthday": "10/10/10", "location": json.dumps({ "latitude": 45, "longitude": 46 }), "photo_profile": "base64photo" })
+		r = requests.post("http://localhost:8000/updateprofile", data = data)
+		self.assertEqual(r.status_code, 400)
 
 if __name__ == '__main__':
 	unittest.main()
