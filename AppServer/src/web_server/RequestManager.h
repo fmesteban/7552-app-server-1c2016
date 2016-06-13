@@ -10,6 +10,9 @@
 #include "RequestHandlerRegister.h"
 #include "RequestHandlerLogin.h"
 #include "RequestHandlerEditProfile.h"
+#include "RequestHandlerPossibleMatches.h"
+#include "RequestHandlerMatches.h"
+#include "RequestHandlerConversation.h"
 
 class RequestManager {
 private:
@@ -20,6 +23,9 @@ private:
 	RequestHandlerRegister reqRegister;
 	RequestHandlerLogin reqLogin;
 	RequestHandlerEditProfile reqEditProfile;
+	RequestHandlerPossibleMatches reqPossibleMatches;
+	RequestHandlerreqMatches reqMatches;
+	RequestHandlerConversation reqConversacion;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(UsersContainer &users);

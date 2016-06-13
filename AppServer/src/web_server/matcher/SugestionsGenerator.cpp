@@ -15,3 +15,16 @@ SugestionsGenerator::~SugestionsGenerator() {
 	}
 }
 
+/** Returns a list of possible matches for the user up to a maximum cant. The list
+ *  contains only the ID of each other user that implies a match.
+ */
+std::list<int> SugestionsGenerator::getPossibleMatches(int user, int cant) {
+
+}
+
+/** Returns a list of matches for the user. The list
+ *  contains only the ID of each other user that implies a match.
+ */
+std::list<int> SugestionsGenerator::getMatches(int user) {
+
+}

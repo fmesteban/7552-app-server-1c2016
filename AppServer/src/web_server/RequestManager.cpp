@@ -8,7 +8,10 @@ RequestManager::RequestManager(UsersContainer &users) :
 	users(users),
 	reqRegister(users),
 	reqLogin(users),
-	reqEditProfile(users) {
+	reqEditProfile(users),
+	reqPossibleMatches(users),
+	reqMatches(users),
+	reqConversation(users), {
 	insertDefaultHandlers();
 }
 
@@ -20,6 +23,9 @@ void RequestManager::insertDefaultHandlers(){
 	addHandler(reqRegister.getUri(), &reqRegister);
 	addHandler(reqLogin.getUri(), &reqLogin);
 	addHandler(reqEditProfile.getUri(), &reqEditProfile);
+	addHandler(reqPossibleMatches.getUri(), &reqPossibleMatches);
+	addHandler(reqMatches.getUri(), &reqMatches);
+	addHandler(reqConversation.getUri(), &reqConversation);
 }
 
 

@@ -10,6 +10,9 @@ private:
 public:
 	SugestionsGenerator();
 	virtual ~SugestionsGenerator();
+
+	std::list<int> getPossibleMatches(int user, int cant);
+	std::list<int> getMatches(int user);
 };
 
 #endif
