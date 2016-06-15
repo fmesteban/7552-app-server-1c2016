@@ -1,4 +1,4 @@
-#include "SugestionsGenerator.h"
+#include "SuggestionsGenerator.h"
 #include <map>
 
 SugestionsGenerator::SugestionsGenerator() {

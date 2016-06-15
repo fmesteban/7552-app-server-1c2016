@@ -2,7 +2,7 @@
 #define WEB_SERVER_MATCHER_SUGESTIONSGENERATOR_H_
 
 #include <map>
-#include "Sugestion.h"
+#include "Suggestion.h"
 
 class SugestionsGenerator {
 private:

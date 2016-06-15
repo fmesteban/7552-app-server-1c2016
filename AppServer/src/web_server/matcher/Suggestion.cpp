@@ -1,4 +1,4 @@
-#include "Sugestion.h"
+#include "Suggestion.h"
 
 Sugestion::Sugestion(User &userA, User &userB) :
 	userA(userA),

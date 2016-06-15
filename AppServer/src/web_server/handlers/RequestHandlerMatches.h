@@ -3,7 +3,7 @@
 
 #include "RequestHandler.h"
 #include "UsersContainer.h"
-#include "SuggestionGenerator.h"
+#include "SuggestionsGenerator.h"
 #include <string>
 #include "log.h"
 
