@@ -4,9 +4,10 @@
 #include <iostream>
 #include <string>
 
-RequestHandlerPossibleMatches::RequestHandlerPossibleMatches(UsersContainer &users) :
-users(users),
-RequestHandler("/getpossiblematches") {
+RequestHandlerPossibleMatches::RequestHandlerPossibleMatches(
+		UsersContainer &users) :
+		users(users),
+		RequestHandler("/getpossiblematches") {
 }
 
 /** Parse the /getpossiblematches uri input, and saves it in the app-server
@@ -41,7 +42,7 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	std::string email = root.get("email", "unavailable").asString();
 	std::string count = root.get("count", "unavailable").asString();
 
-	if(email == "unavailable" || count = "unavailable"){
+	if(email == "unavailable" || count == "unavailable"){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
@@ -70,5 +71,4 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	//Sends response to the client containing its data
 	Response response(ACCEPTED, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection()); */
-
 }

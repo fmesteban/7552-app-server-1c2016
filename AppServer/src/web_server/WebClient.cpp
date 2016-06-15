@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <map>
 #include "WebClient.h"
 #include "Request.h"
 #include "Response.h"
@@ -218,6 +219,55 @@ std::string WebClient::sendLogin(const std::string& userID){
 	return "{}";
 }
 
+void WebClient::getUsers(std::map<int, User*> &usersById){
+	struct mg_connection *nc = NULL;
+
+	/* send the http request */
+	if ((nc = mg_connect(&mgr, remoteHost.c_str(), evHandler)) != NULL) {
+		mg_set_protocol_http_websocket(nc);
+		Request requestToShared(*nc);
+		Response responseFromShared;
+
+		/* GET /users HTTP/1.1 */
+		requestToShared.setMethod("GET");
+		requestToShared.setUri("/users");
+
+		/* setting headers */
+		insertDefaultHeaders(requestToShared);
+
+		/* sending the content */
+		requestToShared.send("");
+		Log::instance()->append(
+				"Sending get users request to shared server.",
+				Log::INFO);
+
+		/* start waiting for response */
+		keepAlive = true;
+		nc->user_data = &responseFromShared;
+		while (keepAlive)
+			mg_mgr_poll(&mgr, 1000);
+
+		/* check if response is on http error */
+		if (responseFromShared.getStatus() == 404){
+			Log::instance()->append(
+					"Received not found error from shared server.",
+					Log::INFO);
+		}else if (responseFromShared.getStatus() == 500){
+			Log::instance()->append(
+					"Received internal server error from shared server.",
+					Log::INFO);
+		}else if (responseFromShared.getStatus() != 200){
+			Log::instance()->append(
+					"Unknown error from shared server. Got " +
+					std::to_string(responseFromShared.getStatus()),
+					Log::ERROR);
+		}
+
+		/* parse body to fill the users map */
+		parseUsersMap(usersById, responseFromShared.getBody());
+	}
+}
+
 /** Inserts a group of default headers to request.
  */
 void WebClient::insertDefaultHeaders(Request &request){
@@ -228,6 +278,55 @@ void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Accept-Encoding", "gzip, deflate");
 	request.insertHeader("Connection", "keep-alive");
 	request.insertHeader("Content-Type", "application/json");
+}
+
+void WebClient::parseUsersMap(
+		std::map<int, User*> &usersById,
+		const std::string &body){
+	/* Loads the response into a JSON Value object */
+	Json::Value root;
+	Json::Reader reader;
+	bool parsingSuccessful = reader.parse(body, root);
+	if (!parsingSuccessful){
+		Log::instance()->append(
+				"Received an malformed response from shared after send a GET users.",
+				Log::INFO);
+		return;
+	}
+
+	Json::Value &usersList = root["users"];
+	Json::ValueConstIterator iterUsers = usersList.begin();
+
+	for (; iterUsers != usersList.end(); ++iterUsers){
+		const Json::Value& user = (*iterUsers)["user"];
+		int id(user["id"].asInt());
+		std::string name(user["name"].asString());
+		std::string alias(user["alias"].asString());
+		std::string email(user["email"].asString());
+		std::string photoUrl(user["photo_profile"].asString());
+		std::string sex(user["sex"].asString());
+		float longitude(user["location"]["longitud"].asFloat());
+		float latitude(user["location"]["latitude"].asFloat());
+		int age(user["age"].asInt());
+
+		User *newUser = new User(
+				name, alias, "undef_password",
+				email, "undef_birthday", sex,
+				longitude, latitude, photoUrl);
+
+		newUser->setId(id);
+		newUser->setAge(age);
+
+		const Json::Value &interestsList = user["interests"];
+		Json::ValueConstIterator iterInterests = interestsList.begin();
+		for(; iterInterests != interestsList.end(); ++iterInterests){
+			newUser->addInterest(
+					(*iterInterests)["category"].asString(),
+					(*iterInterests)["value"].asString());
+		}
+
+		usersById.insert(std::pair<int,User*>(id, newUser));
+	}
 }
 
 WebClient::~WebClient(){

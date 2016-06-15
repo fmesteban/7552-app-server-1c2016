@@ -6,12 +6,14 @@
 #include "RequestManager.h"
 #include "Thread.h"
 #include "log.h"
+#include "SuggestionsGenerator.h"
 
 class WebServer : public Thread{
 private:
 	const std::string httpPort;
 	struct mg_mgr eventManager;
 	struct mg_connection *networkConnection;
+	SugestionsGenerator suggestionsGenerator;
 	UsersContainer users;
 	RequestManager requestManager;
 	static void eventHandler(struct mg_connection *networkConnection,

@@ -16,6 +16,7 @@ public:
 	bool isMatch();
 	bool someoneDisliked();
 	Match *generateMatch();
+	int getAnotherID(User &requesterUser);
 	~Sugestion();
 };
 

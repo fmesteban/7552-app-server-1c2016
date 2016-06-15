@@ -5,6 +5,11 @@
 #include "Database.h"
 #include <string>
 #include <vector>
+#include <map>
+
+
+/* forward declaration */
+class Sugestion;
 
 class User {
 private:
@@ -19,7 +24,10 @@ private:
 	std::string photoProfile;
 	std::vector<Interest*> interests;
 	int id;
+	int age;
+	bool manuallySetAge;
 	void printInterests(std::ostream &os) const;
+	std::map<int, Sugestion*> sugestions;
 
 public:
 	User(const std::string &name,
@@ -33,10 +41,13 @@ public:
 	User(Database &db, const std::string &email);
 	void addInterest(const std::string& category, const std::string &value);
 	void setId(int id);
+	int getID();
+	void setAge(int age);
 	void setId(const std::string& id);
 	void saveIn(Database &db);
 	const std::string &getEmail() const;
 	friend std::ostream & operator<<(std::ostream &os, const User& self);
+	void addSuggestion(Sugestion* newSuggestion);
 	~User();
 };
 

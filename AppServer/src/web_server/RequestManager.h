@@ -24,8 +24,8 @@ private:
 	RequestHandlerLogin reqLogin;
 	RequestHandlerEditProfile reqEditProfile;
 	RequestHandlerPossibleMatches reqPossibleMatches;
-	RequestHandlerreqMatches reqMatches;
-	RequestHandlerConversation reqConversacion;
+	RequestHandlerMatches reqMatches;
+	RequestHandlerConversation reqConversation;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(UsersContainer &users);

@@ -5,6 +5,8 @@
 #include <vector>
 #include <cstdio>
 #include <ctime>
+#include <utility>
+#include "Suggestion.h"
 
 
 static int calculateAge(const std::string &strBirthday){
@@ -50,6 +52,7 @@ User::User(const std::string &name,
 	latitude(latitude),
 	photoProfile(photoProfile){
 	id = -1;
+	manuallySetAge = false;
 }
 
 
@@ -85,6 +88,15 @@ void User::setId(int id){
 	this->id = id;
 }
 
+int User::getID(){
+	return id;
+}
+
+void User::setAge(int age){
+	this->age = age;
+	this->manuallySetAge = true;
+}
+
 
 /** Sets the user id, passed as std::string.
  *
@@ -102,6 +114,8 @@ void User::setId(const std::string& id){
  *
  */
 std::ostream& operator<<(std::ostream &os, const User& self) {
+	int ageToPrint = self.manuallySetAge ? self.age : calculateAge(self.birthday);
+
 	os << "{\"user\":{";
 	self.printInterests(os);
 	if(self.id != -1)
@@ -113,7 +127,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"email\": \"" << self.email 		<< "\","
 			"\"sex\": \"" 	<< self.sex 		<< "\","
 			"\"photo_profile\": \"" << self.photoProfile << "\","
-			"\"age\": " << calculateAge(self.birthday) << ","
+			"\"age\": " << ageToPrint << ","
 			"\"location\":"
 			"{"
 				"\"latitud\": " << self.latitude << ","
@@ -151,6 +165,12 @@ void User::printInterests(std::ostream &os) const{
  */
 const std::string &User::getEmail() const{
 	return email;
+}
+
+
+void User::addSuggestion(Sugestion* newSuggestion){
+	sugestions.insert(std::pair<int,Sugestion*>(
+			newSuggestion->getAnotherID(*this),newSuggestion));
 }
 
 

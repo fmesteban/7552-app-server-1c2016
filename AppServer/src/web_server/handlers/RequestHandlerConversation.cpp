@@ -63,8 +63,4 @@ void RequestHandlerConversation::run(Request &request){
 	//Sends response to the client containing its data
 	Response response(ACCEPTED, conversationAsString);
 	RequestHandler::sendResponse(response, request.getNetworkConnection()); */
-
-	/*
-
-
 }

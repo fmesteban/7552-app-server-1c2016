@@ -5,15 +5,22 @@
 #include "User.h"
 #include "Database.h"
 #include <string>
+#include <map>
+#include <list>
 
 class UsersContainer {
 private:
 	WebClient client;
 	Database db;
+	std::map<int, User*> usersById;
 public:
+	UsersContainer();
 	int add(User &newUser);
 	void edit(User &newProfile);
 	std::string login(const std::string &email);
+	User *getUser(int userID);
+	void getRandomUsers(std::list<User*> &randomUsers);
+	~UsersContainer();
 };
 
 #endif

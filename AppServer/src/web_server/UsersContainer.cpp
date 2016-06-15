@@ -3,7 +3,23 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+#include <map>
+#include <list>
+#include <cstdlib>
 
+
+UsersContainer::UsersContainer(){
+	client.getUsers(usersById);
+/*
+	std::cout << "Users loaded from shared: " << usersById.size() << "\n\n";
+
+	std::map<int, User*>::iterator iterUsers = usersById.begin();
+	for(; iterUsers != usersById.end(); ++iterUsers){
+		std::cout << "User " << iterUsers->first << ": \n\n" << *(iterUsers->second) <<
+				"\n\n" << std::endl;
+	}
+*/
+}
 
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
@@ -51,5 +67,37 @@ std::string UsersContainer::login(const std::string &email){
 	if(!db.getValue(email, userID))
 		return "";
 	return client.sendLogin(userID);
+}
+
+
+User *UsersContainer::getUser(int userID){
+	std::map<int, User*>::iterator elem = usersById.find(userID);
+	if (elem == usersById.end())
+		return NULL;
+	else
+		return elem->second;
+}
+
+
+#define USERS_CONTAINER_RANDOM_USERS_NUMBER 5
+
+void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
+	if (usersById.size() == 0)
+		return;
+	for (int i = 0; i < USERS_CONTAINER_RANDOM_USERS_NUMBER; ++i){
+		std::map<int, User*>::iterator iterUsers = usersById.begin();
+		int r = std::rand() % usersById.size();
+		for (int j = 0; j < r; ++j)
+			++iterUsers;
+		randomUsers.push_back(iterUsers->second);
+	}
+}
+
+
+UsersContainer::~UsersContainer(){
+	std::map<int, User*>::iterator iterUsers = usersById.begin();
+	for(; iterUsers != usersById.end(); ++iterUsers)
+		delete iterUsers->second;
+	usersById.clear();
 }
 

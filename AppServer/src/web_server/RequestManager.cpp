@@ -11,7 +11,7 @@ RequestManager::RequestManager(UsersContainer &users) :
 	reqEditProfile(users),
 	reqPossibleMatches(users),
 	reqMatches(users),
-	reqConversation(users), {
+	reqConversation(users) {
 	insertDefaultHandlers();
 }
 

@@ -72,5 +72,4 @@ void RequestHandlerMatches::run(Request &request){
 	Response response(ACCEPTED, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 	*/
-
 }
