@@ -26,6 +26,8 @@ void RequestHandlerRegister::run(Request &request){
 		return;
 	}
 
+	std::cout << request.getBody() << std::endl;
+
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
@@ -47,8 +49,7 @@ void RequestHandlerRegister::run(Request &request){
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 
-	Json::Value location;
-	reader.parse(root.get("location", "unavailable").asString(), location);
+	Json::Value &location = root["location"];
 	
 	std::string longitudeStr = location.get("longitude", "unavailable").asString();
 	std::string latitudeStr = location.get("latitude", "unavailable").asString();
