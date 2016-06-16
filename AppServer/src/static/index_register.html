@@ -56,15 +56,12 @@
           birthday: birthday,
           sex: sex,
           photo_profile: photo_profile,
-          location: JSON.stringify({
+          location: {
             latitude: latitude,
             longitude: longitude
-          }),
+          },
           interests: [
-            {
-              category: 'Music',
-              value: 'arbol'
-            }
+            
           ]
         }),
         success: function(json) {
