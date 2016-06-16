@@ -3,18 +3,16 @@
 #include <map>
 #include <string>
 
-
-RequestManager::RequestManager(UsersContainer &users) :
+RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator) :
 	users(users),
 	reqRegister(users),
 	reqLogin(users),
 	reqEditProfile(users),
-	reqPossibleMatches(users),
+	reqPossibleMatches(users, suggestionsGenerator),
 	reqMatches(users),
 	reqConversation(users) {
 	insertDefaultHandlers();
 }
-
 
 /** Associates the RequestHandlers with theirs URI.
  */
@@ -28,7 +26,6 @@ void RequestManager::insertDefaultHandlers(){
 	addHandler(reqConversation.getUri(), &reqConversation);
 }
 
-
 /**	Adds a individual handler to hdlrs list.
  *
  */
@@ -37,7 +34,6 @@ void RequestManager::addHandler(
 		RequestHandler* reqHandler){
 	handlerRefs.insert(std::pair<std::string,RequestHandler*>(uri,reqHandler));
 }
-
 
 /** Gets the handler corresponding to passed uri.
  *

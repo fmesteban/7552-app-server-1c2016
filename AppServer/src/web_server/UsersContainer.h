@@ -18,6 +18,8 @@ public:
 	int add(User &newUser);
 	void edit(User &newProfile);
 	std::string login(const std::string &email);
+	std::string get(const int id);
+	int getID(const std::string &email);
 	User *getUser(int userID);
 	void getRandomUsers(std::list<User*> &randomUsers);
 	~UsersContainer();

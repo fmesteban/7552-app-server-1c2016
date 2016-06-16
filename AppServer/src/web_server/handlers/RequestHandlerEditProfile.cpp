@@ -36,6 +36,7 @@ void RequestHandlerEditProfile::run(Request &request){
 		Log::instance()->append(
 				"Received a BAD (malformed) REQUEST. Rejected.",
 				Log::INFO);
+		return;
 	}
 
 	std::string name = root.get("name", "unavailable").asString();

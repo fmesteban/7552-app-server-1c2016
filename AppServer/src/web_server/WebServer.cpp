@@ -28,8 +28,8 @@ void WebServer::eventHandler(struct mg_connection *networkConnection,
  *	Protects the resources using the RAII pattern
  */
 WebServer::WebServer(const std::string &port) : httpPort(port),
-		requestManager(users),
-		suggestionsGenerator(users){
+		suggestionsGenerator(users),
+		requestManager(users, suggestionsGenerator) {
 	keepAlive = true;
 	mg_mgr_init(&eventManager, NULL);
 	networkConnection = mg_bind(&eventManager, httpPort.c_str(), eventHandler);

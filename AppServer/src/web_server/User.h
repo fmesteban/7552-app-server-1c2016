@@ -9,7 +9,7 @@
 
 
 /* forward declaration */
-class Sugestion;
+class Suggestion;
 
 class User {
 private:
@@ -27,7 +27,7 @@ private:
 	int age;
 	bool manuallySetAge;
 	void printInterests(std::ostream &os) const;
-	std::map<int, Sugestion*> sugestions;
+	std::map<int, Suggestion*> sugestions;
 
 public:
 	User(const std::string &name,
@@ -47,7 +47,7 @@ public:
 	void saveIn(Database &db);
 	const std::string &getEmail() const;
 	friend std::ostream & operator<<(std::ostream &os, const User& self);
-	void addSuggestion(Sugestion* newSuggestion);
+	void addSuggestion(Suggestion* newSuggestion);
 	~User();
 };
 

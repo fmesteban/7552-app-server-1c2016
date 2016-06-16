@@ -69,6 +69,24 @@ std::string UsersContainer::login(const std::string &email){
 	return client.sendLogin(userID);
 }
 
+/*
+ * Returns the ID of user from the email
+ */
+int UsersContainer::getID(const std::string &email){
+	std::string userID;
+	if(!db.getValue(email, userID))
+		return -1;
+	int ID;
+	return std::stringstream(userID) >> ID ? ID : 0;
+}
+
+/*
+ *
+ */
+std::string UsersContainer::get(const int id){
+	return client.sendLogin(std::to_string(id));
+}
+
 
 User *UsersContainer::getUser(int userID){
 	std::map<int, User*>::iterator elem = usersById.find(userID);

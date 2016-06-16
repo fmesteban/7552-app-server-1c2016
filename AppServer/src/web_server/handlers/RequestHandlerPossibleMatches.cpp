@@ -5,8 +5,9 @@
 #include <string>
 
 RequestHandlerPossibleMatches::RequestHandlerPossibleMatches(
-		UsersContainer &users) :
+		UsersContainer &users, SuggestionsGenerator &suggestionsGenerator) :
 		users(users),
+		suggestionsGenerator(suggestionsGenerator),
 		RequestHandler("/getpossiblematches") {
 }
 
@@ -54,21 +55,32 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	/* Obtener el ID del usuario de la DB.
 	 * Llamar a getPossibleMatches del SuggestionsGenerator (tener referencia o hacer un singleton?)
 	 * LLamar al shared haciendo get de cada user suggested. Y guardar la info en un array
-	 * Devolver el array en forma de json al cliente.
-	int user_id = db.get(email);
-	std::list<int> possibleMatches = suggestionGenerator.getPossibleMatches(user_id, count); // Should return IDs or emails?
-	std::string result;
-	for each possibleMatch in possibleMatches do
-		std::string userAsString = users.login(possibleMatch); //TODO change login for get
-		
-		if (userAsString == ""){
-			Log::instance()->append(
-					"User with email " + email + " was not found.", Log::ERROR);
-		}
-		append to new list
-	end
+	 * Devolver el array en forma de json al cliente. */
 
-	//Sends response to the client containing its data
-	Response response(ACCEPTED, result);
-	RequestHandler::sendResponse(response, request.getNetworkConnection()); */
+	int userID = users.getID(email);
+
+	if (userID == -1){
+		Response response(SERVER_ERROR_STATUS, SERVER_ERROR_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+			"User with email: " + email + "not found.",
+			Log::ERROR);
+		return;
+	}
+
+	int count_i;
+	std::stringstream(count) >> count_i;
+
+	std::list<int> suggestions = suggestionsGenerator.getPossibleMatches(userID, count_i);
+
+	std::string result = "{\"possibleMatches\": [";
+
+	for (auto const &s : suggestions){
+		std::string user = users.get(s);
+		result += user + ", ";
+	}
+	result.replace(result.back() - 2, result.back(), "]}"); //The extra ", "
+
+	Response response(ACCEPTED_STATUS, result);
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

@@ -3,19 +3,19 @@
 #include <list>
 
 
-SugestionsGenerator::SugestionsGenerator(UsersContainer& usersContainer) :
+SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	usersContainer(usersContainer) {
 }
 
 
-SugestionsGenerator::~SugestionsGenerator(){
-	std::list<Sugestion*>::iterator iter = suggestions.begin();
+SuggestionsGenerator::~SuggestionsGenerator(){
+	std::list<Suggestion*>::iterator iter = suggestions.begin();
 	for(; iter != suggestions.end(); ++iter)
 		delete *iter;
 }
 
 
-float SugestionsGenerator::calculatePoints(const User &userA,
+float SuggestionsGenerator::calculatePoints(const User &userA,
 		const User &userB){
 	return 0;
 }
@@ -24,7 +24,7 @@ float SugestionsGenerator::calculatePoints(const User &userA,
 /** Returns a list of possible matches for the user up to a maximum cant. The list
  *  contains only the ID of each other user that implies a match.
  */
-std::list<int> SugestionsGenerator::getPossibleMatches(int user, int cant) {
+std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	std::list<int> result;
 
 	/* get the user from container */
@@ -62,7 +62,7 @@ std::list<int> SugestionsGenerator::getPossibleMatches(int user, int cant) {
 		result.push_back(currentBestSuggestedUser->getID());
 
 		/* save suggestion */
-		suggestions.push_back(new Sugestion(*userRef, *currentBestSuggestedUser));
+		suggestions.push_back(new Suggestion(*userRef, *currentBestSuggestedUser));
 	}
 
 	return result;
@@ -71,5 +71,5 @@ std::list<int> SugestionsGenerator::getPossibleMatches(int user, int cant) {
 /** Returns a list of matches for the user. The list
  *  contains only the ID of each other user that implies a match.
  */
-std::list<int> SugestionsGenerator::getMatches(int user) {
+std::list<int> SuggestionsGenerator::getMatches(int user) {
 }

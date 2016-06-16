@@ -168,8 +168,8 @@ const std::string &User::getEmail() const{
 }
 
 
-void User::addSuggestion(Sugestion* newSuggestion){
-	sugestions.insert(std::pair<int,Sugestion*>(
+void User::addSuggestion(Suggestion* newSuggestion){
+	sugestions.insert(std::pair<int,Suggestion*>(
 			newSuggestion->getAnotherID(*this),newSuggestion));
 }
 

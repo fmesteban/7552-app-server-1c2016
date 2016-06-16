@@ -7,14 +7,14 @@
 #include "UsersContainer.h"
 #include "User.h"
 
-class SugestionsGenerator {
+class SuggestionsGenerator {
 private:
 	UsersContainer& usersContainer;
-	std::list<Sugestion*> suggestions;
+	std::list<Suggestion*> suggestions;
 	float calculatePoints(const User &userA, const User &userB);
 public:
-	explicit SugestionsGenerator(UsersContainer& usersContainer);
-	~SugestionsGenerator();
+	explicit SuggestionsGenerator(UsersContainer& usersContainer);
+	~SuggestionsGenerator();
 
 	std::list<int> getPossibleMatches(int user, int cant);
 	std::list<int> getMatches(int user);

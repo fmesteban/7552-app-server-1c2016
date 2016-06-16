@@ -28,7 +28,7 @@ private:
 	RequestHandlerConversation reqConversation;
 	void insertDefaultHandlers();
 public:
-	explicit RequestManager(UsersContainer &users);
+	explicit RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);
 	void addHandler(const std::string& uri, RequestHandler* reqHandler);
 	RequestHandler& getHanlder(const std::string& uri);
 };

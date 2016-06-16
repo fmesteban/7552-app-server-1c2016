@@ -10,8 +10,9 @@
 class RequestHandlerPossibleMatches: public RequestHandler {
 private:
 	UsersContainer &users;
+	SuggestionsGenerator &suggestionsGenerator;
 public:
-	explicit RequestHandlerPossibleMatches(UsersContainer &users);
+	explicit RequestHandlerPossibleMatches(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);
 	void run(Request &request);
 };
 

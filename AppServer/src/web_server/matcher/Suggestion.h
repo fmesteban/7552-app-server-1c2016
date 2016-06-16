@@ -4,7 +4,7 @@
 #include "User.h"
 #include "Match.h"
 
-class Sugestion {
+class Suggestion {
 private:
 	User &userA;
 	User &userB;
@@ -12,12 +12,12 @@ private:
 	bool BlikesA;
 	bool _someoneDisliked;
 public:
-	Sugestion(User &userA, User &userB);
+	Suggestion(User &userA, User &userB);
 	bool isMatch();
 	bool someoneDisliked();
 	Match *generateMatch();
 	int getAnotherID(User &requesterUser);
-	~Sugestion();
+	~Suggestion();
 };
 
 #endif

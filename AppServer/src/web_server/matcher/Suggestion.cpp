@@ -1,6 +1,6 @@
 #include "Suggestion.h"
 
-Sugestion::Sugestion(User &userA, User &userB) :
+Suggestion::Suggestion(User &userA, User &userB) :
 	userA(userA),
 	userB(userB) {
 	AlikesB = false;
@@ -10,28 +10,28 @@ Sugestion::Sugestion(User &userA, User &userB) :
 	userB.addSuggestion(this);
 }
 
-bool Sugestion::isMatch(){
+bool Suggestion::isMatch(){
 	return (AlikesB && BlikesA && !_someoneDisliked);
 }
 
-int Sugestion::getAnotherID(User &requesterUser){
+int Suggestion::getAnotherID(User &requesterUser){
 	if (userA.getID() == requesterUser.getID())
 		return userB.getID();
 	else
 		return userA.getID();
 }
 
-bool Sugestion::someoneDisliked(){
+bool Suggestion::someoneDisliked(){
 	return _someoneDisliked;
 }
 
-Match *Sugestion::generateMatch(){
+Match *Suggestion::generateMatch(){
 	if(isMatch())
 		return new Match(userA, userB);
 	else
 		return NULL;
 }
 
-Sugestion::~Sugestion() {
+Suggestion::~Suggestion() {
 }
 
