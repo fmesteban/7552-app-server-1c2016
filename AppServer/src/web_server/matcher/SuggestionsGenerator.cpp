@@ -40,23 +40,25 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		return result;
 
 	/* we will calculate "cant" suggestions */
-	for (int i = 1; i < cant; ++i){
+	for (int i = 1; i <= cant; ++i){
 
 		std::cerr << i << std::endl;
 		/* temporal values for best suggestion */
 		User *currentBestSuggestedUser;
 		float currentBestSuggestedUserPoints = 0;
 
-		/* get some random users from container for be faster than O(NxN) */
+		/* get some random users from container to be faster than O(NxN) */
 		std::list<User*> randomUsers;
 		usersContainer.getRandomUsers(randomUsers);
+
+		std::cerr << "Got random users" << std::endl;
 
 		/* for each users, calculate the suggestion points *
 		 * save if better than current best */
 		std::list<User*>::iterator randomUsersIter = randomUsers.begin();
 		for (; randomUsersIter != randomUsers.end(); ++randomUsersIter){
 			float points = calculatePoints(*userRef, **randomUsersIter);
-			if (points > currentBestSuggestedUserPoints){
+			if (points >= currentBestSuggestedUserPoints){
 				currentBestSuggestedUser = *randomUsersIter;
 				currentBestSuggestedUserPoints = points;
 			}
@@ -71,7 +73,7 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		result.push_back(currentBestSuggestedUser->getID());
 
 		Log::instance()->append(
-			"Added new suggestion for the requester user: " + std::to_string(user) + " .",
+			"Suggesting user " + std::to_string(currentBestSuggestedUser->getID()) + " to the requester user: " + std::to_string(user) + ".",
 			Log::INFO);
 
 		/* save suggestion */

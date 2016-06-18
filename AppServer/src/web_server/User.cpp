@@ -8,7 +8,6 @@
 #include <utility>
 #include "Suggestion.h"
 
-
 /** User constructor
  *
  */
@@ -31,13 +30,11 @@ User::User(const std::string &name,
 	id = -1;
 }
 
-
 /** TODO: User should be able to be loaded from database.
  *
  */
 User::User(Database &db, const std::string &email){
 }
-
 
 /* db registers: (email, id) */
 void User::saveIn(Database &db){
@@ -48,14 +45,12 @@ void User::saveIn(Database &db){
 			Log::INFO);
 }
 
-
 /** Adds an interest to user.
  *
  */
 void User::addInterest(const std::string& category, const std::string &value){
 	interests.push_back(new Interest(category, value));
 }
-
 
 /** Sets the user id, passed as int.
  *
@@ -68,7 +63,6 @@ int User::getID(){
 	return id;
 }
 
-
 /** Sets the user id, passed as std::string.
  *
  */
@@ -79,7 +73,6 @@ void User::setId(const std::string& id){
 	ss >> idAsInt;
 	setId(idAsInt);
 }
-
 
 /** Overloads the operator<<. User must know how print itself.
  *
@@ -99,9 +92,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"age\": " << self.age << ","
 			"\"location\":"
 			"{"
-				"\"latitud\": " << self.latitude << ","
 				"\"latitude\": " << self.latitude << ","
-				"\"longitud\": " << self.longitude << ","
 				"\"longitude\": " << self.longitude <<
 			"}"
 		"}"
@@ -128,7 +119,6 @@ void User::printInterests(std::ostream &os) const{
 	os << "],";
 }
 
-
 /** Returns a reference to user's email.
  *
  */
@@ -136,12 +126,10 @@ const std::string &User::getEmail() const{
 	return email;
 }
 
-
 void User::addSuggestion(Suggestion* newSuggestion){
 	sugestions.insert(std::pair<int,Suggestion*>(
 			newSuggestion->getAnotherID(*this),newSuggestion));
 }
-
 
 void User::edit(User& newProfile){
 	this->age = newProfile.age;
@@ -170,19 +158,20 @@ std::string User::getSomeInterestFromCategory(std::string &category){
 	return std::string("any");
 }
 
-
 /** Checks needed preconditions
  *
  */
 bool User::couldMatch(User &another){
-	std::string categSex("sex");
-	if(this->getSomeInterestFromCategory(categSex) != another.sex)
+	std::string cat("sex");
+	std::string my_preference =  this->getSomeInterestFromCategory(cat);
+	std::string other_preference =  another.getSomeInterestFromCategory(cat);
+	if(my_preference == another.sex || my_preference == "any"){
+		if(other_preference == sex || other_preference == "any")
+			return true;
 		return false;
-	if(another.getSomeInterestFromCategory(categSex) != sex)
-		return false;
-	return true;
+	}
+	return false;
 }
-
 
 /** Releases user's allocated resources.
  *

@@ -81,9 +81,7 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	}
 	result[result.length()-2] = ']';
 	result[result.length()-1] = '}';
-
-	std::cout << result << std::endl;
-
+	
 	Response response(ACCEPTED_STATUS, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

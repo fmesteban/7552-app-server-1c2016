@@ -5,8 +5,9 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 15
+n = 5
 email = "example_real_user" + str(n) + "@mail.com"
+interests = [ { "category": "music", "value": "manu chao"} ]
 
 class TestPossibleMatches(unittest.TestCase):
 	def test_get_suggestions(self):
@@ -34,11 +35,11 @@ class TestPossibleMatches(unittest.TestCase):
 		 "birthday": "10/10/10", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
 		self.assertEquals(r.status_code, 201)
-
-		data = json.dumps({"name": "UserToSuggest", "alias": "real_user", "password": "test", "email": email,
-		 "birthday": "10/10/10", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
+"""
+		data = json.dumps({"name": "UserToSuggest", "alias": "real_user", "password": "test", "email": email, "age": "35", "sex": "Female",
+			"interests": interests, "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEquals(r.status_code, 201)"""
+		self.assertEquals(r.status_code, 201)
 
 		data = json.dumps({"email": email, "count": "3"})
 		r = requests.get("http://localhost:8000/getpossiblematches", data = data)

@@ -7,7 +7,7 @@ import inspect, os
 
 class TestUpdateUser(unittest.TestCase):
 	def test_update_profile_valid(self):
-		n = 5
+		n = 8
 		mail = "example_update" + str(n) + "@mail.com"
 		interests = [ { "category": "music", "value": "El hacedor de viudas"} ]
 		alias = "usuario_update" + str(n)
@@ -19,8 +19,8 @@ class TestUpdateUser(unittest.TestCase):
 		self.assertEqual(r.status_code, 201)
 
 		# Then we update.
-		data = json.dumps({"name": "TestUpdate", "alias": alias + str(n), "password": "test", "email": mail, "age": "32",
-			"sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": interests })
+		data = json.dumps({"name": "TestUpdateUpdated", "alias": alias, "email": mail, "age": "32", "sex": "Male", 
+			"location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": interests })
 		r = requests.put("http://localhost:8000/updateprofile", data = data)
 		self.assertEqual(r.status_code, 201)
 

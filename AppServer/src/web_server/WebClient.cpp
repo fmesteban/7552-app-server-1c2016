@@ -41,8 +41,8 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 /**	Inits the web client resources. (RAII)
  */
 WebClient::WebClient() :
-						remoteHost("shared-server.herokuapp.com:80"){
-//						remoteHost("localhost:5000"){
+//						remoteHost("shared-server.herokuapp.com:80"){
+						remoteHost("localhost:5000"){
 	Log::instance()->append(
 			"Initiating connection with " + remoteHost,
 			Log::INFO);
@@ -186,7 +186,7 @@ std::string WebClient::sendLogin(const std::string& userID){
 		/* sending the content */
 		requestToShared.send("");
 		Log::instance()->append(
-				"Sending get user information request to shared server.",
+				"Sending get user: " + userID +  " information request to shared server.",
 				Log::INFO);
 
 		/* start waiting for response */
