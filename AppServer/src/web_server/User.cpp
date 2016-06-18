@@ -9,29 +9,6 @@
 #include "Suggestion.h"
 
 
-static int calculateAge(const std::string &strBirthday){
-	int day, month, year;
-	sscanf(strBirthday.c_str(), "%d/%d/%d", &day, &month, &year);
-
-	time_t timer;
-	struct tm birthday = {0};
-	double lifeSeconds;
-	birthday.tm_year = year - 1900; /* years since 1900 */
-	birthday.tm_mon = month - 1;	/* months since January */
-	birthday.tm_mday = 1;			/* day of the month */
-
-	time(&timer);
-
-	lifeSeconds = difftime(timer,mktime(&birthday));
-	int age = lifeSeconds;
-	age /= 60; /* seconds per minute */
-	age /= 60; /* minutes per hour */
-	age /= 24; /* hours per day */
-	age /= 365.25; /* days per year */
-
-	return age;
-}
-
 /** User constructor
  *
  */
@@ -39,20 +16,18 @@ User::User(const std::string &name,
 		const std::string &alias,
 		const std::string &password,
 		const std::string &email,
-		const std::string &birthday,
+		int age,
 		const std::string &sex, float longitude, float latitude,
 		const std::string &photoProfile) :
 	name(name),
 	alias(alias),
 	password(password),
-	email(email),
-	birthday(birthday),
 	sex(sex),
+	age(age),
 	longitude(longitude),
 	latitude(latitude),
 	photoProfile(photoProfile){
 	id = -1;
-	manuallySetAge = false;
 }
 
 
@@ -92,11 +67,6 @@ int User::getID(){
 	return id;
 }
 
-void User::setAge(int age){
-	this->age = age;
-	this->manuallySetAge = true;
-}
-
 
 /** Sets the user id, passed as std::string.
  *
@@ -114,8 +84,6 @@ void User::setId(const std::string& id){
  *
  */
 std::ostream& operator<<(std::ostream &os, const User& self) {
-	int ageToPrint = self.manuallySetAge ? self.age : calculateAge(self.birthday);
-
 	os << "{\"user\":{";
 	self.printInterests(os);
 	if(self.id != -1)
@@ -127,7 +95,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"email\": \"" << self.email 		<< "\","
 			"\"sex\": \"" 	<< self.sex 		<< "\","
 			"\"photo_profile\": \"" << self.photoProfile << "\","
-			"\"age\": " << ageToPrint << ","
+			"\"age\": " << self.age << ","
 			"\"location\":"
 			"{"
 				"\"latitud\": " << self.latitude << ","
@@ -171,6 +139,25 @@ const std::string &User::getEmail() const{
 void User::addSuggestion(Suggestion* newSuggestion){
 	sugestions.insert(std::pair<int,Suggestion*>(
 			newSuggestion->getAnotherID(*this),newSuggestion));
+}
+
+
+void User::edit(User& newProfile){
+	this->age = newProfile.age;
+	this->alias = newProfile.alias;
+	this->latitude = newProfile.latitude;
+	this->longitude = newProfile.longitude;
+	this->name = newProfile.name;
+	this->photoProfile = newProfile.photoProfile;
+	this->sex = newProfile.sex;
+
+	std::vector<Interest*>::iterator interestIter = interests.begin();
+	for(; interestIter != interests.end(); ++interestIter)
+		delete *interestIter;
+
+	interestIter = newProfile.interests.begin();
+	for(; interestIter != newProfile.interests.end(); ++interestIter)
+		addInterest((*interestIter)->getCategory(), (*interestIter)->getValue());
 }
 
 

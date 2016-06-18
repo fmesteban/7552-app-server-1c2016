@@ -311,11 +311,10 @@ void WebClient::parseUsersMap(
 
 		User *newUser = new User(
 				name, alias, "undef_password",
-				email, "undef_birthday", sex,
+				email, age, sex,
 				longitude, latitude, photoUrl);
 
 		newUser->setId(id);
-		newUser->setAge(age);
 
 		const Json::Value &interestsList = user["interests"];
 		Json::ValueConstIterator iterInterests = interestsList.begin();

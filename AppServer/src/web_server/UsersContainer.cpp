@@ -35,6 +35,9 @@ int UsersContainer::add(User &newUser){
 	if (status_pair.first != -1){
 		newUser.setId(id);
 		newUser.saveIn(db);
+		usersById.insert(std::pair<int,User*>(id, &newUser));
+	}else{
+		delete &newUser;
 	}
 
 	return status_pair.second;
@@ -54,6 +57,8 @@ void UsersContainer::edit(User &newProfile){
 	ss.clear();
 	newProfile.setId(userID);
 	ss << newProfile;
+
+	usersById.find(newProfile.getID())->second->edit(newProfile);
 
 	client.sendEditProfile(ss.str(), userID);
 }

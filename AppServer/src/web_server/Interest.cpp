@@ -8,6 +8,16 @@ Interest::Interest(const std::string &category, const std::string &value) :
 }
 
 
+std::string &Interest::getCategory(){
+	return category;
+}
+
+
+std::string &Interest::getValue(){
+	return value;
+}
+
+
 /** Overloads the operator << from std::ostream
  *
  */

@@ -45,7 +45,7 @@ void RequestHandlerRegister::run(Request &request){
 	std::string alias = root.get("alias", "unavailable").asString();
 	std::string password = root.get("password", "unavailable").asString();
 	std::string email = root.get("email", "unavailable").asString();
-	std::string birthday = root.get("birthday", "unavailable").asString();
+	int age = root.get("age", "unavailable").asInt();
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 
@@ -58,7 +58,6 @@ void RequestHandlerRegister::run(Request &request){
 		alias == "unavailable" || 
 		password == "unavailable" || 
 		email == "unavailable" || 
-		birthday == "unavailable" || 
 		sex == "unavailable" || 
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
@@ -79,7 +78,7 @@ void RequestHandlerRegister::run(Request &request){
 	aux << latitudeStr;
 	aux >> latitude;
 
-	User newUser(name, alias, password, email, birthday, sex, 
+	User *newUser = new User(name, alias, password, email, age, sex,
 					longitude, latitude, photoProfile);
 
 	/* Parse interests array */
@@ -92,11 +91,11 @@ void RequestHandlerRegister::run(Request &request){
 		std::string value = interest.get("value", "unavailable").asString();
 		if(category == "unavailable" || value == "unavailable")
 			continue;
-		newUser.addInterest(category, value);
+		newUser->addInterest(category, value);
 	}
 
 	/* Adds the built user to users container */
-	int status_code = users.add(newUser);
+	int status_code = users.add(*newUser);
 
 	/* Sends response to the client */
 	Response response(status_code, ACCEPTED_MSG);

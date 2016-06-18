@@ -41,9 +41,8 @@ void RequestHandlerEditProfile::run(Request &request){
 
 	std::string name = root.get("name", "unavailable").asString();
 	std::string alias = root.get("alias", "unavailable").asString();
-	std::string password = root.get("password", "unavailable").asString();
 	std::string email = root.get("email", "unavailable").asString();
-	std::string birthday = root.get("birthday", "unavailable").asString();
+	int age = root.get("age", "unavailable").asInt();
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 
@@ -54,9 +53,7 @@ void RequestHandlerEditProfile::run(Request &request){
 	
 	if(name == "unavailable" || 
 		alias == "unavailable" || 
-		password == "unavailable" || 
 		email == "unavailable" || 
-		birthday == "unavailable" || 
 		sex == "unavailable" || 
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
@@ -77,7 +74,7 @@ void RequestHandlerEditProfile::run(Request &request){
 	aux << latitudeStr;
 	aux >> latitude;
 
-	User newProfile(name, alias, password, email, birthday, sex, 
+	User newProfile(name, alias, "unchanged_password", email, age, sex,
 					longitude, latitude, photoProfile);
 
 	/* Parse interests array */
