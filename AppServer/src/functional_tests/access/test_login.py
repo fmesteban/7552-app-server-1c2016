@@ -5,7 +5,7 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 45
+n = 146
 mail = "example_login" + str(n) + "@mail.com"
 
 class TestLogin(unittest.TestCase):
@@ -19,8 +19,9 @@ class TestLogin(unittest.TestCase):
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
 		self.assertEqual(r.status_code, 201)
 		#Assert the alias is the same
-	    alias = r.json()[u'user'][u'alias']
-	    self.assertEqual(alias, "usuario_login")
+		alias = r.json()[u'user'][u'alias']
+		print r
+		self.assertEqual(alias, "usuario_login")
 
 	def test_login_nonexisting_user(self):
 		data = {"email": "example@inexistent.com", "password": "test"}
@@ -39,7 +40,7 @@ class TestLogin(unittest.TestCase):
 
 		data = {"email": "example@wrongpasswd.com", "password": "wrong"}
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
-		self.assertEqual(r.status_code, 400)
+		self.assertEqual(r.status_code, 500)
 
 if __name__ == '__main__':
 	unittest.main()

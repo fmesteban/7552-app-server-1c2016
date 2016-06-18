@@ -73,13 +73,14 @@ void RequestHandlerPossibleMatches::run(Request &request){
 
 	std::list<int> suggestions = suggestionsGenerator.getPossibleMatches(userID, count_i);
 
-	std::string result = "{\"possibleMatches\": [";
+	std::string result("{\"possibleMatches\": [");
 
 	for (auto const &s : suggestions){
 		std::string user = users.get(s);
 		result += user + ", ";
 	}
-	result.replace(result.back() - 2, result.back(), "]}"); //The extra ", "
+	result[result.length()-2] = ']';
+	result[result.length()-1] = '}';
 
 	Response response(ACCEPTED_STATUS, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());

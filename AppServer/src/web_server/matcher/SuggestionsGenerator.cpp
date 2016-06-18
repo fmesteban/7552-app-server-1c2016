@@ -30,6 +30,10 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	std::list<int> result;
 
+	Log::instance()->append(
+		"Getting suggestions for user with id: " + std::to_string(user) + " .",
+		Log::INFO);
+
 	/* get the user from container */
 	User *userRef = usersContainer.getUser(user);
 	if (userRef == NULL)
@@ -37,6 +41,8 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 
 	/* we will calculate "cant" suggestions */
 	for (int i = 1; i < cant; ++i){
+
+		std::cerr << i << std::endl;
 		/* temporal values for best suggestion */
 		User *currentBestSuggestedUser;
 		float currentBestSuggestedUserPoints = 0;
@@ -64,8 +70,14 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		/* note: here we will have "cant" pushes or less */
 		result.push_back(currentBestSuggestedUser->getID());
 
+		Log::instance()->append(
+			"Added new suggestion for the requester user: " + std::to_string(user) + " .",
+			Log::INFO);
+
 		/* save suggestion */
 		suggestions.push_back(new Suggestion(*userRef, *currentBestSuggestedUser));
+
+		Log::instance()->append("Suggestion saved.", Log::INFO);
 	}
 
 	return result;

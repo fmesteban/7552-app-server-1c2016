@@ -45,7 +45,9 @@ void RequestHandlerRegister::run(Request &request){
 	std::string alias = root.get("alias", "unavailable").asString();
 	std::string password = root.get("password", "unavailable").asString();
 	std::string email = root.get("email", "unavailable").asString();
-	int age = root.get("age", "unavailable").asInt();
+	std::string age_str = root.get("age", "unavailable").asString();
+	int age;
+	std::stringstream(age_str) >> age ? age : 0;
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 

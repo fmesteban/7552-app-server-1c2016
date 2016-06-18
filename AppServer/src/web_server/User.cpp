@@ -24,6 +24,7 @@ User::User(const std::string &name,
 	password(password),
 	sex(sex),
 	age(age),
+	email(email),
 	longitude(longitude),
 	latitude(latitude),
 	photoProfile(photoProfile){
