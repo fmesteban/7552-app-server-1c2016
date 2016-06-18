@@ -7,20 +7,21 @@ import inspect, os
 
 class TestUpdateUser(unittest.TestCase):
 	def test_update_profile_valid(self):
-		n = 45
+		n = 5
 		mail = "example_update" + str(n) + "@mail.com"
-		interests = [ { "category": "music", "value": "manu chao"} ]
+		interests = [ { "category": "music", "value": "El hacedor de viudas"} ]
+		alias = "usuario_update" + str(n)
 
 		# First we register
-		data = json.dumps({"name": "TestUpdate", "alias": "usuario_update", "password": "test", "email": mail, 
-			"birthday": "10/10/1990", "sex": "male", "location": "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": [ob for ob in interests] })
+		data = json.dumps({"name": "TestUpdate", "alias": alias, "password": "test", "email": mail, "age": "32", 
+			"sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": interests })
 		r = requests.post("http://localhost:8000/register", data = data)
 		self.assertEqual(r.status_code, 201)
 
-		# Then we update. Note we are trying to modify the sex, and it is not possible
-		data = json.dumps({"name": "TestUpdateUpdated", "alias": "usuario_update", "password": "test", "email": mail, 
-			"birthday": "10/10/1990", "sex": "female", "location": "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": [ob for ob in interests] })
-		r = requests.post("http://localhost:8000/updateprofile", data = data)
+		# Then we update.
+		data = json.dumps({"name": "TestUpdate", "alias": alias + str(n), "password": "test", "email": mail, "age": "32",
+			"sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo", "interests": interests })
+		r = requests.put("http://localhost:8000/updateprofile", data = data)
 		self.assertEqual(r.status_code, 201)
 
 		# Finally we retrieve to check updated data
@@ -30,12 +31,10 @@ class TestUpdateUser(unittest.TestCase):
 		# Check name is changed
 		response = r.json()[u'user']
 		self.assertEqual(response[u'name'], "TestUpdateUpdated")
-		# Check sex is not changed
-		self.assertEqual(response[u'sex'], "male")
 
 	def test_update_profile_malformed(self):
 		data = json.dumps({"name": "TestUpdateUpdated", "alias": "usuario_update", "password": "test", "email": "example_update1@domain.com", 
-			"birthday": "10/10/10", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
+			"age": "32", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/updateprofile", data = data)
 		self.assertEqual(r.status_code, 400)
 

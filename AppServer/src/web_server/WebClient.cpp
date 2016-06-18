@@ -115,7 +115,7 @@ std::pair<int, int> WebClient::sendRegister(const std::string& postData){
 
 /**	Sends a http put request to edit an existing user
  */
-bool WebClient::sendEditProfile(const std::string& putData,
+int WebClient::sendEditProfile(const std::string& putData,
 		const std::string &userID){
 	struct mg_connection *nc = NULL;
 
@@ -148,7 +148,6 @@ bool WebClient::sendEditProfile(const std::string& putData,
 			Log::instance()->append(
 					"Received OK from shared server.",
 					Log::INFO);
-			return true;
 		}
 		if(responseFromShared.getStatus() == 500){
 			Log::instance()->append(
@@ -160,8 +159,9 @@ bool WebClient::sendEditProfile(const std::string& putData,
 					std::to_string(responseFromShared.getStatus()),
 					Log::ERROR);
 		}
+		return responseFromShared.getStatus();
 	}
-	return false;
+	return -1;
 }
 
 /** Sends a a http get request to get the information

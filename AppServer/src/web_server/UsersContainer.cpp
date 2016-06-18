@@ -47,12 +47,12 @@ int UsersContainer::add(User &newUser){
 /** Loads user from db, and sends an edit profile request to
  *  shared server.
  */
-void UsersContainer::edit(User &newProfile){
+int UsersContainer::edit(User &newProfile){
 	std::stringstream ss;
 
 	std::string userID;
 	if(!db.getValue(newProfile.getEmail(), userID))
-		return;
+		return -1;
 
 	ss.clear();
 	newProfile.setId(userID);
@@ -60,7 +60,7 @@ void UsersContainer::edit(User &newProfile){
 
 	usersById.find(newProfile.getID())->second->edit(newProfile);
 
-	client.sendEditProfile(ss.str(), userID);
+	return client.sendEditProfile(ss.str(), userID);
 }
 
 

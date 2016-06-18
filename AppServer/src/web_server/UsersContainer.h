@@ -16,7 +16,7 @@ private:
 public:
 	UsersContainer();
 	int add(User &newUser);
-	void edit(User &newProfile);
+	int edit(User &newProfile);
 	std::string login(const std::string &email);
 	std::string get(const int id);
 	int getID(const std::string &email);

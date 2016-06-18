@@ -18,12 +18,12 @@ RequestHandler("/updateprofile") {
 void RequestHandlerEditProfile::run(Request &request){
 	Log::instance()->append("Received a profile update request", Log::INFO);
 
-	if (request.getMethod() != "POST"){
+	if (request.getMethod() != "PUT"){
 		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
-			"{ \"response\": \"POST\" }\r\n");
-		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
+			"{ \"response\": \"PUT\" }\r\n");
+		Log::instance()->append("Not a PUT request. Rejected.", Log::INFO);
 		return;
 	}
 	/* Loads the request into a JSON Value object */
@@ -42,7 +42,9 @@ void RequestHandlerEditProfile::run(Request &request){
 	std::string name = root.get("name", "unavailable").asString();
 	std::string alias = root.get("alias", "unavailable").asString();
 	std::string email = root.get("email", "unavailable").asString();
-	int age = root.get("age", "unavailable").asInt();
+	std::string age_str = root.get("age", "unavailable").asString();
+	int age;
+	std::stringstream(age_str) >> age ? age : 0;
 	std::string sex = root.get("sex", "unavailable").asString();
 	std::string photoProfile = root.get("photo_profile", "unavailable").asString();
 
@@ -91,9 +93,15 @@ void RequestHandlerEditProfile::run(Request &request){
 		newProfile.addInterest(category, value);
 	}
 	/* Edits the pre-existent user in users container */
-	users.edit(newProfile);
+	int response_status = users.edit(newProfile);
+	if (response_status == -1){
+		Log::instance()->append(
+				"Unknown ERROR on APP SERVER.",
+				Log::ERROR);
+		response_status = 500;
+	}
 
 	/* Sends response to the client */
-	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	Response response(response_status, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

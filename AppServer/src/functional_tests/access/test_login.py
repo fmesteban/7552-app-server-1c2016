@@ -12,7 +12,7 @@ class TestLogin(unittest.TestCase):
 
 	def test_login_existing_user(self):
 		data = json.dumps({"name": "TestLogin", "alias": "usuario_login", "password": "test", "email": mail, 
-			"birthday": "10/10/10", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
+			"age": "21", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		requests.post("http://localhost:8000/register", data = data)
 
 		data = {"email": mail, "password": "test"}
@@ -35,7 +35,7 @@ class TestLogin(unittest.TestCase):
 
 	def test_login_invalid_password(self):
 		data = json.dumps({"name": "TestWronsPasswd", "alias": "usuario_wpasswd", "password": "test", "email": mail, 
-			"birthday": "10/10/10", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
+			"age": "21", "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		requests.post("http://localhost:8000/register", data = data)
 
 		data = {"email": "example@wrongpasswd.com", "password": "wrong"}

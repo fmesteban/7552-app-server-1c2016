@@ -22,7 +22,7 @@ public:
 	std::pair<int, int> sendRegister(const std::string& data);
 	std::string sendLogin(const std::string& userID);
 	void eventHandler(struct mg_connection *nc, int ev, void *ev_data);
-	bool sendEditProfile(const std::string& putData, const std::string &userID);
+	int sendEditProfile(const std::string& putData, const std::string &userID);
 	void getUsers(std::map<int, User*> &usersById);
 	~WebClient();
 };
