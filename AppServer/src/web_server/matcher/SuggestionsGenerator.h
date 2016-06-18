@@ -11,7 +11,7 @@ class SuggestionsGenerator {
 private:
 	UsersContainer& usersContainer;
 	std::list<Suggestion*> suggestions;
-	float calculatePoints(const User &userA, const User &userB);
+	float calculatePoints(User &userA, User &userB);
 public:
 	explicit SuggestionsGenerator(UsersContainer& usersContainer);
 	~SuggestionsGenerator();

@@ -15,8 +15,11 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 }
 
 
-float SuggestionsGenerator::calculatePoints(const User &userA,
-		const User &userB){
+float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
+	if(!userA.couldMatch(userB)){
+		return -1;
+	}
+
 	return 0;
 }
 

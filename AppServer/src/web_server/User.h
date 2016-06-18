@@ -46,6 +46,8 @@ public:
 	friend std::ostream & operator<<(std::ostream &os, const User& self);
 	void addSuggestion(Suggestion* newSuggestion);
 	void edit(User& newProfile);
+	std::string getSomeInterestFromCategory(std::string &category);
+	bool couldMatch(User &another);
 	~User();
 };
 

@@ -160,6 +160,28 @@ void User::edit(User& newProfile){
 		addInterest((*interestIter)->getCategory(), (*interestIter)->getValue());
 }
 
+std::string User::getSomeInterestFromCategory(std::string &category){
+	std::vector<Interest*>::iterator interestIter = interests.begin();
+	for(; interestIter != interests.end(); ++interestIter)
+		if((*interestIter)->getCategory() == category)
+			return (*interestIter)->getValue();
+	std::string("any");
+	return std::string("any");
+}
+
+
+/** Checks needed preconditions
+ *
+ */
+bool User::couldMatch(User &another){
+	std::string categSex("sex");
+	if(this->getSomeInterestFromCategory(categSex) != another.sex)
+		return false;
+	if(another.getSomeInterestFromCategory(categSex) != sex)
+		return false;
+	return true;
+}
+
 
 /** Releases user's allocated resources.
  *
