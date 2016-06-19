@@ -14,13 +14,17 @@ private:
 public:
 	Suggestion(User &userA, User &userB);
 	bool isMatch();
-	User &Suggestion::getUserA();
-	User &Suggestion::getUserB();
+	User &getUserA();
+	User &getUserB();
 	bool someoneDisliked();
 	Match *generateMatch();
 	int getAnotherID(User &requesterUser);
 	void markAsDisliked();
 	void addLike(int idSrc, int idDest);
+	void setAlikesB(bool value);
+	void setBlikesA(bool value);
+	void setsomeoneDisliked(bool value);
+	friend std::ostream & operator<<(std::ostream &os, const Suggestion& self);
 	~Suggestion();
 };
 

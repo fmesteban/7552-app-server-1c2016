@@ -6,15 +6,18 @@
 #include "Suggestion.h"
 #include "UsersContainer.h"
 #include "User.h"
+#include "Database.h"
 #include "distance.h"
 
 #define MAXDISTANCE 10 //It's in Km
 
 class SuggestionsGenerator {
 private:
+	Database db;
 	UsersContainer& usersContainer;
 	std::list<Suggestion*> suggestions;
 	float calculatePoints(User &userA, User &userB);
+	bool loadSuggestions();
 public:
 	explicit SuggestionsGenerator(UsersContainer& usersContainer);
 	~SuggestionsGenerator();

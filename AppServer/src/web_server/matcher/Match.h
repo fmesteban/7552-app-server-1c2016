@@ -14,6 +14,7 @@ public:
 	User &getUserA();
 	User &getUserB();
 	void pushChatMessage(User &userSrc, const std::string &message, const std::string &time);
+	friend std::ostream & operator<<(std::ostream &os, const Match& self);
 	Chat &getChat();
 	~Match();
 };

@@ -11,15 +11,81 @@
 
 UsersContainer::UsersContainer(){
 	client.getUsers(usersById);
-	/*
-	std::cout << "Users loaded from shared: " << usersById.size() << "\n\n";
+	Log::instance()->append(
+			"Loaded " + std::to_string(usersById.size()) + "users correctly from shared server.",
+			Log::INFO);
 
-	std::map<int, User*>::iterator iterUsers = usersById.begin();
-	for(; iterUsers != usersById.end(); ++iterUsers){
-		std::cout << "User " << iterUsers->first << ": \n\n" << *(iterUsers->second) <<
-				"\n\n" << std::endl;
+	bool matchesLoaded = loadMatches();
+	if(!matchesLoaded){
+		Log::instance()->append(
+				"There was an error loading matches from RocksDB.",
+				Log::INFO);
 	}
-	 */
+	else {
+		Log::instance()->append(
+				"Loaded " + std::to_string(allMatches.size()) + "matches correctly from RocksDB.",
+				Log::INFO);
+	}
+}
+
+/**
+ * Loads matches saved in DB
+ */
+bool UsersContainer::loadMatches(){
+	std::string matches_str;
+	db.getValue(std::string("matches"), matches_str);
+	/* Loads the request into a JSON Value object */
+	Json::Value root;
+	Json::Reader reader;
+	bool parsingSuccessful = reader.parse(matches_str, root);
+	if (!parsingSuccessful){
+		Log::instance()->append(
+				"JSON saved for matches is not correct.",
+				Log::ERROR);
+		return false;
+	}
+
+	/* Parse interests array */
+	Json::Value& matches = root["matches"];
+	Json::ValueConstIterator it = matches.begin();
+	for (; it != matches.end(); ++it)
+	{
+		const Json::Value& match = *it;
+		std::string userA_str = match.get("userA", "unavailable").asString();
+		int userAID;
+		std::stringstream(userA_str) >> userAID ? userAID : 0;
+		std::string userB_str = match.get("userB", "unavailable").asString();
+		int userBID;
+		std::stringstream(userB_str) >> userBID ? userBID : 0;
+		if(userA_str == "unavailable" || userB_str == "unavailable")
+			continue;
+
+		User* userA = getUser(userAID);
+		User* userB = getUser(userBID);
+
+		Match* newMatch = new Match(*userA, *userB);
+
+		allMatches.push_back(newMatch);
+
+		/* Need to parse chat messages still */
+		Json::Value& chat = matches["chat"];
+		Json::Value& messages = chat["messages"];
+		Json::ValueConstIterator it = messages.begin();
+		for (; it != messages.end(); ++it)
+		{
+			const Json::Value& chatMessage = *it;
+			std::string from = chatMessage.get("sendFrom", "unavailable").asString();
+			std::string msg = chatMessage.get("msg", "unavailable").asString();
+			std::string time = chatMessage.get("time", "unavailable").asString();
+			if(from == "unavailable" || msg == "unavailable" || time == "unavailable")
+				continue;
+
+			User* user = getUser(getID(from));
+
+			newMatch->pushChatMessage(*user, msg, time);
+		}
+	}
+	return true;
 }
 
 /** Forms a json with specified values, and delegates the send
@@ -87,13 +153,15 @@ int UsersContainer::getID(const std::string &email){
 }
 
 /*
- *
+ * 
  */
 std::string UsersContainer::get(const int id){
 	return client.sendLogin(std::to_string(id));
 }
 
-
+/**
+ * Returns a User* that matches the ID
+ */
 User *UsersContainer::getUser(int userID){
 	std::map<int, User*>::iterator elem = usersById.find(userID);
 	if (elem == usersById.end())
@@ -135,13 +203,13 @@ UsersContainer::~UsersContainer(){
 
 	std::string key("matches");
 	std::ostringstream value;
-	value << "[";
+	value << "{\"matches\":[";
 	std::vector<Match*>::iterator iterMatches = allMatches.begin();
 	for(; iterMatches != allMatches.end(); ++iterMatches){
-		value << *iter;
+		value << *iterMatches;
 		delete *iterMatches;
 	}
-	value << "]";
+	value << "]}";
 	db.putKeyValue(key, value.str());
 	allMatches.clear();
 }
