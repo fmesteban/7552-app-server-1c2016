@@ -31,3 +31,7 @@ Por ahora, el mismo correra cpplint a todo el src de la aplicacion. De encontrar
 
 ### Para mas informacion
 [Visitar la wiki!] (https://github.com/fmesteban/7552-app-server-1c2016/wiki)
+
+### Para ver la documentacion
+
+[Visitar la documentacion!] (http://fmesteban.github.io/7552-shared-server-1c2016/index.html)
