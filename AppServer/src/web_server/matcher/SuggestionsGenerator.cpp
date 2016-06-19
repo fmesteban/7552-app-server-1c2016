@@ -77,7 +77,10 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 			Log::INFO);
 
 		/* save suggestion */
-		suggestions.push_back(new Suggestion(*userRef, *currentBestSuggestedUser));
+		Suggestion *s = new Suggestion(*userRef, *currentBestSuggestedUser);
+		suggestions.push_back(s);
+		userRef->addSuggestion(s);
+		currentBestSuggestedUser->addSuggestion(s);
 
 		Log::instance()->append("Suggestion saved.", Log::INFO);
 	}

@@ -6,8 +6,6 @@ Suggestion::Suggestion(User &userA, User &userB) :
 	AlikesB = false;
 	BlikesA = false;
 	_someoneDisliked = false;
-	userA.addSuggestion(this);
-	userB.addSuggestion(this);
 }
 
 bool Suggestion::isMatch(){
