@@ -27,12 +27,11 @@ Chat &Match::getChat(){
 std::ostream& operator<<(std::ostream &os, const Match& self) {
 	return os << 
 		"{"
-			"\"userA\":\"" << self.userA().getID() << "\","
-			"\"userB\":\"" << self.userB().getID() << "\","
+			"\"userA\":\"" << self.userA.getID() << "\","
+			"\"userB\":\"" << self.userB.getID() << "\","
 			"\"chat\":\"" << self.chat << "\""
 		"}";
 }
 
 Match::~Match() {
 }
-

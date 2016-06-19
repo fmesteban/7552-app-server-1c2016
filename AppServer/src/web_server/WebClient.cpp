@@ -323,7 +323,6 @@ void WebClient::parseUsersMap(
 					(*iterInterests)["category"].asString(),
 					(*iterInterests)["value"].asString());
 		}
-
 		usersById.insert(std::pair<int,User*>(id, newUser));
 	}
 }

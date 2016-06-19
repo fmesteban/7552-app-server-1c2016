@@ -5,20 +5,83 @@
 
 SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	usersContainer(usersContainer) {
+	bool suggestionsLoaded = loadSuggestions();
+	if(!suggestionsLoaded){
+		Log::instance()->append(
+				"There was an error loading suggestions from RocksDB.",
+				Log::INFO);
+	}
+	else {
+		Log::instance()->append(
+			"Loaded " + std::to_string(suggestions.size()) + "suggestions correctly from RocksDB.",
+			Log::INFO);
+	}
 }
 
+/**
+ * Loads suggestiosns saved in DB
+ */
+bool SuggestionsGenerator::loadSuggestions(){
+	std::string suggestions_str;
+	db.getValue(std::string("suggestions"), suggestions_str);
+	/* Loads the request into a JSON Value object */
+	Json::Value root;
+	Json::Reader reader;
+	bool parsingSuccessful = reader.parse(suggestions_str, root);
+	if (!parsingSuccessful){
+		Log::instance()->append(
+				"JSON saved for suggestions is not correct.",
+				Log::ERROR);
+		return false;
+	}
+
+	/* Parse interests array */
+	Json::Value& JSON_suggestions = root["suggestions"];
+	Json::ValueConstIterator it = JSON_suggestions.begin();
+	for (; it != JSON_suggestions.end(); ++it)
+	{
+		const Json::Value& suggestion = *it;
+		std::string userA_str = suggestion.get("userA", "unavailable").asString();
+		int userAID;
+		std::stringstream(userA_str) >> userAID ? userAID : 0;
+		std::string userB_str = suggestion.get("userB", "unavailable").asString();
+		int userBID;
+		std::stringstream(userB_str) >> userBID ? userBID : 0;
+		std::string AlikesB = suggestion.get("AlikesB", "unavailable").asString();
+		std::string BlikesA = suggestion.get("BlikesA", "unavailable").asString();
+		std::string _someoneDisliked = suggestion.get("_someoneDisliked", "unavailable").asString();
+		if(userA_str == "unavailable" ||
+		   userB_str == "unavailable" ||
+		   AlikesB == "unavailable" ||
+		   BlikesA == "unavailable" ||
+		   _someoneDisliked == "unavailable" )
+			continue;
+
+		User* userA = usersContainer.getUser(userAID);
+		User* userB = usersContainer.getUser(userBID);
+
+		Suggestion* sug = new Suggestion(*userA, *userB);
+		sug->setAlikesB(AlikesB == "true");
+		sug->setBlikesA(BlikesA == "true");
+		sug->setsomeoneDisliked(_someoneDisliked == "true");
+
+		/* save suggestion */
+		suggestions.push_back(sug);
+	}
+	return true;
+}
 
 SuggestionsGenerator::~SuggestionsGenerator(){
 	std::string key("suggestions");
 	std::ostringstream value;
-	value << "[";
+	value << "{\"suggestions\":[";
 	std::list<Suggestion*>::iterator iter = suggestions.begin();
 	for(; iter != suggestions.end(); ++iter){
 		value << *iter;
 		delete *iter;
 	}
-	value << "]";
-	db.putKeyValue(key.str(), value.str());
+	value << "]}";
+	db.putKeyValue(key, value.str());
 }
 
 

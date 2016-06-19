@@ -27,7 +27,7 @@ class TestUpdateUser(unittest.TestCase):
 		# Finally we retrieve to check updated data
 		data = json.dumps({"email": mail, "password": "test"})
 		r = requests.post("http://localhost:8000/login", data = data)
-		self.assertEqual(r.status_code, 201)
+		self.assertEqual(r.status_code, 200)
 		# Check name is changed
 		response = r.json()[u'user']
 		self.assertEqual(response[u'name'], "TestUpdateUpdated")

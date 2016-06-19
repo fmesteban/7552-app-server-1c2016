@@ -6,12 +6,15 @@
 #include "Suggestion.h"
 #include "UsersContainer.h"
 #include "User.h"
+#include "Database.h"
 
 class SuggestionsGenerator {
 private:
+	Database db;
 	UsersContainer& usersContainer;
 	std::list<Suggestion*> suggestions;
 	float calculatePoints(User &userA, User &userB);
+	bool loadSuggestions();
 public:
 	explicit SuggestionsGenerator(UsersContainer& usersContainer);
 	~SuggestionsGenerator();

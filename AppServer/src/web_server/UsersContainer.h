@@ -4,6 +4,8 @@
 #include "WebClient.h"
 #include "User.h"
 #include "Database.h"
+
+#include <json/json.h>
 #include <string>
 #include <map>
 #include <list>
@@ -14,6 +16,7 @@ private:
 	Database db;
 	std::map<int, User*> usersById;
 	std::vector<Match*> allMatches;
+	bool loadMatches();
 public:
 	UsersContainer();
 	int add(User &newUser);

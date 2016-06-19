@@ -61,6 +61,7 @@ void RequestHandlerRegister::run(Request &request){
 		password == "unavailable" || 
 		email == "unavailable" || 
 		sex == "unavailable" || 
+		age_str == "unavailable" ||
 		photoProfile == "unavailable" || 
 		longitudeStr == "unavailable" || 
 		latitudeStr == "unavailable"){
