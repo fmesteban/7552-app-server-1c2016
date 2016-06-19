@@ -75,6 +75,6 @@ void RequestHandlerDislike::run(Request &request){
 	}
 
 	/* Sends response to the client */
-	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	Response response(ACCEPTED_STATUS, "{}");
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

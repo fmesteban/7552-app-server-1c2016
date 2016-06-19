@@ -17,6 +17,10 @@ void Match::pushChatMessage(User &userSrc, const std::string &message, const std
 	chat.pushMessage(userSrc, message, time);
 }
 
+Chat &Match::getChat(){
+	return chat;
+}
+
 Match::~Match() {
 }
 

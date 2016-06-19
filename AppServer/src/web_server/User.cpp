@@ -207,6 +207,12 @@ void User::sendMsg(int idDest, const std::string &message, const std::string &ti
 	}
 }
 
+void User::printChat(std::ostream &os, int idAnother){
+	std::map<int, Match*>::iterator iterMatches = matches.find(idAnother);
+	if(iterMatches != matches.end()){
+		os << iterMatches->second->getChat();
+	}
+}
 
 /** Releases user's allocated resources.
  *

@@ -53,18 +53,12 @@ void RequestHandlerGetConversation::run(Request &request){
 	User *userSrc = users.getUser(users.getID(emailSrc));
 	int idDest = users.getID(emailDst);
 
+	std::stringstream responseStream;
+	responseStream << "{ \"conversation\": { \"email\" : " << emailDst << ", ";
+	userSrc->printChat(responseStream, idDest);
+	responseStream << "} }";
 
-	/*
-	Obtener el usuario de cada email
-	Llamar a SuggestionsGenerator y conseguir la conversation entre ambos
-	Devolver el JSON
-
-	int user_id_src = db.get(emailSrc);
-	int user_id_dst = db.get(emailDst);
-	Conversation conversation = suggestionGenerator.getConversation(user_id_src, user_id_dst);
-	std::string conversationAsString << conversation;
-	
 	//Sends response to the client containing its data
-	Response response(ACCEPTED, conversationAsString);
-	RequestHandler::sendResponse(response, request.getNetworkConnection()); */
+	Response response(ACCEPTED_STATUS, responseStream.str());
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

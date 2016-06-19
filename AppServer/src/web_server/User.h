@@ -56,6 +56,7 @@ public:
 	bool operator==(User &another);
 	std::map<int, Match*> &getMatches();
 	void sendMsg(int idDest, const std::string &message, const std::string &time);
+	void printChat(std::ostream &os, int idAnother);
 	~User();
 };
 
