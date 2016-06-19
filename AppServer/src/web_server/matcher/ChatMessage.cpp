@@ -1,10 +1,7 @@
 #include "ChatMessage.h"
 
-ChatMessage::ChatMessage() {
-	// TODO Auto-generated constructor stub
-}
-
-ChatMessage::~ChatMessage() {
-	// TODO Auto-generated destructor stub
+ChatMessage::ChatMessage(User &userSrc, const std::string &message) :
+	userSrc(userSrc),
+	message(message){
 }
 

@@ -53,6 +53,7 @@ public:
 	void dislike(int idAnother);
 	Suggestion *getSuggestion(int idAnother);
 	void addMatch(int idAnother, Match *newMatch);
+	bool operator==(User &another);
 	~User();
 };
 

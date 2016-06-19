@@ -192,6 +192,11 @@ void User::addMatch(int idAnother, Match *newMatch){
 	this->matches.insert(std::pair<int,Match*>(idAnother,newMatch));
 }
 
+bool User::operator==(User &another){
+	return this->id == another.id;
+}
+
+
 /** Releases user's allocated resources.
  *
  */
