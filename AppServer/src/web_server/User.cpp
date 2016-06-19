@@ -196,6 +196,10 @@ bool User::operator==(User &another){
 	return this->id == another.id;
 }
 
+std::map<int, Match*> &User::getMatches(){
+	return matches;
+}
+
 
 /** Releases user's allocated resources.
  *

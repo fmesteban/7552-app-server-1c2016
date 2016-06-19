@@ -49,27 +49,25 @@ void RequestHandlerMatches::run(Request &request){
 		return;
 	}
 
-	/*
-	Obtener el usuario de la DB
-	Del SuggestionsGenerator (?) conseguir los matches.
-	Hacer un get de cada user en el shared server
-	Devolver el JSON
+	std::map<int, Match*> &matches = users.getUser(users.getID(email))->getMatches();
 
-	int user_id = db.get(email);
-	std::list<int> matches = suggestionGenerator.getMatches(user_id); // Should return IDs or emails?
 	std::string result;
-	for each match in Matches do
-		std::string userAsString = users.login(match); //TODO change login for get
-		
-		if (userAsString == ""){
-			Log::instance()->append(
-					"User with email " + email + " was not found.", Log::ERROR);
+	if (matches.size() == 0){
+		result = "{\"matches\": []";
+	}else{
+		result = "{\"matches\": [";
+		std::map<int, Match*>::iterator iterMatches = matches.begin();
+
+		for (; iterMatches != matches.end(); ++iterMatches){
+			std::string user = users.get(iterMatches->first);
+			result += user + ", ";
 		}
-		append userAsString to new list
-	end
+
+		result[result.length()-2] = ']';
+		result[result.length()-1] = '}';
+	}
 
 	//Sends response to the client containing its data
-	Response response(ACCEPTED, result);
+	Response response(ACCEPTED_STATUS, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
-	*/
 }

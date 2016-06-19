@@ -125,6 +125,8 @@ void UsersContainer::addMatch(Match *match){
 	userB.addMatch(userA.getID(), match);
 }
 
+
+
 UsersContainer::~UsersContainer(){
 	std::map<int, User*>::iterator iterUsers = usersById.begin();
 	for(; iterUsers != usersById.end(); ++iterUsers)

@@ -54,6 +54,7 @@ public:
 	Suggestion *getSuggestion(int idAnother);
 	void addMatch(int idAnother, Match *newMatch);
 	bool operator==(User &another);
+	std::map<int, Match*> &getMatches();
 	~User();
 };
 
