@@ -10,7 +10,8 @@ private:
 	std::vector<ChatMessage*> messages;
 public:
 	Chat();
-	void pushMessage(User &userSrc, const std::string &message);
+	void pushMessage(User &userSrc, const std::string &message, const std::string &time);
+	friend std::ostream & operator<<(std::ostream &os, const Chat& self);
 	~Chat();
 };
 

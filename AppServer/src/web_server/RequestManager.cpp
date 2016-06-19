@@ -10,7 +10,8 @@ RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &sugg
 	reqEditProfile(users),
 	reqPossibleMatches(users, suggestionsGenerator),
 	reqMatches(users),
-	reqConversation(users) {
+	reqGetConversation(users),
+	reqSendConversation(users) {
 	insertDefaultHandlers();
 }
 
@@ -23,7 +24,8 @@ void RequestManager::insertDefaultHandlers(){
 	addHandler(reqEditProfile.getUri(), &reqEditProfile);
 	addHandler(reqPossibleMatches.getUri(), &reqPossibleMatches);
 	addHandler(reqMatches.getUri(), &reqMatches);
-	addHandler(reqConversation.getUri(), &reqConversation);
+	addHandler(reqGetConversation.getUri(), &reqGetConversation);
+	addHandler(reqSendConversation.getUri(), &reqSendConversation);
 }
 
 /**	Adds a individual handler to hdlrs list.

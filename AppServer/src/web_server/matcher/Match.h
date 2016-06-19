@@ -13,7 +13,7 @@ public:
 	Match(User &userA, User &userB);
 	User &getUserA();
 	User &getUserB();
-	void pushChatMessage(User &userSrc, const std::string &message);
+	void pushChatMessage(User &userSrc, const std::string &message, const std::string &time);
 	~Match();
 };
 

@@ -1,20 +1,21 @@
-#include "RequestHandlerConversation.h"
+#include "RequestHandlerSendConversation.h"
 #include "Response.h"
 #include "User.h"
 #include <iostream>
 #include <string>
+#include <ctime>
 
-RequestHandlerConversation::RequestHandlerConversation(UsersContainer &users) :
+RequestHandlerSendConversation::RequestHandlerSendConversation(UsersContainer &users) :
 users(users),
-RequestHandler("/getconversation") {
+RequestHandler("/sendconversation") {
 }
 
-/** Parse the /getconversation uri input, and saves it in the app-server
+/** Parse the /sendconversation uri input, and saves it in the app-server
  *  database.
  *
  */
-void RequestHandlerConversation::run(Request &request){
-	Log::instance()->append("Received a get conversation request", Log::INFO);
+void RequestHandlerSendConversation::run(Request &request){
+	Log::instance()->append("Received a get send conversation request", Log::INFO);
 
 	if (request.getMethod() != "POST"){
 		/* some libraries send OPTIONS before POST */
@@ -38,17 +39,27 @@ void RequestHandlerConversation::run(Request &request){
 		return;
 	}
 
-	std::string emailSrc = root.get("emailSrc", "unavailable").asString();
-	std::string emailDst = root.get("emailDst", "unavailable").asString();
+	std::string emailSrc = root["conversation"]["emailSrc"].asString();
+	std::string emailDst = root["conversation"]["emailDst"].asString();
+	User *userSrc = users.getUser(users.getID(emailSrc));
+	int idDest = users.getID(emailDst);
 
-	if(emailSrc == "unavailable" || emailDst == "unavailable"){
-		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
-		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append(
-			"Received a BAD (incomplete) REQUEST. Rejected.",
-			Log::INFO);
-		return;
+	std::time_t now = std::time(NULL);
+	std::stringstream ssNow;
+	//ssNow << now.tm_hour << ":" << now.tm_min;
+	ssNow << "13:30";
+
+	Json::Value &messages = root["conversation"]["messages"];
+	Json::ValueConstIterator it = messages.begin();
+	for (; it != messages.end(); ++it)
+	{
+		const Json::Value& msg = *it;
+		std::string message = msg["msg"].asString();
+		userSrc->sendMsg(idDest, message, ssNow.str());
 	}
+
+
+
 
 	/*
 	Obtener el usuario de cada email

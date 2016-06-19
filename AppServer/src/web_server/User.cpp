@@ -200,6 +200,13 @@ std::map<int, Match*> &User::getMatches(){
 	return matches;
 }
 
+void User::sendMsg(int idDest, const std::string &message, const std::string &time){
+	std::map<int, Match*>::iterator iterMatches = matches.find(idDest);
+	if(iterMatches != matches.end()){
+		iterMatches->second->pushChatMessage(*this, message, time);
+	}
+}
+
 
 /** Releases user's allocated resources.
  *

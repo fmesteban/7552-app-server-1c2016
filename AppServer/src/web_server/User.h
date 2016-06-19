@@ -55,6 +55,7 @@ public:
 	void addMatch(int idAnother, Match *newMatch);
 	bool operator==(User &another);
 	std::map<int, Match*> &getMatches();
+	void sendMsg(int idDest, const std::string &message, const std::string &time);
 	~User();
 };
 

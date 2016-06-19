@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_REQUESTMANAGER_H_
 #define WEB_SERVER_REQUESTMANAGER_H_
 
+#include <handlers/RequestHandlerGetConversation.h>
 #include <map>
 #include <string>
 #include "UsersContainer.h"
@@ -12,7 +13,8 @@
 #include "RequestHandlerEditProfile.h"
 #include "RequestHandlerPossibleMatches.h"
 #include "RequestHandlerMatches.h"
-#include "RequestHandlerConversation.h"
+#include "RequestHandlerGetConversation.h"
+#include "RequestHandlerSendConversation.h"
 
 class RequestManager {
 private:
@@ -25,7 +27,8 @@ private:
 	RequestHandlerEditProfile reqEditProfile;
 	RequestHandlerPossibleMatches reqPossibleMatches;
 	RequestHandlerMatches reqMatches;
-	RequestHandlerConversation reqConversation;
+	RequestHandlerGetConversation reqGetConversation;
+	RequestHandlerSendConversation reqSendConversation;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);

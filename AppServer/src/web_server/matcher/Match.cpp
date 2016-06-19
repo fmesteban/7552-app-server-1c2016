@@ -13,8 +13,8 @@ User &Match::getUserB(){
 	return userB;
 }
 
-void Match::pushChatMessage(User &userSrc, const std::string &message){
-	chat.pushMessage(userSrc, message);
+void Match::pushChatMessage(User &userSrc, const std::string &message, const std::string &time){
+	chat.pushMessage(userSrc, message, time);
 }
 
 Match::~Match() {
