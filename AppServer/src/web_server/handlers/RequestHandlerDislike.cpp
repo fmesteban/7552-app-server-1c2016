@@ -17,12 +17,12 @@ void RequestHandlerDislike::run(Request &request){
 
 	Log::instance()->append("Received a dislike request", Log::INFO);
 
-	if (request.getMethod() != "PUT"){
+	if (request.getMethod() != "POST"){
 		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
-			"{ \"response\": \"PUT\" }\r\n");
-		Log::instance()->append("Not a PUT request. Rejected.", Log::INFO);
+			"{ \"response\": \"POST\" }\r\n");
+		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
 

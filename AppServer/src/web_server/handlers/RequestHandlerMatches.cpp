@@ -16,12 +16,12 @@ RequestHandler("/getmatches") {
 void RequestHandlerMatches::run(Request &request){
 	Log::instance()->append("Received a get matches request", Log::INFO);
 
-	if (request.getMethod() != "GET"){
+	if (request.getMethod() != "POST"){
 		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
 			request.getNetworkConnection(),
-			"{ \"response\": \"GET\" }\r\n");
-		Log::instance()->append("Not a GET request. Rejected.", Log::INFO);
+			"{ \"response\": \"POST\" }\r\n");
+		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
 
