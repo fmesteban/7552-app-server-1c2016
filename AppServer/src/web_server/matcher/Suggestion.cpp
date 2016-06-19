@@ -32,6 +32,17 @@ Match *Suggestion::generateMatch(){
 		return NULL;
 }
 
+void Suggestion::markAsDisliked(){
+	_someoneDisliked = true;
+}
+
+void Suggestion::addLike(int idSrc, int idDest){
+	if(userA.getID() == idSrc)
+		AlikesB = true;
+	else
+		BlikesA = true;
+}
+
 Suggestion::~Suggestion() {
 }
 

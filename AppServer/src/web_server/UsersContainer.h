@@ -13,6 +13,7 @@ private:
 	WebClient client;
 	Database db;
 	std::map<int, User*> usersById;
+	std::vector<Match*> allMatches;
 public:
 	UsersContainer();
 	int add(User &newUser);
@@ -22,6 +23,7 @@ public:
 	int getID(const std::string &email);
 	User *getUser(int userID);
 	void getRandomUsers(std::list<User*> &randomUsers);
+	void addMatch(Match *match);
 	~UsersContainer();
 };
 

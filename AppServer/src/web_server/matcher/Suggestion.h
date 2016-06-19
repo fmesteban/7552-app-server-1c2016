@@ -17,6 +17,8 @@ public:
 	bool someoneDisliked();
 	Match *generateMatch();
 	int getAnotherID(User &requesterUser);
+	void markAsDisliked();
+	void addLike(int idSrc, int idDest);
 	~Suggestion();
 };
 

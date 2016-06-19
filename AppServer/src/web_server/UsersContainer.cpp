@@ -6,11 +6,12 @@
 #include <map>
 #include <list>
 #include <cstdlib>
+#include "Match.h"
 
 
 UsersContainer::UsersContainer(){
 	client.getUsers(usersById);
-/*
+	/*
 	std::cout << "Users loaded from shared: " << usersById.size() << "\n\n";
 
 	std::map<int, User*>::iterator iterUsers = usersById.begin();
@@ -18,7 +19,7 @@ UsersContainer::UsersContainer(){
 		std::cout << "User " << iterUsers->first << ": \n\n" << *(iterUsers->second) <<
 				"\n\n" << std::endl;
 	}
-*/
+	 */
 }
 
 /** Forms a json with specified values, and delegates the send
@@ -116,11 +117,23 @@ void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
 	}
 }
 
+void UsersContainer::addMatch(Match *match){
+	allMatches.push_back(match);
+	User &userA = match->getUserA();
+	User &userB = match->getUserB();
+	userA.addMatch(userB.getID(), match);
+	userB.addMatch(userA.getID(), match);
+}
 
 UsersContainer::~UsersContainer(){
 	std::map<int, User*>::iterator iterUsers = usersById.begin();
 	for(; iterUsers != usersById.end(); ++iterUsers)
 		delete iterUsers->second;
 	usersById.clear();
+
+	std::vector<Match*>::iterator iterMatches = allMatches.begin();
+	for(; iterMatches != allMatches.end(); ++iterMatches)
+		delete *iterMatches;
+	allMatches.clear();
 }
 

@@ -7,6 +7,7 @@
 #include <ctime>
 #include <utility>
 #include "Suggestion.h"
+#include "Match.h"
 
 /** User constructor
  *
@@ -18,15 +19,15 @@ User::User(const std::string &name,
 		int age,
 		const std::string &sex, float longitude, float latitude,
 		const std::string &photoProfile) :
-	name(name),
-	alias(alias),
-	password(password),
-	sex(sex),
-	age(age),
-	email(email),
-	longitude(longitude),
-	latitude(latitude),
-	photoProfile(photoProfile){
+		name(name),
+		alias(alias),
+		password(password),
+		sex(sex),
+		age(age),
+		email(email),
+		longitude(longitude),
+		latitude(latitude),
+		photoProfile(photoProfile){
 	id = -1;
 }
 
@@ -92,11 +93,11 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
 			"\"age\": " << self.age << ","
 			"\"location\":"
 			"{"
-				"\"latitude\": " << self.latitude << ","
-				"\"longitude\": " << self.longitude <<
+			"\"latitude\": " << self.latitude << ","
+			"\"longitude\": " << self.longitude <<
 			"}"
-		"}"
-	"}";
+			"}"
+			"}";
 
 	return os;
 }
@@ -107,7 +108,7 @@ std::ostream& operator<<(std::ostream &os, const User& self) {
  */
 void User::printInterests(std::ostream &os) const{
 	os << 
-	"\"interests\":[";
+			"\"interests\":[";
 	if (!interests.empty()){
 		for (size_t i=0; i < interests.size() - 1; ++i){
 			/* with comma */
@@ -143,6 +144,7 @@ void User::edit(User& newProfile){
 	std::vector<Interest*>::iterator interestIter = interests.begin();
 	for(; interestIter != interests.end(); ++interestIter)
 		delete *interestIter;
+	interests.clear();
 
 	interestIter = newProfile.interests.begin();
 	for(; interestIter != newProfile.interests.end(); ++interestIter)
@@ -154,7 +156,6 @@ std::string User::getSomeInterestFromCategory(std::string &category){
 	for(; interestIter != interests.end(); ++interestIter)
 		if((*interestIter)->getCategory() == category)
 			return (*interestIter)->getValue();
-	std::string("any");
 	return std::string("any");
 }
 
@@ -162,15 +163,33 @@ std::string User::getSomeInterestFromCategory(std::string &category){
  *
  */
 bool User::couldMatch(User &another){
-	std::string cat("sex");
-	std::string my_preference =  this->getSomeInterestFromCategory(cat);
-	std::string other_preference =  another.getSomeInterestFromCategory(cat);
-	if(my_preference == another.sex || my_preference == "any"){
-		if(other_preference == sex || other_preference == "any")
+	std::string category("sex");
+	std::string myPreference =  this->getSomeInterestFromCategory(category);
+	std::string otherPreference =  another.getSomeInterestFromCategory(category);
+	if(myPreference == another.sex || myPreference == "any"){
+		if(otherPreference == sex || otherPreference == "any")
 			return true;
 		return false;
 	}
 	return false;
+}
+
+void User::dislike(int idAnother){
+	std::map<int, Suggestion*>::iterator iter = sugestions.find(idAnother);
+	if (iter != sugestions.end())
+		iter->second->markAsDisliked();
+}
+
+Suggestion *User::getSuggestion(int idAnother){
+	std::map<int, Suggestion*>::iterator iter = sugestions.find(idAnother);
+	if (iter != sugestions.end())
+		return iter->second;
+	else
+		return NULL;
+}
+
+void User::addMatch(int idAnother, Match *newMatch){
+	this->matches.insert(std::pair<int,Match*>(idAnother,newMatch));
 }
 
 /** Releases user's allocated resources.
@@ -180,4 +199,6 @@ User::~User(){
 	std::vector<Interest*>::iterator interest = interests.begin();
 	for(; interest != interests.end(); ++interest)
 		delete *interest;
+
+	interests.clear();
 }

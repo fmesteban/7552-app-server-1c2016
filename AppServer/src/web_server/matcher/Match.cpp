@@ -5,6 +5,14 @@ Match::Match(User &userA, User &userB) :
 	userB(userB) {
 }
 
+User &Match::getUserA(){
+	return userA;
+}
+
+User &Match::getUserB(){
+	return userB;
+}
+
 Match::~Match() {
 }
 

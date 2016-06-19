@@ -8,8 +8,9 @@
 #include <map>
 
 
-/* forward declaration */
+/* forward declarations */
 class Suggestion;
+class Match;
 
 class User {
 private:
@@ -26,6 +27,7 @@ private:
 	int id;
 	void printInterests(std::ostream &os) const;
 	std::map<int, Suggestion*> sugestions;
+	std::map<int, Match*> matches;
 
 public:
 	User(const std::string &name,
@@ -48,6 +50,9 @@ public:
 	void edit(User& newProfile);
 	std::string getSomeInterestFromCategory(std::string &category);
 	bool couldMatch(User &another);
+	void dislike(int idAnother);
+	Suggestion *getSuggestion(int idAnother);
+	void addMatch(int idAnother, Match *newMatch);
 	~User();
 };
 

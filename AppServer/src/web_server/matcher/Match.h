@@ -9,6 +9,8 @@ private:
 	User &userB;
 public:
 	Match(User &userA, User &userB);
+	User &getUserA();
+	User &getUserB();
 	~Match();
 };
 

@@ -20,8 +20,8 @@ void RequestHandlerLike::run(Request &request){
 	if (request.getMethod() != "PUT"){
 		/* some libraries send OPTIONS before POST */
 		RequestHandler::sendHttpOk(
-			request.getNetworkConnection(),
-			"{ \"response\": \"PUT\" }\r\n");
+				request.getNetworkConnection(),
+				"{ \"response\": \"PUT\" }\r\n");
 		Log::instance()->append("Not a PUT request. Rejected.", Log::INFO);
 		return;
 	}
@@ -34,8 +34,8 @@ void RequestHandlerLike::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"Received a BAD (malformed) REQUEST. Rejected.",
-			Log::INFO);
+				"Received a BAD (malformed) REQUEST. Rejected.",
+				Log::INFO);
 		return;
 	}
 
@@ -46,8 +46,39 @@ void RequestHandlerLike::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"Received a BAD (incomplete) REQUEST. Rejected.",
-			Log::INFO);
+				"Received a BAD (incomplete) REQUEST. Rejected.",
+				Log::INFO);
 		return;
 	}
+
+	int idSrc = users.getID(emailSrc);
+	int idDst = users.getID(emailDst);
+	if (idSrc == -1 || idDst == -1){
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+				"Some user was not found. Rejected.",
+				Log::INFO);
+		return;
+	}
+
+	User *userSrc = users.getUser(idSrc);
+	if (userSrc){
+		Suggestion *suggestion = userSrc->getSuggestion(idDst);
+		suggestion->addLike(idSrc, idDst);
+		if (suggestion->isMatch()){
+			users.addMatch(suggestion->generateMatch());
+		}
+	}else{
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+				"Unavailable source user. Rejected.",
+				Log::INFO);
+		return;
+	}
+
+	/* Sends response to the client */
+	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }
