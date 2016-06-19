@@ -133,9 +133,16 @@ UsersContainer::~UsersContainer(){
 		delete iterUsers->second;
 	usersById.clear();
 
+	std::string key("matches");
+	std::ostringstream value;
+	value << "[";
 	std::vector<Match*>::iterator iterMatches = allMatches.begin();
-	for(; iterMatches != allMatches.end(); ++iterMatches)
+	for(; iterMatches != allMatches.end(); ++iterMatches){
+		value << *iter;
 		delete *iterMatches;
+	}
+	value << "]";
+	db.putKeyValue(key, value.str());
 	allMatches.clear();
 }
 

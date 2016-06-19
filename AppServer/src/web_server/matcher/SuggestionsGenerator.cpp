@@ -9,9 +9,16 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 
 
 SuggestionsGenerator::~SuggestionsGenerator(){
+	std::string key("suggestions");
+	std::ostringstream value;
+	value << "[";
 	std::list<Suggestion*>::iterator iter = suggestions.begin();
-	for(; iter != suggestions.end(); ++iter)
+	for(; iter != suggestions.end(); ++iter){
+		value << *iter;
 		delete *iter;
+	}
+	value << "]";
+	db.putKeyValue(key.str(), value.str());
 }
 
 
