@@ -8,6 +8,15 @@ Suggestion::Suggestion(User &userA, User &userB) :
 	_someoneDisliked = false;
 }
 
+User &Suggestion::getUserA(){
+	return userA;
+}
+
+User &Suggestion::getUserB(){
+	return userB;
+}
+
+
 bool Suggestion::isMatch(){
 	return (AlikesB && BlikesA && !_someoneDisliked);
 }
@@ -43,6 +52,20 @@ void Suggestion::addLike(int idSrc, int idDest){
 		std::cout << "Adding like from " << idDest << " to " << idSrc << std::endl;
 		BlikesA = true;
 	}
+}
+
+/** Overloads the operator << from std::ostream
+ *
+ */
+std::ostream& operator<<(std::ostream &os, const Suggestion& self) {
+	return os << 
+		"{"
+			"\"userA\":\"" << self.userA().getID() << "\","
+			"\"userB\":\"" << self.userB().getID() << "\","
+			"\"AlikesB\":\"" << self.AlikesB << "\","
+			"\"BlikesA\":\"" << self.BlikesA << "\","
+			"\"_someoneDisliked\":\"" << self._someoneDisliked << "\""
+		"}";
 }
 
 Suggestion::~Suggestion() {

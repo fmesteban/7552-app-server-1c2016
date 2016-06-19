@@ -26,6 +26,23 @@ std::ostream& operator<<(std::ostream &os, const Chat& self) {
 	return os << "]";
 }
 
+/** Overloads the operator << from std::ostream
+ *
+ */
+std::ostream& operator<<(std::ostream &os, const Chat& self) {
+	os << "\"messages\":[";
+	if(!messages.isEmpty()){
+		for (size_t i=0; i < messages.size() - 1; ++i){
+			/* with comma */
+			os << *messages[i] << ",";
+		}
+		/* without comma */
+		os << *messages[messages.size() - 1];
+	}
+	os << "]";
+	return os;
+}
+
 Chat::~Chat() {
 	std::vector<ChatMessage*>::iterator iter = messages.begin();
 	for(; iter != messages.end(); ++iter){

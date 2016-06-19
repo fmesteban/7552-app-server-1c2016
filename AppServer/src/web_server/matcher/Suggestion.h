@@ -14,6 +14,8 @@ private:
 public:
 	Suggestion(User &userA, User &userB);
 	bool isMatch();
+	User &Suggestion::getUserA();
+	User &Suggestion::getUserB();
 	bool someoneDisliked();
 	Match *generateMatch();
 	int getAnotherID(User &requesterUser);

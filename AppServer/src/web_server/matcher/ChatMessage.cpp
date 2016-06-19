@@ -6,7 +6,6 @@ ChatMessage::ChatMessage(User &userSrc, const std::string &message, const std::s
 	time(time){
 }
 
-
 /** Overloads the operator << from std::ostream
  *
  */
