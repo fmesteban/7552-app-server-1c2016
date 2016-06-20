@@ -40,14 +40,10 @@ public:
 			const std::string &photoProfile);
 	User(Database &db, const std::string &email);
 	void addInterest(const std::string& category, const std::string &value);
-	void setId(int id);
-	int getID();
-	void setId(const std::string& id);
 	void saveIn(Database &db);
 	const std::string &getEmail() const;
 	friend std::ostream & operator<<(std::ostream &os, const User& self);
 	void addSuggestion(Suggestion* newSuggestion);
-	void edit(User& newProfile);
 	std::string getSomeInterestFromCategory(std::string &category);
 	bool couldMatch(User &another);
 	void dislike(int idAnother);
@@ -57,6 +53,16 @@ public:
 	std::map<int, Match*> &getMatches();
 	void sendMsg(int idDest, const std::string &message, const std::string &time);
 	void printChat(std::ostream &os, int idAnother);
+
+	int getID();
+	float getLongitude();
+	float getLatitude();
+	std::vector<Interest*> getInterests();
+	void edit(User& newProfile);
+	void setId(int id);
+	void setId(const std::string& id);
+	
+
 	~User();
 };
 

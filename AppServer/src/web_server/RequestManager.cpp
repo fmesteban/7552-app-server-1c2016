@@ -11,7 +11,9 @@ RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &sugg
 	reqPossibleMatches(users, suggestionsGenerator),
 	reqMatches(users),
 	reqGetConversation(users),
-	reqSendConversation(users) {
+	reqSendConversation(users),
+	reqLike(users),
+	reqDislike(users) {
 	insertDefaultHandlers();
 }
 

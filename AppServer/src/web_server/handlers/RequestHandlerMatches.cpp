@@ -53,7 +53,7 @@ void RequestHandlerMatches::run(Request &request){
 
 	std::string result;
 	if (matches.size() == 0){
-		result = "{\"matches\": []";
+		result = "{\"matches\": []}";
 	}else{
 		result = "{\"matches\": [";
 		std::map<int, Match*>::iterator iterMatches = matches.begin();

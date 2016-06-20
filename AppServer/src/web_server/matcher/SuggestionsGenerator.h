@@ -6,6 +6,9 @@
 #include "Suggestion.h"
 #include "UsersContainer.h"
 #include "User.h"
+#include "distance.h"
+
+#define MAXDISTANCE 10 //It's in Km
 
 class SuggestionsGenerator {
 private:

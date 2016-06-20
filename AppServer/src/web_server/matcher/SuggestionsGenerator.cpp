@@ -16,11 +16,27 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 
 
 float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
-	if(!userA.couldMatch(userB)){
+	if(!userA.couldMatch(userB))
 		return -1;
+	double distance = DistanceHelper::distanceEarth(userA.getLatitude(),
+									userA.getLongitude(),
+									userB.getLatitude(),
+									userB.getLongitude());
+	if (distance > MAXDISTANCE)
+		return -1;
+
+	int points = 0;
+
+	for (auto interestA : userA.getInterests()){
+		for (auto interestB : userB.getInterests()){
+			if (interestA->getCategory() == interestB->getCategory()){
+				if(interestA->getValue() == interestB->getValue())
+					points += 1;
+			}
+		}
 	}
 
-	return 0;
+	return points;
 }
 
 

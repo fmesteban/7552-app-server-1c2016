@@ -64,6 +64,18 @@ int User::getID(){
 	return id;
 }
 
+float User::getLongitude(){
+	return longitude;
+}
+
+float User::getLatitude(){
+	return latitude;
+}
+
+std::vector<Interest*> User::getInterests(){
+	return interests;
+}
+
 /** Sets the user id, passed as std::string.
  *
  */
@@ -208,6 +220,8 @@ void User::sendMsg(int idDest, const std::string &message, const std::string &ti
 }
 
 void User::printChat(std::ostream &os, int idAnother){
+	if (matches.size() == 0)
+		os << "\"messages\": []";
 	std::map<int, Match*>::iterator iterMatches = matches.find(idAnother);
 	if(iterMatches != matches.end()){
 		os << iterMatches->second->getChat();

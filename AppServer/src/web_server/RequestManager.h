@@ -15,6 +15,8 @@
 #include "RequestHandlerMatches.h"
 #include "RequestHandlerGetConversation.h"
 #include "RequestHandlerSendConversation.h"
+#include "RequestHandlerLike.h"
+#include "RequestHandlerDislike.h"
 
 class RequestManager {
 private:
@@ -29,6 +31,8 @@ private:
 	RequestHandlerMatches reqMatches;
 	RequestHandlerGetConversation reqGetConversation;
 	RequestHandlerSendConversation reqSendConversation;
+	RequestHandlerLike reqLike;
+	RequestHandlerDislike reqDislike;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);
