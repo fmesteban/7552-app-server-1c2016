@@ -19,6 +19,7 @@ private:
 	bool loadMatches();
 public:
 	UsersContainer();
+	Database getDB();
 	int add(User &newUser);
 	int edit(User &newProfile);
 	std::string login(const std::string &email);

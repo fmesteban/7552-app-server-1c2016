@@ -29,6 +29,14 @@ UsersContainer::UsersContainer(){
 }
 
 /**
+ * Returns the reference to the Database
+ */
+Database UsersContainer::getDB(){
+	std::cerr << "Returning DB" << std::endl;
+	return db;
+}
+
+/**
  * Loads matches saved in DB
  */
 bool UsersContainer::loadMatches(){

@@ -5,6 +5,11 @@
 
 SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	usersContainer(usersContainer) {
+
+	Log::instance()->append(
+			"Building suggestions.",
+			Log::INFO);
+
 	bool suggestionsLoaded = loadSuggestions();
 	if(!suggestionsLoaded){
 		Log::instance()->append(
@@ -23,7 +28,11 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
  */
 bool SuggestionsGenerator::loadSuggestions(){
 	std::string suggestions_str;
-	db.getValue(std::string("suggestions"), suggestions_str);
+
+	usersContainer.getDB().getValue(std::string("suggestions"), suggestions_str);
+
+	std::cerr << "Suggestions: " << suggestions_str << std::endl;
+
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
@@ -81,7 +90,7 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 		delete *iter;
 	}
 	value << "]}";
-	db.putKeyValue(key, value.str());
+	usersContainer.getDB().putKeyValue(key, value.str());
 }
 
 
@@ -175,10 +184,4 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	}
 
 	return result;
-}
-
-/** Returns a list of matches for the user. The list
- *  contains only the ID of each other user that implies a match.
- */
-std::list<int> SuggestionsGenerator::getMatches(int user) {
 }
