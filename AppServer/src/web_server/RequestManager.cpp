@@ -28,6 +28,8 @@ void RequestManager::insertDefaultHandlers(){
 	addHandler(reqMatches.getUri(), &reqMatches);
 	addHandler(reqGetConversation.getUri(), &reqGetConversation);
 	addHandler(reqSendConversation.getUri(), &reqSendConversation);
+	addHandler(reqLike.getUri(), &reqLike);
+	addHandler(reqDislike.getUri(), &reqDislike);
 }
 
 /**	Adds a individual handler to hdlrs list.

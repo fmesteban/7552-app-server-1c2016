@@ -64,6 +64,9 @@ void RequestHandlerDislike::run(Request &request){
 
 	User *userSrc = users.getUser(idSrc);
 	if (userSrc){
+		Log::instance()->append(
+			"User " + std::to_string(idSrc) +" dislikes user " + std::to_string(idDst),
+			Log::INFO);
 		userSrc->dislike(idDst);
 	}else{
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);

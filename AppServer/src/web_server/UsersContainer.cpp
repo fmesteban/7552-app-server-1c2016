@@ -103,7 +103,7 @@ User *UsersContainer::getUser(int userID){
 }
 
 
-#define USERS_CONTAINER_RANDOM_USERS_NUMBER 5
+#define USERS_CONTAINER_RANDOM_USERS_NUMBER 15
 
 void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
 	if (usersById.size() == 0)

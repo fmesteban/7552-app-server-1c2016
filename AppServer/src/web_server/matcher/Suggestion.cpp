@@ -35,10 +35,14 @@ void Suggestion::markAsDisliked(){
 }
 
 void Suggestion::addLike(int idSrc, int idDest){
-	if(userA.getID() == idSrc)
+	if(userA.getID() == idSrc){
+		std::cout << "Adding like from " << idSrc << " to " << idDest << std::endl;
 		AlikesB = true;
-	else
+	}
+	else{
+		std::cout << "Adding like from " << idDest << " to " << idSrc << std::endl;
 		BlikesA = true;
+	}
 }
 
 Suggestion::~Suggestion() {

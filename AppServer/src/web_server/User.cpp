@@ -202,8 +202,10 @@ void User::dislike(int idAnother){
 
 Suggestion *User::getSuggestion(int idAnother){
 	std::map<int, Suggestion*>::iterator iter = sugestions.find(idAnother);
-	if (iter != sugestions.end())
+	if (iter != sugestions.end()){
+		std::cout << "Found suggestion: " << iter->second << std::endl;
 		return iter->second;
+	}
 	else
 		return NULL;
 }

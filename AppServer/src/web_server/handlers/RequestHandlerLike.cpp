@@ -63,18 +63,23 @@ void RequestHandlerLike::run(Request &request){
 	}
 
 	User *userSrc = users.getUser(idSrc);
+
 	if (userSrc){
 		Suggestion *suggestion = userSrc->getSuggestion(idDst);
+		Log::instance()->append(
+			"User " + std::to_string(idSrc) +" likes user " + std::to_string(idDst),
+			Log::INFO);
 		suggestion->addLike(idSrc, idDst);
 		if (suggestion->isMatch()){
+			Log::instance()->append("It's a match.", Log::INFO);
 			users.addMatch(suggestion->generateMatch());
 		}
 	}else{
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-				"Unavailable source user. Rejected.",
-				Log::INFO);
+			"Unavailable source user. Rejected.",
+			Log::INFO);
 		return;
 	}
 
