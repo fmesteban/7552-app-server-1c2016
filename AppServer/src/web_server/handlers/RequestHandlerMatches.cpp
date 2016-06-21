@@ -54,6 +54,9 @@ void RequestHandlerMatches::run(Request &request){
 	std::string result;
 	if (matches.size() == 0){
 		result = "{\"matches\": []}";
+		Log::instance()->append(
+			"Received a BAD (incomplete) REQUEST. Rejected.",
+			Log::INFO);
 	}else{
 		result = "{\"matches\": [";
 		std::map<int, Match*>::iterator iterMatches = matches.begin();

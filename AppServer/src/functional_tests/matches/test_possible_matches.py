@@ -46,5 +46,14 @@ class TestPossibleMatches(unittest.TestCase):
 		r = requests.post("http://localhost:8000/getpossiblematches", data = data)
 		self.assertEquals(r.status_code, 201)
 
+	def test_inexistant_user(self):
+		pass
+
+	def test_malformed_request(self):
+		pass
+
+	def test_incorrect_method(self):
+		pass
+
 if __name__ == '__main__':
 	unittest.main()
