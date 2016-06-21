@@ -22,12 +22,15 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 									userA.getLongitude(),
 									userB.getLatitude(),
 									userB.getLongitude());
+	/* To be used when real position values are stored
 	if (distance > MAXDISTANCE)
-		return -1;
+		return -1;*/
 
-	int points = 0;
+	int points = 1;
 
 	for (auto interestA : userA.getInterests()){
+		if (interestA->getCategory() == "sex")
+			continue;
 		for (auto interestB : userB.getInterests()){
 			if (interestA->getCategory() == interestB->getCategory()){
 				if(interestA->getValue() == interestB->getValue())
@@ -81,7 +84,7 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		}
 
 		/* random list has just repeated suggestions */
-		if (currentBestSuggestedUserPoints < 0)
+		if (currentBestSuggestedUserPoints <= 0)
 			continue;
 
 		/* add the suggestion to result list (just the id) */

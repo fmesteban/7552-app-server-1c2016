@@ -58,6 +58,7 @@ public:
 	float getLongitude();
 	float getLatitude();
 	std::vector<Interest*> getInterests();
+	std::string getSex();
 	void edit(User& newProfile);
 	void setId(int id);
 	void setId(const std::string& id);

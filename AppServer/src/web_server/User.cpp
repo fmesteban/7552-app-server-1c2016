@@ -178,12 +178,20 @@ bool User::couldMatch(User &another){
 	std::string category("sex");
 	std::string myPreference =  this->getSomeInterestFromCategory(category);
 	std::string otherPreference =  another.getSomeInterestFromCategory(category);
-	if(myPreference == another.sex || myPreference == "any"){
-		if(otherPreference == sex || otherPreference == "any")
+	if(myPreference == another.getSex() || myPreference == "any"){
+		if(otherPreference == getSex() || otherPreference == "any"){
 			return true;
+		}
 		return false;
 	}
 	return false;
+}
+
+std::string User::getSex(){
+	if (sex == "male" || sex == "Male"){
+		return "men";
+	}
+	return "women";
 }
 
 void User::dislike(int idAnother){
