@@ -13,7 +13,6 @@
 
 class SuggestionsGenerator {
 private:
-	Database db;
 	UsersContainer& usersContainer;
 	std::list<Suggestion*> suggestions;
 	float calculatePoints(User &userA, User &userB);

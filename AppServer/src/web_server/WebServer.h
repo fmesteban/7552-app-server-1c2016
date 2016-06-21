@@ -13,8 +13,8 @@ private:
 	const std::string httpPort;
 	struct mg_mgr eventManager;
 	struct mg_connection *networkConnection;
-	SuggestionsGenerator suggestionsGenerator;
 	UsersContainer users;
+	SuggestionsGenerator suggestionsGenerator;
 	RequestManager requestManager;
 	static void eventHandler(struct mg_connection *networkConnection,
 			int eventCode, void *dataPointer);

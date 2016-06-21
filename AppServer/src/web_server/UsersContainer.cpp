@@ -8,11 +8,10 @@
 #include <cstdlib>
 #include "Match.h"
 
-
 UsersContainer::UsersContainer(){
 	client.getUsers(usersById);
 	Log::instance()->append(
-			"Loaded " + std::to_string(usersById.size()) + "users correctly from shared server.",
+			"Loaded " + std::to_string(usersById.size()) + " users correctly from shared server.",
 			Log::INFO);
 
 	bool matchesLoaded = loadMatches();
@@ -23,7 +22,7 @@ UsersContainer::UsersContainer(){
 	}
 	else {
 		Log::instance()->append(
-				"Loaded " + std::to_string(allMatches.size()) + "matches correctly from RocksDB.",
+				"Loaded " + std::to_string(allMatches.size()) + " matches correctly from RocksDB.",
 				Log::INFO);
 	}
 }
@@ -31,7 +30,7 @@ UsersContainer::UsersContainer(){
 /**
  * Returns the reference to the Database
  */
-Database UsersContainer::getDB(){
+Database &UsersContainer::getDB(){
 	std::cerr << "Returning DB" << std::endl;
 	return db;
 }
