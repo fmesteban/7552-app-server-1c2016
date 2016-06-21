@@ -31,7 +31,6 @@ UsersContainer::UsersContainer(){
  * Returns the reference to the Database
  */
 Database &UsersContainer::getDB(){
-	std::cerr << "Returning DB" << std::endl;
 	return db;
 }
 
@@ -74,12 +73,14 @@ bool UsersContainer::loadMatches(){
 
 		allMatches.push_back(newMatch);
 
+		std::cerr << "Aca llega" << std::endl;
+
 		/* Need to parse chat messages still */
-		Json::Value& chat = matches["chat"];
-		Json::Value& messages = chat["messages"];
+		Json::Value& messages = matches["chat"];
 		Json::ValueConstIterator it = messages.begin();
 		for (; it != messages.end(); ++it)
 		{
+			std::cerr << "A que no itera " << std::endl;
 			const Json::Value& chatMessage = *it;
 			std::string from = chatMessage.get("sendFrom", "unavailable").asString();
 			std::string msg = chatMessage.get("msg", "unavailable").asString();
@@ -91,6 +92,8 @@ bool UsersContainer::loadMatches(){
 
 			newMatch->pushChatMessage(*user, msg, time);
 		}
+
+		std::cerr << "Aca no llega" << std::endl;
 	}
 	return true;
 }
@@ -200,8 +203,6 @@ void UsersContainer::addMatch(Match *match){
 	userB.addMatch(userA.getID(), match);
 }
 
-
-
 UsersContainer::~UsersContainer(){
 	std::map<int, User*>::iterator iterUsers = usersById.begin();
 	for(; iterUsers != usersById.end(); ++iterUsers)
@@ -213,10 +214,12 @@ UsersContainer::~UsersContainer(){
 	value << "{\"matches\":[";
 	std::vector<Match*>::iterator iterMatches = allMatches.begin();
 	for(; iterMatches != allMatches.end(); ++iterMatches){
-		value << *iterMatches;
+		value << **iterMatches;
 		delete *iterMatches;
 	}
 	value << "]}";
+	std::cout << "Matches to be saved on DB" << std::endl;
+	std::cout << value.str() << std::endl;
 	db.putKeyValue(key, value.str());
 	allMatches.clear();
 }

@@ -86,10 +86,12 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 	value << "{\"suggestions\":[";
 	std::list<Suggestion*>::iterator iter = suggestions.begin();
 	for(; iter != suggestions.end(); ++iter){
-		value << *iter;
+		value << **iter;
 		delete *iter;
 	}
 	value << "]}";
+	std::cout << "Suggestions to be saved on DB" << std::endl;
+	std::cout << value.str() << std::endl;
 	usersContainer.getDB().putKeyValue(key, value.str());
 }
 
@@ -140,7 +142,6 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	/* we will calculate "cant" suggestions */
 	for (int i = 1; i <= cant; ++i){
 
-		std::cerr << i << std::endl;
 		/* temporal values for best suggestion */
 		User *currentBestSuggestedUser;
 		float currentBestSuggestedUserPoints = 0;
@@ -148,8 +149,6 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		/* get some random users from container to be faster than O(NxN) */
 		std::list<User*> randomUsers;
 		usersContainer.getRandomUsers(randomUsers);
-
-		std::cerr << "Got random users" << std::endl;
 
 		/* for each users, calculate the suggestion points *
 		 * save if better than current best */

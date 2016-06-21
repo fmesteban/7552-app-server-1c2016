@@ -55,14 +55,10 @@ void Suggestion::markAsDisliked(){
 }
 
 void Suggestion::addLike(int idSrc, int idDest){
-	if(userA.getID() == idSrc){
-		std::cout << "Adding like from " << idSrc << " to " << idDest << std::endl;
+	if(userA.getID() == idSrc)
 		AlikesB = true;
-	}
-	else{
-		std::cout << "Adding like from " << idDest << " to " << idSrc << std::endl;
+	else
 		BlikesA = true;
-	}
 }
 
 /** Overloads the operator << from std::ostream

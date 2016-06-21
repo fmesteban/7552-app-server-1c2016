@@ -29,7 +29,7 @@ std::ostream& operator<<(std::ostream &os, const Match& self) {
 		"{"
 			"\"userA\":\"" << self.userA.getID() << "\","
 			"\"userB\":\"" << self.userB.getID() << "\","
-			"\"chat\":\"" << self.chat << "\""
+			"\"chat\":" << self.chat <<
 		"}";
 }
 

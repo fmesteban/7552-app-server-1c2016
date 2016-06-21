@@ -25,21 +25,29 @@ class TestMatches(unittest.TestCase):
 
 	def test_get_matches(self):
 		#Get suggestions
-		data = json.dumps({"email": my_email, "count": "3"})
+		data = json.dumps({"email": my_email, "count": "1"})
 		r = requests.post("http://localhost:8000/getpossiblematches", data = data)
 		self.assertEquals(r.status_code, 201)
 		suggestions = r.json()[u'possibleMatches']
-		print "Suggestions: ",
-		print suggestions
+		#print "Suggestions: ",
+		#print suggestions
+
+		data = json.dumps({"emailSrc": my_email, "emailDst": other_email})
+		r = requests.post("http://localhost:8000/like", data = data)
+		self.assertEquals(r.status_code, 201)
+
+		data = json.dumps({"emailSrc": other_email, "emailDst": my_email})
+		r = requests.post("http://localhost:8000/like", data = data)
+		self.assertEquals(r.status_code, 201)
 
 		#Like on suggestions
-		for candidate in suggestions:
+		"""for candidate in suggestions:
 			r_email = candidate[u'user'][u'email']
 			data = json.dumps({"emailSrc": my_email, "emailDst": r_email})
 			r = requests.post("http://localhost:8000/like", data = data)
-			self.assertEquals(r.status_code, 201)
-
-		data = json.dumps({"email": my_email})
+			self.assertEquals(r.status_code, 201)"""
+			
+		"""data = json.dumps({"email": my_email})
 		r = requests.post("http://localhost:8000/getmatches", data = data)
 		self.assertEquals(r.status_code, 201)
 		matches = r.json()[u'matches']
@@ -50,16 +58,15 @@ class TestMatches(unittest.TestCase):
 			r_email = candidate[u'user'][u'email']
 			data = json.dumps({"emailSrc": r_email, "emailDst": my_email})
 			r = requests.post("http://localhost:8000/like", data = data)
-			self.assertEquals(r.status_code, 201)
-
+			self.assertEquals(r.status_code, 201)"""
 
 		data = json.dumps({"email": my_email})
 		r = requests.post("http://localhost:8000/getmatches", data = data)
 		self.assertEquals(r.status_code, 201)
 		matches = r.json()[u'matches']
 		self.assertNotEqual(len(matches), 0)
-		print "Matches: ",
-		print matches
+		#print "Matches: ",
+		#print matches
 
 	def test_inexistant_user(self):
 		pass

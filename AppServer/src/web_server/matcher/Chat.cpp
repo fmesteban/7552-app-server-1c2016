@@ -12,7 +12,7 @@ void Chat::pushMessage(User &userSrc, const std::string &message, const std::str
  *
  */
 std::ostream& operator<<(std::ostream &os, const Chat& self) {
-	os << "\"messages\": [ ";
+	os << "[";
 
 	if (!self.messages.empty()){
 		for (size_t i=0; i < self.messages.size() - 1; ++i){
