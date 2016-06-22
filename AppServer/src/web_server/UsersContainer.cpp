@@ -74,6 +74,8 @@ bool UsersContainer::loadMatches(){
 
 		User* userA = getUser(userAID);
 		User* userB = getUser(userBID);
+		if (userA == NULL || userB == NULL)
+			continue;
 
 		Match* newMatch = new Match(*userA, *userB);
 
@@ -206,11 +208,6 @@ void UsersContainer::addMatch(Match *match){
 }
 
 UsersContainer::~UsersContainer(){
-	std::map<int, User*>::iterator iterUsers = usersById.begin();
-	for(; iterUsers != usersById.end(); ++iterUsers)
-		delete iterUsers->second;
-	usersById.clear();
-
 	std::string key("matches");
 	std::ostringstream value;
 	value << "{\"matches\":[";
@@ -224,5 +221,10 @@ UsersContainer::~UsersContainer(){
 	std::cout << value.str() << std::endl;
 	db.putKeyValue(key, value.str());
 	allMatches.clear();
+
+	std::map<int, User*>::iterator iterUsers = usersById.begin();
+	for(; iterUsers != usersById.end(); ++iterUsers)
+		delete iterUsers->second;
+	usersById.clear();
 }
 
