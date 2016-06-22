@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <list>
 
 
 /* forward declarations */
@@ -53,6 +54,7 @@ public:
 	std::map<int, Match*> &getMatches();
 	void sendMsg(int idDest, const std::string &message, const std::string &time);
 	void printChat(std::ostream &os, int idAnother);
+	void loadNotShownSuggestions(std::list<int> &result);
 
 	int getID();
 	float getLongitude();

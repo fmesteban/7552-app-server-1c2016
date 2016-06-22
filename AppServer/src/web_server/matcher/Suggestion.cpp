@@ -6,6 +6,8 @@ Suggestion::Suggestion(User &userA, User &userB) :
 	AlikesB = false;
 	BlikesA = false;
 	_someoneDisliked = false;
+	sentToA = false;
+	sentToB = false;
 }
 
 User &Suggestion::getUserA(){
@@ -71,8 +73,29 @@ std::ostream& operator<<(std::ostream &os, const Suggestion& self) {
 			"\"userB\":\"" << self.userB.getID() << "\","
 			"\"AlikesB\":\"" << self.AlikesB << "\","
 			"\"BlikesA\":\"" << self.BlikesA << "\","
-			"\"_someoneDisliked\":\"" << self._someoneDisliked << "\""
+			"\"_someoneDisliked\":\"" << self._someoneDisliked << "\","
+			"\"sentToA\":\"" << self.sentToA << "\","
+			"\"sentToB\":\"" << self.sentToB << "\""
 		"}";
+}
+
+void Suggestion::setSentToA(bool value){
+	sentToA = value;
+}
+
+void Suggestion::setSentToB(bool value){
+	sentToB = value;
+}
+
+bool Suggestion::wasSentToUser(User &user){
+	return (user == userA) ? sentToA : sentToB;
+}
+
+void Suggestion::setWasSentToUser(User &user, bool value){
+	if (user == userA)
+		setSentToA(value);
+	else
+		setSentToB(value);
 }
 
 Suggestion::~Suggestion() {

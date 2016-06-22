@@ -252,6 +252,16 @@ void User::printChat(std::ostream &os, int idAnother){
 
 }
 
+void User::loadNotShownSuggestions(std::list<int> &result){
+	std::map<int, Suggestion*>::iterator iterSug = sugestions.begin();
+	for (; iterSug != sugestions.end(); ++iterSug){
+		if (!iterSug->second->wasSentToUser(*this)){
+			result.push_back(iterSug->first);
+			iterSug->second->setWasSentToUser(*this, true);
+		}
+	}
+}
+
 /** Releases user's allocated resources.
  *
  */

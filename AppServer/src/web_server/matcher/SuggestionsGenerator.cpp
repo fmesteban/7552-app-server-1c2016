@@ -59,6 +59,8 @@ bool SuggestionsGenerator::loadSuggestions(){
 		std::string AlikesB = suggestion.get("AlikesB", "unavailable").asString();
 		std::string BlikesA = suggestion.get("BlikesA", "unavailable").asString();
 		std::string _someoneDisliked = suggestion.get("_someoneDisliked", "unavailable").asString();
+		std::string sentToA = suggestion.get("sentToA", "unavailable").asString();
+		std::string sentToB = suggestion.get("sentToB", "unavailable").asString();
 		if(userA_str == "unavailable" ||
 		   userB_str == "unavailable" ||
 		   AlikesB == "unavailable" ||
@@ -73,6 +75,8 @@ bool SuggestionsGenerator::loadSuggestions(){
 		sug->setAlikesB(AlikesB == "true");
 		sug->setBlikesA(BlikesA == "true");
 		sug->setsomeoneDisliked(_someoneDisliked == "true");
+		sug->setSentToA(sentToA == "true");
+		sug->setSentToB(sentToB == "true");
 
 		/* save suggestion */
 		suggestions.push_back(sug);
@@ -139,6 +143,9 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	if (userRef == NULL)
 		return result;
 
+	/* load the suggestions shown to other user, but not to current */
+	userRef->loadNotShownSuggestions(result);
+
 	/* we will calculate "cant" suggestions */
 	for (int i = 1; i <= cant; ++i){
 
@@ -178,6 +185,8 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		suggestions.push_back(s);
 		userRef->addSuggestion(s);
 		currentBestSuggestedUser->addSuggestion(s);
+		s->setWasSentToUser(*userRef, true);
+		s->setWasSentToUser(*currentBestSuggestedUser, false);
 
 		Log::instance()->append("Suggestion saved.", Log::INFO);
 	}
