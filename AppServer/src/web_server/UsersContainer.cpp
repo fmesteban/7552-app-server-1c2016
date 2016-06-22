@@ -10,6 +10,12 @@
 
 UsersContainer::UsersContainer(){
 	client.getUsers(usersById);
+
+	/* Add users to db. This way we can change of shared server without problems */
+	std::map<int, User*>::iterator iterLoadedUsers = usersById.begin();
+	for(; iterLoadedUsers != usersById.end(); ++iterLoadedUsers)
+		iterLoadedUsers->second->saveIn(db);
+
 	Log::instance()->append(
 			"Loaded " + std::to_string(usersById.size()) + " users correctly from shared server.",
 			Log::INFO);
