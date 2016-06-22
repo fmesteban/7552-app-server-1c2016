@@ -73,14 +73,11 @@ bool UsersContainer::loadMatches(){
 
 		allMatches.push_back(newMatch);
 
-		std::cerr << "Aca llega" << std::endl;
-
 		/* Need to parse chat messages still */
-		Json::Value& messages = matches["chat"];
+		const Json::Value& messages = match["chat"];
 		Json::ValueConstIterator it = messages.begin();
 		for (; it != messages.end(); ++it)
 		{
-			std::cerr << "A que no itera " << std::endl;
 			const Json::Value& chatMessage = *it;
 			std::string from = chatMessage.get("sendFrom", "unavailable").asString();
 			std::string msg = chatMessage.get("msg", "unavailable").asString();
@@ -92,11 +89,10 @@ bool UsersContainer::loadMatches(){
 
 			newMatch->pushChatMessage(*user, msg, time);
 		}
-
-		std::cerr << "Aca no llega" << std::endl;
 	}
 	return true;
 }
+
 
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
