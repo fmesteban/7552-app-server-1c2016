@@ -38,7 +38,6 @@ public:
 			const std::string &sex,
 			float longitude, float latitude,
 			const std::string &photoProfile);
-	User(Database &db, const std::string &email);
 	void addInterest(const std::string& category, const std::string &value);
 	void saveIn(Database &db);
 	const std::string &getEmail() const;
@@ -48,6 +47,7 @@ public:
 	bool couldMatch(User &another);
 	void dislike(int idAnother);
 	Suggestion *getSuggestion(int idAnother);
+	bool isAlreadySuggested(int idAnother);
 	void addMatch(int idAnother, Match *newMatch);
 	bool operator==(User &another);
 	std::map<int, Match*> &getMatches();
@@ -62,7 +62,6 @@ public:
 	void edit(User& newProfile);
 	void setId(int id);
 	void setId(const std::string& id);
-	
 
 	~User();
 };

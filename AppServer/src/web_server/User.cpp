@@ -31,12 +31,6 @@ User::User(const std::string &name,
 	id = -1;
 }
 
-/** TODO: User should be able to be loaded from database.
- *
- */
-User::User(Database &db, const std::string &email){
-}
-
 /* db registers: (email, id) */
 void User::saveIn(Database &db){
 	std::stringstream ss;
@@ -175,16 +169,27 @@ std::string User::getSomeInterestFromCategory(std::string &category){
  *
  */
 bool User::couldMatch(User &another){
+	/* check sexual orientations */
+	bool sexualOrientationCouldMatch;
 	std::string category("sex");
 	std::string myPreference =  this->getSomeInterestFromCategory(category);
 	std::string otherPreference =  another.getSomeInterestFromCategory(category);
 	if(myPreference == another.getSex() || myPreference == "any"){
 		if(otherPreference == getSex() || otherPreference == "any"){
-			return true;
+			sexualOrientationCouldMatch = true;
 		}
-		return false;
+		sexualOrientationCouldMatch = false;
+	}else{
+		sexualOrientationCouldMatch = false;
 	}
-	return false;
+
+	/* don't suggest myself */
+	bool sameUser = (another == *this);
+
+	/* already suggested */
+	bool alreadySuggested = isAlreadySuggested(another.getID());
+
+	return sexualOrientationCouldMatch && !sameUser && !alreadySuggested;
 }
 
 std::string User::getSex(){
@@ -207,6 +212,11 @@ Suggestion *User::getSuggestion(int idAnother){
 	else
 		return NULL;
 }
+
+bool User::isAlreadySuggested(int idAnother){
+	return (getSuggestion(idAnother) != NULL);
+}
+
 
 void User::addMatch(int idAnother, Match *newMatch){
 	this->matches.insert(std::pair<int,Match*>(idAnother,newMatch));
