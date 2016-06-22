@@ -177,8 +177,9 @@ bool User::couldMatch(User &another){
 	if(myPreference == another.getSex() || myPreference == "any"){
 		if(otherPreference == getSex() || otherPreference == "any"){
 			sexualOrientationCouldMatch = true;
+		}else{
+			sexualOrientationCouldMatch = false;
 		}
-		sexualOrientationCouldMatch = false;
 	}else{
 		sexualOrientationCouldMatch = false;
 	}
@@ -189,7 +190,7 @@ bool User::couldMatch(User &another){
 	/* already suggested */
 	bool alreadySuggested = isAlreadySuggested(another.getID());
 
-	return sexualOrientationCouldMatch && !sameUser && !alreadySuggested;
+	return sexualOrientationCouldMatch && (!sameUser) && (!alreadySuggested);
 }
 
 std::string User::getSex(){

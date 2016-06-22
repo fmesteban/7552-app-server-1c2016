@@ -66,6 +66,14 @@ void RequestHandlerLike::run(Request &request){
 
 	if (userSrc){
 		Suggestion *suggestion = userSrc->getSuggestion(idDst);
+		if(!suggestion){
+			Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+			RequestHandler::sendResponse(response, request.getNetworkConnection());
+			Log::instance()->append(
+				"Unavailable suggestion. Rejected.",
+				Log::INFO);
+			return;
+		}
 		Log::instance()->append(
 			"User " + std::to_string(idSrc) +" likes user " + std::to_string(idDst),
 			Log::INFO);
