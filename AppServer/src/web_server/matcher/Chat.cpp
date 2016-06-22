@@ -1,11 +1,48 @@
 #include "Chat.h"
 #include <vector>
 
-Chat::Chat() {
+Chat::Chat(User &userA, User &userB) :
+userA(userA),
+userB(userB){
 }
 
 void Chat::pushMessage(User &userSrc, const std::string &message, const std::string &time){
-	messages.push_back(new ChatMessage(userSrc, message, time));
+	if(userSrc == userA)
+		messagesFromA.push_back(new ChatMessage(userSrc, message, time));
+	else
+		messagesFromB.push_back(new ChatMessage(userSrc, message, time));
+}
+
+void Chat::printMessages(std::ostream &os, const std::vector<ChatMessage*> &messages) const{
+	if (!messages.empty()){
+		for (size_t i=0; i < messages.size() - 1; ++i){
+			/* with comma */
+			os << *messages[i] << ",";
+		}
+		/* without comma */
+		os << *messages[messages.size() - 1];
+	}
+}
+
+void Chat::clearMessages(std::vector<ChatMessage*> &messages){
+	for (size_t i=0; i < messages.size(); ++i)
+		delete messages[i];
+	messages.clear();
+}
+
+
+void Chat::printTo(std::ostream &os, User &userSrc){
+	os << "[";
+
+	if(userSrc == userA){
+		printMessages(os, messagesFromA);
+		clearMessages(messagesFromA);
+	}else{
+		printMessages(os, messagesFromB);
+		clearMessages(messagesFromB);
+	}
+
+	os << "]";
 }
 
 /** Overloads the operator << from std::ostream
@@ -14,22 +51,17 @@ void Chat::pushMessage(User &userSrc, const std::string &message, const std::str
 std::ostream& operator<<(std::ostream &os, const Chat& self) {
 	os << "[";
 
-	if (!self.messages.empty()){
-		for (size_t i=0; i < self.messages.size() - 1; ++i){
-			/* with comma */
-			os << *self.messages[i] << ",";
-		}
-		/* without comma */
-		os << *self.messages[self.messages.size() - 1];
-	}
+	bool commaInTheMiddle = (self.messagesFromA.size() > 0) && (self.messagesFromB.size() > 0);
+	self.printMessages(os, self.messagesFromA);
+	if(commaInTheMiddle) os << ", ";
+	self.printMessages(os, self.messagesFromB);
 
 	return os << "]";
 }
 
+
 Chat::~Chat() {
-	std::vector<ChatMessage*>::iterator iter = messages.begin();
-	for(; iter != messages.end(); ++iter){
-		delete *iter;
-	}
+	clearMessages(messagesFromA);
+	clearMessages(messagesFromB);
 }
 

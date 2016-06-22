@@ -2,7 +2,8 @@
 
 Match::Match(User &userA, User &userB) :
 	userA(userA),
-	userB(userB) {
+	userB(userB),
+	chat(userA, userB) {
 }
 
 User &Match::getUserA(){
@@ -25,7 +26,7 @@ Chat &Match::getChat(){
  *
  */
 std::ostream& operator<<(std::ostream &os, const Match& self) {
-	return os << 
+	return os <<
 		"{"
 			"\"userA\":\"" << self.userA.getID() << "\","
 			"\"userB\":\"" << self.userB.getID() << "\","
