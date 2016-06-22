@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(AppServer)
 
+#INCLUDE(CodeCoverage)
 
 #sets compile flags
 set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage -pthread -std=c++11 -O0 ${CMAKE_CXX_FLAGS}")
