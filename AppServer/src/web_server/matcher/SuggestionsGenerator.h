@@ -2,7 +2,7 @@
 #define WEB_SERVER_MATCHER_SUGESTIONSGENERATOR_H_
 
 #include <map>
-#include <list>
+#include <vector>
 #include "Suggestion.h"
 #include "UsersContainer.h"
 #include "User.h"
@@ -14,7 +14,7 @@
 class SuggestionsGenerator {
 private:
 	UsersContainer& usersContainer;
-	std::list<Suggestion*> suggestions;
+	std::vector<Suggestion*> suggestions;
 	float calculatePoints(User &userA, User &userB);
 	bool loadSuggestions();
 public:

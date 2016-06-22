@@ -91,11 +91,16 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 	std::string key("suggestions");
 	std::ostringstream value;
 	value << "{\"suggestions\":[";
-	std::list<Suggestion*>::iterator iter = suggestions.begin();
-	for(; iter != suggestions.end(); ++iter){
-		value << **iter;
-		delete *iter;
+
+	if (!suggestions.empty()){
+		for (int i = 0; i < suggestions.size() - 1; ++i){
+			value << *suggestions[i] << ",";
+			delete suggestions[i];
+		}
+		value << *suggestions[suggestions.size() - 1];
+		delete suggestions[suggestions.size() - 1];
 	}
+
 	value << "]}";
 	std::cout << "Suggestions to be saved on DB" << std::endl;
 	std::cout << value.str() << std::endl;
