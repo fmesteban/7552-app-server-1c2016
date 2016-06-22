@@ -71,6 +71,9 @@ bool SuggestionsGenerator::loadSuggestions(){
 		User* userA = usersContainer.getUser(userAID);
 		User* userB = usersContainer.getUser(userBID);
 
+		if (userA == NULL || userB == NULL)
+			continue;
+
 		Suggestion* sug = new Suggestion(*userA, *userB);
 		sug->setAlikesB(AlikesB == "true");
 		sug->setBlikesA(BlikesA == "true");
