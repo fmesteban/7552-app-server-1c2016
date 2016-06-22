@@ -9,7 +9,7 @@
 #include "Database.h"
 #include "distance.h"
 
-#define MAXDISTANCE 10 //It's in Km
+#define MAXDISTANCE 25 //It's in Km
 
 class SuggestionsGenerator {
 private:

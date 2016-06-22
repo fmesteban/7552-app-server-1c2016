@@ -12,9 +12,8 @@ interests = [{"category": "music", "value": "la que no es 25"}, {"category": "se
 interests2 = [{"category": "music", "value": "la que no es 25"}, {"category": "sex", "value": "men"}]
 
 class TestMatches(unittest.TestCase):
-
 	@classmethod
-    def setUpClass(self):
+	def setUpClass(cls):
 		data = json.dumps({"name": "UserToMatch", "alias": "fefee33", "password": "test", "email": my_email, "age": "35", "sex": "Male",
 			"interests": interests, "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)

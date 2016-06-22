@@ -20,9 +20,8 @@ void RequestHandlerEditProfile::run(Request &request){
 
 	if (request.getMethod() != "POST"){
 		/* some libraries send OPTIONS before POST */
-		RequestHandler::sendHttpOk(
-			request.getNetworkConnection(),
-			"{ \"response\": \"POST\" }\r\n");
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}

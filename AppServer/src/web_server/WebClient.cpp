@@ -305,7 +305,7 @@ void WebClient::parseUsersMap(
 		std::string email(user["email"].asString());
 		std::string photoUrl(user["photo_profile"].asString());
 		std::string sex(user["sex"].asString());
-		float longitude(user["location"]["longitud"].asFloat());
+		float longitude(user["location"]["longitude"].asFloat());
 		float latitude(user["location"]["latitude"].asFloat());
 		int age(user["age"].asInt());
 

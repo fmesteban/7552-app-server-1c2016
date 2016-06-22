@@ -18,7 +18,7 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	}
 	else {
 		Log::instance()->append(
-			"Loaded " + std::to_string(suggestions.size()) + "suggestions correctly from RocksDB.",
+			"Loaded " + std::to_string(suggestions.size()) + " suggestions correctly from RocksDB.",
 			Log::INFO);
 	}
 }
@@ -75,11 +75,11 @@ bool SuggestionsGenerator::loadSuggestions(){
 			continue;
 
 		Suggestion* sug = new Suggestion(*userA, *userB);
-		sug->setAlikesB(AlikesB == "true");
-		sug->setBlikesA(BlikesA == "true");
-		sug->setsomeoneDisliked(_someoneDisliked == "true");
-		sug->setSentToA(sentToA == "true");
-		sug->setSentToB(sentToB == "true");
+		sug->setAlikesB(AlikesB == "1");
+		sug->setBlikesA(BlikesA == "1");
+		sug->setsomeoneDisliked(_someoneDisliked == "1");
+		sug->setSentToA(sentToA == "1");
+		sug->setSentToB(sentToB == "1");
 
 		/* save suggestion */
 		suggestions.push_back(sug);
@@ -110,9 +110,9 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 									userA.getLongitude(),
 									userB.getLatitude(),
 									userB.getLongitude());
-	/* To be used when real position values are stored
+
 	if (distance > MAXDISTANCE)
-		return -1;*/
+		return -1;
 
 	int points = 1;
 
@@ -138,7 +138,7 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	std::list<int> result;
 
 	Log::instance()->append(
-		"Getting suggestions for user with id: " + std::to_string(user) + " .",
+		"Getting suggestions for user with id: " + std::to_string(user),
 		Log::INFO);
 
 	/* get the user from container */
