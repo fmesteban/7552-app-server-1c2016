@@ -62,7 +62,7 @@ void RequestHandlerPossibleMatches::run(Request &request){
 		Response response(SERVER_ERROR_STATUS, SERVER_ERROR_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"User with email: " + email + "not found.",
+			"User with email: " + email + " not found.",
 			Log::ERROR);
 		return;
 	}

@@ -21,24 +21,6 @@ void Database::putKeyValue(const std::string& key, const std::string& value){
 	assert(s.ok());
 }
 
-void Database::putTwoLvlKeyValue(
-		const std::string& keyFirstLevel,
-		const std::string& keySecondLevel,
-		const std::string& value){
-	std::string resultKey;
-	wrapKeys(resultKey, keyFirstLevel, keySecondLevel);
-	putKeyValue(resultKey, value);
-}
-
-bool Database::getTwoLvlValue(
-		const std::string& keyFirstLevel,
-		const std::string& keySecondLevel,
-		std::string& value){
-	std::string resultKey;
-	wrapKeys(resultKey, keyFirstLevel, keySecondLevel);
-	return getValue(resultKey, value);
-}
-
 bool Database::getValue(const std::string& key, std::string& value){
 	s = db->Get(rocksdb::ReadOptions(), key, &value);
 	if (s.IsNotFound())
@@ -47,21 +29,6 @@ bool Database::getValue(const std::string& key, std::string& value){
 		Log::instance()->append("Key found: " + key +
 				", value: " + value +" in DB.", Log::INFO);
 	return !s.IsNotFound();
-}
-
-void Database::eraseKey(const std::string& key){
-	s = db->Delete(rocksdb::WriteOptions(), key);
-	//assert(s.ok());
-	if (s.ok())
-		Log::instance()->append("Deleted key: " + key + " from DB.", Log::INFO);
-	else
-		Log::instance()->append("Key not deleted: " + key + " in DB.", Log::ERROR);
-}
-
-void Database::wrapKeys(std::string& resultKey,
-			const std::string& keyFirstLevel,
-			const std::string& keySecondLevel){
-	resultKey = keyFirstLevel + "&" + keySecondLevel;
 }
 
 Database::~Database(){
