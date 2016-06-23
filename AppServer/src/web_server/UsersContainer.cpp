@@ -79,7 +79,7 @@ bool UsersContainer::loadMatches(){
 
 		Match* newMatch = new Match(*userA, *userB);
 
-		allMatches.push_back(newMatch);
+		addMatch(newMatch);
 
 		/* Need to parse chat messages still */
 		const Json::Value& messages = match["chat"];
