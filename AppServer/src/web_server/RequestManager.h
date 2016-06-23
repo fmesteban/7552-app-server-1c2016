@@ -7,7 +7,6 @@
 #include <string>
 #include "UsersContainer.h"
 #include "RequestHandler.h"
-#include "RequestHandlerExample.h"
 #include "RequestHandlerNotFound.h"
 #include "RequestHandlerRegister.h"
 #include "RequestHandlerLogin.h"
@@ -23,7 +22,6 @@ class RequestManager {
 private:
 	UsersContainer &users;
 	std::map<std::string, RequestHandler*> handlerRefs;
-	RequestHandlerExample reqExample;
 	RequestHandlerNotFound hdlNotFound;
 	RequestHandlerRegister reqRegister;
 	RequestHandlerLogin reqLogin;

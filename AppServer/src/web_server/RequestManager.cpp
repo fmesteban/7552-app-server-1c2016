@@ -32,7 +32,6 @@ RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &sugg
  *
  */
 void RequestManager::insertDefaultHandlers(){
-	addHandler(reqExample.getUri(), &reqExample);
 	addHandler(reqRegister.getUri(), &reqRegister);
 	addHandler(reqLogin.getUri(), &reqLogin);
 	addHandler(reqEditProfile.getUri(), &reqEditProfile);

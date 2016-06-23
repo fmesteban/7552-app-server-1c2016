@@ -52,8 +52,21 @@ void RequestHandlerSendConversation::run(Request &request){
 
 	std::string emailSrc = root["conversation"]["emailSrc"].asString();
 	std::string emailDst = root["conversation"]["emailDst"].asString();
-	User *userSrc = users.getUser(users.getID(emailSrc));
+
+
+
+	int idSrc = users.getID(emailSrc);
 	int idDest = users.getID(emailDst);
+	if (idSrc == -1 || idDest == -1){
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+				"Some user was not found. Rejected.",
+				Log::INFO);
+		return;
+	}
+
+	User *userSrc = users.getUser(idSrc);
 
 	std::time_t _now = time(NULL);
 	struct tm *now = localtime(&_now);
