@@ -49,13 +49,27 @@ void RequestHandlerGetConversation::run(Request &request){
 		return;
 	}
 
+	int idSrc = users.getID(emailSrc);
+	int idDst = users.getID(emailDst);
+	if (idSrc == -1 || idDst == -1){
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+				"Some user was not found. Rejected.",
+				Log::INFO);
+		return;
+	}
+
 	User *userSrc = users.getUser(users.getID(emailSrc));
 	int idDest = users.getID(emailDst);
 
 	std::stringstream responseStream;
-	responseStream << "{ \"conversation\": { \"email\" : " << emailDst << ", ";
+	responseStream << "{\"conversation\":{ \"email\":\"" << emailDst << "\",";
 	userSrc->printChat(responseStream, idDest);
 	responseStream << "} }";
+
+	std::cout << "Response getconversation" << std::endl;
+	std::cout << responseStream.str() << std::endl;
 
 	//Sends response to the client containing its data
 	Response response(ACCEPTED_STATUS, responseStream.str());

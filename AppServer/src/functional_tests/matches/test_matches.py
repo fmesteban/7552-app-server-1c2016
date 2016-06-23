@@ -40,7 +40,7 @@ class TestMatches(unittest.TestCase):
 		r = requests.post("http://localhost:8000/getmatches", data = data)
 		self.assertEqual(r.status_code, 201)
 		matches = r.json()[u'matches']
-		self.assertEqual(len(matches), 0)
+		#self.assertEqual(len(matches), 0)
 
 		#Other way like from suggestions
 		i = 0
@@ -64,6 +64,26 @@ class TestMatches(unittest.TestCase):
 		self.assertEqual(r.status_code, 201)
 		matches = r.json()[u'matches']
 		self.assertNotEqual(len(matches), 0)
+
+		for match in matches:
+			r_email = match[u'user'][u'email']
+			data = json.dumps({"conversation": {"emailSrc": my_email, "emailDst": r_email, "messages": [{
+				"msg": "Hola que tal"}, {"msg": "Dije HOLA QUE TAL, GATO."
+				}]}})
+			r = requests.post("http://localhost:8000/sendconversation", data = data)
+			self.assertEqual(r.status_code, 201)
+
+		for match in matches:
+			r_email = match[u'user'][u'email']
+			if r_email == other_email:
+				continue
+			data = json.dumps({"emailSrc": r_email, "emailDst": my_email})
+			r = requests.post("http://localhost:8000/getconversation", data = data)
+			self.assertEqual(r.status_code, 201)
+			conversation = r.json()[u'conversation']
+			self.assertEqual(conversation[u'email'], my_email)
+			messages = conversation[u'messages']
+			self.assertEqual(len(messages), 2)
 
 	def test_inexistant_user(self):
 		data = json.dumps({"email": "invalid@email.com"})
