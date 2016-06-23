@@ -1,3 +1,4 @@
+/** Include area. */
 #include "Chat.h"
 #include <vector>
 

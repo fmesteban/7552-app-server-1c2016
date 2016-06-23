@@ -1,3 +1,4 @@
+/** Include area. */
 #include "SuggestionsGenerator.h"
 #include <map>
 #include <list>

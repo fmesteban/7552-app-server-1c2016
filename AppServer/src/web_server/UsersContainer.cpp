@@ -1,3 +1,4 @@
+/** Include area. */
 #include "UsersContainer.h"
 #include <string>
 #include <iostream>

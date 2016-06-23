@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_USER_H_
 #define WEB_SERVER_USER_H_
 
+/** Include area. */
 #include "Interest.h"
 #include "Database.h"
 #include <string>

@@ -1,3 +1,4 @@
+/** Include area. */
 #include "Suggestion.h"
 
 Suggestion::Suggestion(User &userA, User &userB) :

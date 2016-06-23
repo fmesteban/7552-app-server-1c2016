@@ -13,12 +13,6 @@
 #define LOG_FILE "Server-Log.txt"
 
 class Log {
-private:
-	static Log *log;
-	std::string logTypeToString(LOG_TYPE logType);
-	void printNewLogger();
-	std::string timestamp();
-
 public:
 	/* log levels */
 	typedef enum {
@@ -31,6 +25,12 @@ public:
     LOG_TYPE loggerLevel;
     void append(std::string msg, LOG_TYPE logType);
     void closeLog();
+
+private:
+	static Log *log;
+	std::string logTypeToString(LOG_TYPE logType);
+	void printNewLogger();
+	std::string timestamp();
 };
 
 #endif

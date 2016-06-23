@@ -1,17 +1,29 @@
+/** Include area. */
 #include "RequestHandlerDislike.h"
 #include "Response.h"
 #include "User.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler dislike will handle the uri "/dislike".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerDislike::RequestHandlerDislike(UsersContainer &users) :
 users(users),
 RequestHandler("/dislike") {
 }
 
+
 /** Parse the /dislike uri input, and saves the like from User A to B
  *  database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerDislike::run(Request &request){
 

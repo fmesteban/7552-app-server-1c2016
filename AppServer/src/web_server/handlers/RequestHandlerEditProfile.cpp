@@ -1,3 +1,4 @@
+/** Include area. */
 #include "RequestHandlerEditProfile.h"
 #include "Response.h"
 #include "User.h"
@@ -5,6 +6,14 @@
 #include <string>
 
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler edit profile will handle the uri "/updateprofile".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerEditProfile::RequestHandlerEditProfile(UsersContainer &users) :
 users(users),
 RequestHandler("/updateprofile") {
@@ -14,6 +23,7 @@ RequestHandler("/updateprofile") {
 /** Parse the /register uri input, and saves it in the app-server
  * 	database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerEditProfile::run(Request &request){
 	Log::instance()->append("Received a profile update request", Log::INFO);

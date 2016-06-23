@@ -1,3 +1,4 @@
+/** Include area. */
 #include "WebServer.h"
 #include <iostream>
 #include <string>

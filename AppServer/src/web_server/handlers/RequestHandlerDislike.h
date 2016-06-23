@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_HANDLERS_REQUESTHANDLERDISLIKE_H_
 #define WEB_SERVER_HANDLERS_REQUESTHANDLERDISLIKE_H_
 
+/** Include area. */
 #include "RequestHandler.h"
 #include "UsersContainer.h"
 #include "SuggestionsGenerator.h"

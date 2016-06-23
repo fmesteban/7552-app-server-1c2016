@@ -1,17 +1,29 @@
+/** Include area. */
 #include "RequestHandlerLike.h"
 #include "Response.h"
 #include "User.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler like will handle the uri "/like".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerLike::RequestHandlerLike(UsersContainer &users) :
 users(users),
 RequestHandler("/like") {
 }
 
+
 /** Parse the /like uri input, and saves the like from User A to B
  *  database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerLike::run(Request &request){
 

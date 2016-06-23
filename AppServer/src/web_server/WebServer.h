@@ -1,6 +1,7 @@
 #ifndef WEBSERVER_H_
 #define WEBSERVER_H_
 
+/** Include area. */
 #include "mongoose.h"
 #include <string>
 #include "RequestManager.h"

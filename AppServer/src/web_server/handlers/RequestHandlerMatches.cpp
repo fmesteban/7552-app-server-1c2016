@@ -1,9 +1,19 @@
+/** Include area. */
 #include "RequestHandlerMatches.h"
 #include "Response.h"
 #include "User.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler matches will handle the uri "/getmatches".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerMatches::RequestHandlerMatches(UsersContainer &users) :
 users(users),
 RequestHandler("/getmatches") {
@@ -12,6 +22,7 @@ RequestHandler("/getmatches") {
 /** Parse the /getmatches uri input, and saves it in the app-server
  *  database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerMatches::run(Request &request){
 	Log::instance()->append("Received a get matches request", Log::INFO);

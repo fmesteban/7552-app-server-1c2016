@@ -1,3 +1,4 @@
+/** Include area. */
 #include "RequestManager.h"
 #include <utility>
 #include <map>

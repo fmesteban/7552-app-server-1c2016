@@ -1,3 +1,4 @@
+/** Include area. */
 #include "Thread.h"
 #include <pthread.h>
 

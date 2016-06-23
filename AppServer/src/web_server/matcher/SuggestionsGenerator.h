@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_MATCHER_SUGESTIONSGENERATOR_H_
 #define WEB_SERVER_MATCHER_SUGESTIONSGENERATOR_H_
 
+/** Include area. */
 #include <map>
 #include <vector>
 #include "Suggestion.h"

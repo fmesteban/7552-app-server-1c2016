@@ -1,3 +1,4 @@
+/** Include area. */
 #include "ChatMessage.h"
 
 ChatMessage::ChatMessage(User &userSrc, const std::string &message, const std::string &time) :

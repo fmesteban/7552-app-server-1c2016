@@ -1,3 +1,4 @@
+/** Include area. */
 #include "Interest.h"
 #include <string>
 #include <ostream>

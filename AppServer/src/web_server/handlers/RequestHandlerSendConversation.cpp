@@ -1,3 +1,4 @@
+/** Include area. */
 #include "RequestHandlerSendConversation.h"
 #include "Response.h"
 #include "User.h"
@@ -5,14 +6,25 @@
 #include <string>
 #include <ctime>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler send conversation handles the uri "/sendconversation".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerSendConversation::RequestHandlerSendConversation(UsersContainer &users) :
 users(users),
 RequestHandler("/sendconversation") {
 }
 
+
 /** Parse the /sendconversation uri input, and saves it in the app-server
  *  database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerSendConversation::run(Request &request){
 	Log::instance()->append("Received a get send conversation request", Log::INFO);
@@ -57,7 +69,7 @@ void RequestHandlerSendConversation::run(Request &request){
 		userSrc->sendMsg(idDest, message, ssNow.str());
 	}
 	
-	//Sends response to the client containing its data
+	/* Sends response to the client containing its data */
 	Response response(ACCEPTED_STATUS, "{}");
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

@@ -1,6 +1,7 @@
 #ifndef WEB_CLIENT_WEBCLIENT_H_
 #define WEB_CLIENT_WEBCLIENT_H_
 
+/** Include area. */
 #include <string>
 #include <utility>
 #include <map>

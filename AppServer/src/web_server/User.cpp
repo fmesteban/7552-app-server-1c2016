@@ -1,3 +1,4 @@
+/** Include area. */
 #include "User.h"
 #include "Interest.h"
 #include <string>
