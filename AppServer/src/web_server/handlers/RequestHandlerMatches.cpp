@@ -48,7 +48,16 @@ void RequestHandlerMatches::run(Request &request){
 		return;
 	}
 
-	std::map<int, Match*> &matches = users.getUser(users.getID(email))->getMatches();
+	int userID = users.getID(email);
+	if (userID == -1){
+		Response response(SERVER_ERROR_STATUS, SERVER_ERROR_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+			"User with email: " + email + "not found.",
+			Log::ERROR);
+		return;
+	}
+	std::map<int, Match*> &matches = users.getUser(userID)->getMatches();
 
 	std::string result;
 	if (matches.size() == 0){
