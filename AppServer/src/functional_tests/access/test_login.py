@@ -18,13 +18,21 @@ class TestLogin(unittest.TestCase):
 		requests.post("http://localhost:8000/register", data = data)
 		
 	def test_login_existing_user(self):
-
 		data = {"email": mail, "password": "test"}
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
 		self.assertEqual(r.status_code, 201)
 		#Assert the alias is the same
 		alias = r.json()[u'user'][u'alias']
 		self.assertEqual(alias, "usuario_login")
+
+	def test_login_invalid_password(self):
+		data = json.dumps({"name": "TestWronsPasswd", "alias": "usuario_wpasswd", "password": "test", "email": mail, 
+			"age": "21", "sex": "Male", "location": { "latitude": -34.6970, "longitude": -58.3768 }, "photo_profile": "base64photo" })
+		requests.post("http://localhost:8000/register", data = data)
+
+		data = {"email": "example@wrongpasswd.com", "password": "wrong"}
+		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
+		self.assertEqual(r.status_code, 500)
 
 	def test_login_nonexisting_user(self):
 		data = {"email": "example@inexistent.com", "password": "test"}
@@ -36,14 +44,10 @@ class TestLogin(unittest.TestCase):
 		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
 		self.assertEqual(r.status_code, 400)
 
-	def test_login_invalid_password(self):
-		data = json.dumps({"name": "TestWronsPasswd", "alias": "usuario_wpasswd", "password": "test", "email": mail, 
-			"age": "21", "sex": "Male", "location": { "latitude": -34.6970, "longitude": -58.3768 }, "photo_profile": "base64photo" })
-		requests.post("http://localhost:8000/register", data = data)
-
-		data = {"email": "example@wrongpasswd.com", "password": "wrong"}
-		r = requests.post("http://localhost:8000/login", data = json.dumps(data))
-		self.assertEqual(r.status_code, 500)
+	def test_incorrect_method(self):
+		data = json.dumps({"email": mail, "password": "test"})
+		r = requests.post("http://localhost:8000/updateprofile", data = data)
+		self.assertEqual(r.status_code, 400)
 
 if __name__ == '__main__':
 	unittest.main()
