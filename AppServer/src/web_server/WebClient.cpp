@@ -9,7 +9,15 @@
 #include <json/json.h>
 
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
 /** Static function. Just calls the current instance's event handler.
+ *
+ *	\param networkConnection Mongoose network connection struct.
+ *	\param eventCode Mongoose event code.
+ *	\param eventData Mongoose event data, could be the http message.
  */
 static void evHandler(struct mg_connection *networkConnection,
 		int eventCode, void *eventData) {
@@ -19,6 +27,10 @@ static void evHandler(struct mg_connection *networkConnection,
 
 
 /** Handles an http response.
+ *
+ *	\param networkConnection Mongoose network connection struct.
+ *	\param eventCode Mongoose event code.
+ *	\param eventData Mongoose event data, could be the http message.
  */
 void WebClient::eventHandler(struct mg_connection *networkConnection,
 		int eventCode, void *eventData){
@@ -40,6 +52,7 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 }
 
 /**	Inits the web client resources. (RAII)
+ *
  */
 WebClient::WebClient() :
 						remoteHost("shared-server.herokuapp.com:80"){
@@ -51,9 +64,14 @@ WebClient::WebClient() :
 	keepAlive = true;
 }
 
+
 /**	Sends a http post request to add a new user
  *  Returns a pair with the ID of the new user (-1 if error) and the
  *  status code of the shared server response.
+ *
+ *  \param postData Is the content of request to be sent.
+ *
+ *	\return a pair containing the new user id, and the status code.
  */
 std::pair<int, int> WebClient::sendRegister(const std::string& postData){
 	struct mg_connection *nc = NULL;
@@ -114,7 +132,12 @@ std::pair<int, int> WebClient::sendRegister(const std::string& postData){
 	return std::pair<int, int> (-1, -1);
 }
 
-/**	Sends a http put request to edit an existing user
+/**	Sends a http put request to edit an existing user.
+ *
+ * 	\param putData Is the content of request to send.
+ * 	\param userID Is the identifier of user to edit, as string.
+ *
+ * 	\return The http status of response of shared.
  */
 int WebClient::sendEditProfile(const std::string& putData,
 		const std::string &userID){
@@ -165,8 +188,13 @@ int WebClient::sendEditProfile(const std::string& putData,
 	return -1;
 }
 
+
 /** Sends a a http get request to get the information
  *  of an existing user.
+ *
+ * 	\param userID Is the identifier of user to edit, as string.
+ *
+ * 	\return The body of response of shared.
  */
 std::string WebClient::sendLogin(const std::string& userID){
 	struct mg_connection *nc = NULL;
@@ -220,6 +248,11 @@ std::string WebClient::sendLogin(const std::string& userID){
 	return "{}";
 }
 
+
+/** Loads the users of shared to a passed map.
+ *
+ * 	\param usersById Map to fill.
+ */
 void WebClient::getUsers(std::map<int, User*> &usersById){
 	struct mg_connection *nc = NULL;
 
@@ -270,6 +303,8 @@ void WebClient::getUsers(std::map<int, User*> &usersById){
 }
 
 /** Inserts a group of default headers to request.
+ *
+ * 	\param request Is the request where we will add the default headers.
  */
 void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Host", remoteHost);
@@ -281,6 +316,12 @@ void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Content-Type", "application/json");
 }
 
+
+/** Parse a get users request, and adds the result to a users map.
+ *
+ * 	\param usersById Map to fill.
+ *	\param body Is the body of response of a get users request to shared.
+ */
 void WebClient::parseUsersMap(
 		std::map<int, User*> &usersById,
 		const std::string &body){
@@ -328,6 +369,10 @@ void WebClient::parseUsersMap(
 	}
 }
 
+
+/** Releases reserver resources.
+ *
+ */
 WebClient::~WebClient(){
 	mg_mgr_free(&mgr);
 }

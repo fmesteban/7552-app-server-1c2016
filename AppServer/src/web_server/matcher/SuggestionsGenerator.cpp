@@ -4,6 +4,14 @@
 #include <list>
 
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Constructor of Suggestion generator.
+ *
+ * 	\param usersContainer Is the server users container.
+ */
 SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	usersContainer(usersContainer) {
 
@@ -24,8 +32,9 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	}
 }
 
-/**
- * Loads suggestiosns saved in DB
+/** Loads suggestiosns saved in DB
+ *
+ *	\return False on error, True otherwise.
  */
 bool SuggestionsGenerator::loadSuggestions(){
 	std::string suggestions_str;
@@ -87,6 +96,10 @@ bool SuggestionsGenerator::loadSuggestions(){
 	return true;
 }
 
+
+/** Persist the current state and releases the reserved memory.
+ *
+ */
 SuggestionsGenerator::~SuggestionsGenerator(){
 	std::string key("suggestions");
 	std::ostringstream value;
@@ -108,6 +121,14 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 }
 
 
+/** Calculates a coefficient of relation between interests of passed users.
+ *
+ *	\param userA Is one of the users.
+ *	\param userB Is the another.
+ *
+ *	\return a negative value If the users can't match. A big value indicates
+ *	a bigger probability of match.
+ */
 float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 	if(!userA.couldMatch(userB))
 		return -1;
@@ -120,7 +141,6 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 		return -1;
 
 	int points = 1;
-
 	for (auto interestA : userA.getInterests()){
 		if (interestA->getCategory() == "sex")
 			continue;
@@ -138,6 +158,13 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 
 /** Returns a list of possible matches for the user up to a maximum cant. The list
  *  contains only the ID of each other user that implies a match.
+ *
+ *  \param user Is the user ID to want matches.
+ *  \param cant The maximum number of new matches (The final size of result list
+ *  can be bigger than cant, because we append the suggestions generated
+ *  previously, for other users)
+ *
+ *  \return The list of ids.
  */
 std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	std::list<int> result;

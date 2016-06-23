@@ -4,7 +4,7 @@
 #include "log.h"
 
 
-/* command line format */
+/** Command line format. */
 typedef enum{
 	/* ./AppServer */
 	processName,
@@ -17,6 +17,9 @@ typedef enum{
 }ParameterPositions;
 
 
+/** Verifies the command line parameters.
+ *
+ */
 static bool verifyParameters(int argc, char *argv[]){
 	return (argc == commandLineRightSize);
 }
@@ -27,7 +30,7 @@ int main(int argc, char *argv[]) {
 		std::cerr << "usage: " << argv[processName] << " port" << std::endl;
 		return 1;
 	}
-	// Set the log level	
+	/* set the log level */
 	Log::instance()->loggerLevel = Log::INFO;
 	/* just start the webserver's thread */
 	WebServer server(argv[portPosition]);

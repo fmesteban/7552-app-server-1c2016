@@ -60,7 +60,7 @@ public:
 	int getID();
 	float getLongitude();
 	float getLatitude();
-	std::vector<Interest*> getInterests();
+	std::vector<Interest*> &getInterests();
 	std::string getSex();
 	void edit(User& newProfile);
 	void setId(int id);
