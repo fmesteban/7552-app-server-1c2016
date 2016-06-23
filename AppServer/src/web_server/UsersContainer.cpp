@@ -77,8 +77,6 @@ bool UsersContainer::loadMatches(){
 
 		User* userA = getUser(userAID);
 		User* userB = getUser(userBID);
-		if (userA == NULL || userB == NULL)
-			continue;
 
 		Match* newMatch = new Match(*userA, *userB);
 
@@ -104,7 +102,6 @@ bool UsersContainer::loadMatches(){
 	return true;
 }
 
-
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
  *  Returns the error message from the shared server.
@@ -127,7 +124,6 @@ int UsersContainer::add(User &newUser){
 	return status_pair.second;
 }
 
-
 /** Loads user from db, and sends an edit profile request to
  *  shared server.
  */
@@ -146,7 +142,6 @@ int UsersContainer::edit(User &newProfile){
 
 	return client.sendEditProfile(ss.str(), userID);
 }
-
 
 /** Loads user id from db, and gets its data from shared server.
  *
@@ -187,7 +182,6 @@ User *UsersContainer::getUser(int userID){
 		return elem->second;
 }
 
-
 #define USERS_CONTAINER_RANDOM_USERS_NUMBER 15
 
 void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
@@ -216,7 +210,7 @@ UsersContainer::~UsersContainer(){
 	value << "{\"matches\":[";
 	if (!allMatches.empty()){
 		for (int i = 0; i < allMatches.size() - 1; ++i){
-			value << *allMatches[i];
+			value << *allMatches[i] << ",";
 			delete allMatches[i];
 		}
 		value << *allMatches[allMatches.size() - 1];
