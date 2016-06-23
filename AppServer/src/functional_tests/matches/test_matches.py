@@ -5,7 +5,7 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 5
+n = 1
 my_email = "fede.est" + str(n) + "@domain.com"
 other_email = "marga" + str(n) + "@domain.com"
 interests = [{"category": "music", "value": "la que no es 25"}, {"category": "sex", "value": "women"}]
