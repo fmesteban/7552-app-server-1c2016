@@ -43,11 +43,21 @@ class TestMatches(unittest.TestCase):
 		self.assertEqual(len(matches), 0)
 
 		#Other way like from suggestions
+		i = 0
 		for candidate in suggestions:
+			#Send one dislike just because
+			if i == len(suggestions) - 1:
+				r_email = candidate[u'user'][u'email']
+				data = json.dumps({"emailSrc": r_email, "emailDst": my_email})
+				r = requests.post("http://localhost:8000/dislike", data = data)
+				self.assertEqual(r.status_code, 201)
+				continue
+
 			r_email = candidate[u'user'][u'email']
 			data = json.dumps({"emailSrc": r_email, "emailDst": my_email})
 			r = requests.post("http://localhost:8000/like", data = data)
 			self.assertEqual(r.status_code, 201)
+			i+=1
 
 		data = json.dumps({"email": my_email})
 		r = requests.post("http://localhost:8000/getmatches", data = data)
