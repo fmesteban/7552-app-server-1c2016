@@ -1,8 +1,18 @@
+/** Include area. */
 #include "RequestHandlerLogin.h"
 #include "Response.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler login will handle the uri "/login".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerLogin::RequestHandlerLogin(UsersContainer &users) :
 users(users),
 RequestHandler("/login") {
@@ -11,15 +21,15 @@ RequestHandler("/login") {
 /** Should send the data of the user to the shared server. This should return
  *  all the fields of the user.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerLogin::run(Request &request){
 	Log::instance()->append("Received a login request", Log::INFO);
 
 	if (request.getMethod() != "POST"){
 		/* some libraries send OPTIONS before POST */
-		RequestHandler::sendHttpOk(
-				request.getNetworkConnection(),
-				"{ \"response\": \"POST\" }\r\n");
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append("Not a POST request. Rejected.", Log::INFO);
 		return;
 	}
@@ -50,9 +60,16 @@ void RequestHandlerLogin::run(Request &request){
 	}
 
 	/* Gets the pre-existent user from users container */
-	std::string userAsString = users.login(email, password);
+	std::string userAsString = users.login(email);
+	int status = ACCEPTED_STATUS;
+
+	if (userAsString == ""){
+		Log::instance()->append(
+				"User with email " + email + " was not found.", Log::ERROR);
+		status = 500;
+	}
 
 	/* Sends response to the client containing its data */
-	Response response(ACCEPTED_STATUS, ACCEPTED_MSG);
+	Response response(status, userAsString);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

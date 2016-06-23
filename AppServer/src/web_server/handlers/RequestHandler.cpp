@@ -1,30 +1,26 @@
+/** Include area. */
 #include "RequestHandler.h"
 #include <string>
 
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler generic constructor.
+ *
+ *	\param uri Is the uri what will be handled by the current handler.
+ */
 RequestHandler::RequestHandler(const std::string _uri):
 uri(_uri){
 }
 
 
-/** Sends an 201 OK response to \nc, appending the \extraLine
- */
-void RequestHandler::sendHttpOk(struct mg_connection *nc,
-		const std::string &extraLine){
-	mg_printf(nc,
-			"HTTP/1.1 201 OK\r\n"
-			"Access-Control-Allow-Origin: *\r\n"
-			"Access-Control-Allow-Headers: content-type\r\n"
-			"Transfer-Encoding: chunked\r\n"
-			"\r\n");
-
-	mg_printf_http_chunk(nc, extraLine.c_str());
-	mg_send_http_chunk(nc, "", 0);
-}
-
-
 /** Sends a Response to a network connection.
  *
+ *	\param r Is the response to be sent.
+ *	\param nc Is the mongoose network connection by where the
+ *	response will be sent.
  */
 void RequestHandler::sendResponse(Response &r, struct mg_connection *nc){
 	Log::instance()->append("Sending response to client's request.", Log::INFO);
@@ -42,6 +38,8 @@ void RequestHandler::sendResponse(Response &r, struct mg_connection *nc){
 
 /** Returns Request uri. Requests handlers who inherit from it class,
  *  must handle a specific uri.
+ *
+ *  \return The uri as a string refference.
  */
 const std::string& RequestHandler::getUri(){
 	return uri;

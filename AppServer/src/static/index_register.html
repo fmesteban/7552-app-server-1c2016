@@ -37,7 +37,7 @@
       var alias = document.getElementById('alias').value;
       var password = document.getElementById('password').value;
       var email = document.getElementById('email').value;
-      var birthday = document.getElementById('birthday').value;
+      var age = document.getElementById('age').value;
       var sex = document.getElementById('sex').value;
       var latitude = document.getElementById('latitude').value;
       var longitude = document.getElementById('longitude').value;
@@ -53,18 +53,15 @@
           alias: alias,
           password: password,
           email: email,
-          birthday: birthday,
+          age: age,
           sex: sex,
           photo_profile: photo_profile,
-          location: JSON.stringify({
+          location: {
             latitude: latitude,
             longitude: longitude
-          }),
+          },
           interests: [
-            {
-              category: 'music',
-              value: 'arbol'
-            }
+            
           ]
         }),
         success: function(json) {
@@ -101,7 +98,7 @@
       <label>email:</label> <input type="text" id="email" />
     </div><div>
     <div>
-      <label>Birthday:</label> <input type="text" id="birthday" />
+      <label>age:</label> <input type="text" id="age" />
     </div><div>
     <div>
       <label>Your genre:</label> <input type="text" id="sex" />

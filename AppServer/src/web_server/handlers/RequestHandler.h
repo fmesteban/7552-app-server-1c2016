@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_HANDLERS_REQUESTHANDLER_H_
 #define WEB_SERVER_HANDLERS_REQUESTHANDLER_H_
 
+/** Include area. */
 #include "mongoose.h"
 #include <string>
 #include <json/json.h>

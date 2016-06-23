@@ -1,7 +1,16 @@
+/** Include area. */
 #include "Database.h"
 #include <string>
 #include <iostream>
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+
+/** DB Constructor. Opens the database file, or creates it if doesn't exist.
+ *
+ */
 Database::Database() :
 kDBPath("./debug_db") {
 	/** Optimize RocksDB. This is the easiest way to get RocksDB to perform well */
@@ -15,57 +24,39 @@ kDBPath("./debug_db") {
 	Log::instance()->append("DB openes correctly.", Log::INFO);
 }
 
-// TODO: don't use assert, throw exceptions instead
+
+/** Adds a key-value pair in the database.
+ *
+ *	\param key Is the key of the pair.
+ *	\param value Is the value of the pair.
+ */
 void Database::putKeyValue(const std::string& key, const std::string& value){
 	s = db->Put(rocksdb::WriteOptions(), key, value);
-	std::cerr << s.ToString() << std::endl;
 	assert(s.ok());
 }
 
-void Database::putTwoLvlKeyValue(
-		const std::string& keyFirstLevel,
-		const std::string& keySecondLevel,
-		const std::string& value){
-	std::string resultKey;
-	wrapKeys(resultKey, keyFirstLevel, keySecondLevel);
-	putKeyValue(resultKey, value);
-}
 
-bool Database::getTwoLvlValue(
-		const std::string& keyFirstLevel,
-		const std::string& keySecondLevel,
-		std::string& value){
-	std::string resultKey;
-	wrapKeys(resultKey, keyFirstLevel, keySecondLevel);
-	return getValue(resultKey, value);
-}
-
+/**	Gets a value of the database, for the corresponding key.
+ *
+ *	\param key Is the key to want in the db.
+ *	\param value Is a refference what the function will fill with the wanted value.
+ *
+ *	\return True if the key was found, False otherwise.
+ */
 bool Database::getValue(const std::string& key, std::string& value){
 	s = db->Get(rocksdb::ReadOptions(), key, &value);
-	std::cerr << s.ToString();
-	//assert(s.ok());
 	if (s.IsNotFound())
 		Log::instance()->append("Key not found: " + key + " in DB.", Log::ERROR);
 	else
-		Log::instance()->append("Key found: " + key + ", value: " + value +" in DB.", Log::INFO);
+		Log::instance()->append("Key found: " + key +
+				", value: " + value +" in DB.", Log::INFO);
 	return !s.IsNotFound();
 }
 
-void Database::eraseKey(const std::string& key){
-	s = db->Delete(rocksdb::WriteOptions(), key);
-	//assert(s.ok());
-	if (s.ok())
-		Log::instance()->append("Deleted key: " + key + " from DB.", Log::INFO);
-	else
-		Log::instance()->append("Key not deleted: " + key + " in DB.", Log::ERROR);
-}
 
-void Database::wrapKeys(std::string& resultKey,
-			const std::string& keyFirstLevel,
-			const std::string& keySecondLevel){
-	resultKey = keyFirstLevel + "&" + keySecondLevel;
-}
-
+/**	Releases the memory used by DB and destroys the logger.
+ *
+ */
 Database::~Database(){
 	Log::instance()->append("Closing DB.", Log::INFO);
 	delete db;
