@@ -3,7 +3,7 @@
 #include <iostream>
 
 Database::Database() :
-kDBPath("./test_db") {
+kDBPath("./debug_db") {
 	/** Optimize RocksDB. This is the easiest way to get RocksDB to perform well */
 	options.IncreaseParallelism();
 	options.OptimizeLevelStyleCompaction();

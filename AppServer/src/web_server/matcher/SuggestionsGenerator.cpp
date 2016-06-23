@@ -31,7 +31,7 @@ bool SuggestionsGenerator::loadSuggestions(){
 
 	usersContainer.getDB().getValue(std::string("suggestions"), suggestions_str);
 
-	std::cerr << "Suggestions: " << suggestions_str << std::endl;
+	std::cerr << "Suggestions loaded from DB\n" << suggestions_str << std::endl;
 
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
@@ -43,7 +43,6 @@ bool SuggestionsGenerator::loadSuggestions(){
 				Log::ERROR);
 		return false;
 	}
-
 	/* Parse interests array */
 	Json::Value& JSON_suggestions = root["suggestions"];
 	Json::ValueConstIterator it = JSON_suggestions.begin();

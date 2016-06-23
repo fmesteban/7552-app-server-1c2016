@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(AppServer)
 
-#INCLUDE(CodeCoverage)
-
 #sets compile flags
-set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage -pthread -std=c++11 -O0 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "--coverage -fprofile-arcs -ftest-coverage -pthread -std=c++11 -O0 ${CMAKE_CXX_FLAGS}")
 
 #adds the ldflags needed to link rocksdb
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lrt -lsnappy -lgflags -lz -lbz2")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lrt -lsnappy -lgflags -lz -lbz2 --coverage")
 
 
 #adds the source and header files recursively

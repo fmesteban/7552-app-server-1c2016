@@ -5,19 +5,18 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 146
+n = 1
 mail = "example_login" + str(n) + "@mail.com"
 
 class TestLogin(unittest.TestCase):
 
 	@classmethod
-    def setUpClass(self):
-    	#First we register
+	def setUpClass(cls):
+		#First we register
 		data = json.dumps({"name": "TestLogin", "alias": "usuario_login", "password": "test", "email": mail, 
 			"age": "21", "sex": "Male", "location": { "latitude": -34.6970, "longitude": -58.3768 }, "photo_profile": "base64photo" })
 		requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
-
+		
 	def test_login_existing_user(self):
 
 		data = {"email": mail, "password": "test"}

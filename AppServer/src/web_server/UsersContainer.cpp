@@ -46,6 +46,9 @@ Database &UsersContainer::getDB(){
 bool UsersContainer::loadMatches(){
 	std::string matches_str;
 	db.getValue(std::string("matches"), matches_str);
+
+	std::cerr << "Matches loaded from DB\n" << matches_str << std::endl;
+
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
