@@ -4,6 +4,7 @@
 /** Include area. */
 #include <map>
 #include <vector>
+#include <list>
 #include "Suggestion.h"
 #include "UsersContainer.h"
 #include "User.h"

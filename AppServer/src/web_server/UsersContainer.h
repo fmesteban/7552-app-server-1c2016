@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include <vector>
 
 class UsersContainer {
 private:

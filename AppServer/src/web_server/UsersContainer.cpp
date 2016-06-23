@@ -6,6 +6,7 @@
 #include <utility>
 #include <map>
 #include <list>
+#include <vector>
 #include <cstdlib>
 #include "Match.h"
 
@@ -25,13 +26,15 @@ UsersContainer::UsersContainer(){
 	/* loads the users from shared server */
 	client.getUsers(usersById);
 
-	/* Add users to db. This way we can change of shared server without problems */
+	/* add users to db */ 
+	/* this way we can change of shared server without problems */
 	std::map<int, User*>::iterator iterLoadedUsers = usersById.begin();
 	for(; iterLoadedUsers != usersById.end(); ++iterLoadedUsers)
 		iterLoadedUsers->second->saveIn(db);
 
 	Log::instance()->append(
-			"Loaded " + std::to_string(usersById.size()) + " users correctly from shared server.",
+			"Loaded " + std::to_string(usersById.size()) + 
+			" users correctly from shared server.",
 			Log::INFO);
 
 	bool matchesLoaded = loadMatches();
@@ -39,10 +42,10 @@ UsersContainer::UsersContainer(){
 		Log::instance()->append(
 				"There was an error loading matches from RocksDB.",
 				Log::INFO);
-	}
-	else {
+	}else{
 		Log::instance()->append(
-				"Loaded " + std::to_string(allMatches.size()) + " matches correctly from RocksDB.",
+				"Loaded " + std::to_string(allMatches.size()) + 
+				" matches correctly from RocksDB.",
 				Log::INFO);
 	}
 }

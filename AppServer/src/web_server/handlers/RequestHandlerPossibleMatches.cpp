@@ -4,6 +4,7 @@
 #include "User.h"
 #include <iostream>
 #include <string>
+#include <list>
 
 
 /*------------------------------------------------------------------------
@@ -54,7 +55,7 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	std::string email = root.get("email", "unavailable").asString();
 	std::string count = root.get("count", "unavailable").asString();
 
-	if(email == "unavailable" || count == "unavailable"){
+	if (email == "unavailable" || count == "unavailable"){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
@@ -81,7 +82,8 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	int count_i;
 	std::stringstream(count) >> count_i;
 
-	std::list<int> suggestions = suggestionsGenerator.getPossibleMatches(userID, count_i);
+	std::list<int> suggestions = suggestionsGenerator.getPossibleMatches(
+		userID, count_i);
 
 	std::string result;
 	if (suggestions.size() == 0){

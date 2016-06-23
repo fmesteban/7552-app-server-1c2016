@@ -13,7 +13,9 @@ private:
 	UsersContainer &users;
 	SuggestionsGenerator &suggestionsGenerator;
 public:
-	explicit RequestHandlerPossibleMatches(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);
+	explicit RequestHandlerPossibleMatches(
+		UsersContainer &users, 
+		SuggestionsGenerator &suggestionsGenerator);
 	void run(Request &request);
 };
 

@@ -1,5 +1,6 @@
 /** Include area. */
 #include "ChatMessage.h"
+#include <string>
 
 
 /*------------------------------------------------------------------------
@@ -12,7 +13,10 @@
  * 	\param message Is the message as string.
  * 	\param time Is a string representing a timestamp.
  */
-ChatMessage::ChatMessage(User &userSrc, const std::string &message, const std::string &time) :
+ChatMessage::ChatMessage(
+		User &userSrc, 
+		const std::string &message, 
+		const std::string &time) :
 	userSrc(userSrc),
 	message(message),
 	time(time){

@@ -168,12 +168,11 @@ int WebClient::sendEditProfile(const std::string& putData,
 		while (keepAlive)
 			mg_mgr_poll(&mgr, 1000);
 		// TODO: capture possible error here.
-		if(responseFromShared.getStatus() == 200){
+		if (responseFromShared.getStatus() == 200){
 			Log::instance()->append(
 					"Received OK from shared server.",
 					Log::INFO);
-		}
-		else if(responseFromShared.getStatus() == 500){
+		}else if (responseFromShared.getStatus() == 500){
 			Log::instance()->append(
 					"Received internal server error from shared server.",
 					Log::INFO);

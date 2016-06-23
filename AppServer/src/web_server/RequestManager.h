@@ -2,7 +2,6 @@
 #define WEB_SERVER_REQUESTMANAGER_H_
 
 /** Include area. */
-#include <handlers/RequestHandlerGetConversation.h>
 #include <map>
 #include <string>
 #include "UsersContainer.h"
@@ -17,6 +16,7 @@
 #include "RequestHandlerSendConversation.h"
 #include "RequestHandlerLike.h"
 #include "RequestHandlerDislike.h"
+
 
 class RequestManager {
 private:
@@ -34,7 +34,9 @@ private:
 	RequestHandlerDislike reqDislike;
 	void insertDefaultHandlers();
 public:
-	explicit RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator);
+	explicit RequestManager(
+		UsersContainer &users, 
+		SuggestionsGenerator &suggestionsGenerator);
 	void addHandler(const std::string& uri, RequestHandler* reqHandler);
 	RequestHandler& getHanlder(const std::string& uri);
 };

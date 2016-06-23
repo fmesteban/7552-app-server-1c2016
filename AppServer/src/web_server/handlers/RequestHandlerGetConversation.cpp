@@ -14,9 +14,10 @@
  *
  * 	\param users Is the server users container.
  */
-RequestHandlerGetConversation::RequestHandlerGetConversation(UsersContainer &users) :
-users(users),
-RequestHandler("/getconversation") {
+RequestHandlerGetConversation::RequestHandlerGetConversation(
+	UsersContainer &users) :
+	users(users),
+	RequestHandler("/getconversation") {
 }
 
 /** Parse the /getconversation uri input, and saves it in the app-server

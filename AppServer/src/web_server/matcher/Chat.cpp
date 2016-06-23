@@ -1,6 +1,7 @@
 /** Include area. */
 #include "Chat.h"
 #include <vector>
+#include <string>
 
 
 /*------------------------------------------------------------------------
@@ -24,7 +25,10 @@ userB(userB){
  *  \param message Is the message as string.
  *  \param time Is a timestamp as string.
  */
-void Chat::pushMessage(User &userSrc, const std::string &message, const std::string &time){
+void Chat::pushMessage(
+	User &userSrc, 
+	const std::string &message, 
+	const std::string &time){
 	if(userSrc == userA)
 		messagesFromA.push_back(new ChatMessage(userSrc, message, time));
 	else
@@ -37,7 +41,9 @@ void Chat::pushMessage(User &userSrc, const std::string &message, const std::str
  *	\param os Is the output stream where the chat messages will be printed.
  *	\param messages Is the array of messages to print.
  */
-void Chat::printMessages(std::ostream &os, const std::vector<ChatMessage*> &messages) const{
+void Chat::printMessages(
+	std::ostream &os, 
+	const std::vector<ChatMessage*> &messages) const{
 	if (!messages.empty()){
 		for (size_t i=0; i < messages.size() - 1; ++i){
 			/* with comma */
@@ -88,7 +94,9 @@ void Chat::printTo(std::ostream &os, User &userSrc){
 std::ostream& operator<<(std::ostream &os, const Chat& self) {
 	os << "[";
 
-	bool commaInTheMiddle = (self.messagesFromA.size() > 0) && (self.messagesFromB.size() > 0);
+	bool commaInTheMiddle = 
+		(self.messagesFromA.size() > 0) && 
+		(self.messagesFromB.size() > 0);
 	self.printMessages(os, self.messagesFromA);
 	if(commaInTheMiddle) os << ", ";
 	self.printMessages(os, self.messagesFromB);
