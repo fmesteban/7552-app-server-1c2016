@@ -77,8 +77,12 @@ bool UsersContainer::loadMatches(){
 
 		User* userA = getUser(userAID);
 		User* userB = getUser(userBID);
-		if (userA == NULL || userB == NULL)
+		if (userA == NULL || userB == NULL){
+			std::cout << "null";
 			continue;
+		}else{
+			std::cout << "loading " << userA->getID() << " & " << userB->getID() << std::endl;
+		}
 
 		Match* newMatch = new Match(*userA, *userB);
 
@@ -216,7 +220,7 @@ UsersContainer::~UsersContainer(){
 	value << "{\"matches\":[";
 	if (!allMatches.empty()){
 		for (int i = 0; i < allMatches.size() - 1; ++i){
-			value << *allMatches[i];
+			value << *allMatches[i] << ",";
 			delete allMatches[i];
 		}
 		value << *allMatches[allMatches.size() - 1];
