@@ -214,10 +214,13 @@ UsersContainer::~UsersContainer(){
 	std::string key("matches");
 	std::ostringstream value;
 	value << "{\"matches\":[";
-	std::vector<Match*>::iterator iterMatches = allMatches.begin();
-	for(; iterMatches != allMatches.end(); ++iterMatches){
-		value << **iterMatches;
-		delete *iterMatches;
+	if (!allMatches.empty()){
+		for (int i = 0; i < allMatches.size() - 1; ++i){
+			value << *allMatches[i];
+			delete allMatches[i];
+		}
+		value << *allMatches[allMatches.size() - 1];
+		delete allMatches[allMatches.size() - 1];
 	}
 	value << "]}";
 	std::cout << "Matches to be saved on DB" << std::endl;
