@@ -23,12 +23,12 @@ class TestUpdateUser(unittest.TestCase):
 		data = json.dumps({"name": "TestUpdateUpdated", "alias": alias, "email": mail, "age": "32", "sex": "Male", 
 			"location": { "latitude": -34.6982, "longitude": -58.3771 }, "photo_profile": "base64photo", "interests": interests })
 		r = requests.post("http://localhost:8000/updateprofile", data = data)
-		self.assertEqual(r.status_code, 201)
+		self.assertEqual(r.status_code, 200)
 
 		# We retrieve to check updated data
 		data = json.dumps({"email": mail, "password": "test"})
 		r = requests.post("http://localhost:8000/login", data = data)
-		self.assertEqual(r.status_code, 200)
+		self.assertEqual(r.status_code, 201)
 		# Check name is changed
 		response = r.json()[u'user']
 		self.assertEqual(response[u'name'], "TestUpdateUpdated")

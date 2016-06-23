@@ -149,7 +149,7 @@ int WebClient::sendEditProfile(const std::string& putData,
 					"Received OK from shared server.",
 					Log::INFO);
 		}
-		if(responseFromShared.getStatus() == 500){
+		else if(responseFromShared.getStatus() == 500){
 			Log::instance()->append(
 					"Received internal server error from shared server.",
 					Log::INFO);

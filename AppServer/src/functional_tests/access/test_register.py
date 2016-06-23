@@ -5,7 +5,7 @@ from subprocess import call
 import inspect, os
 
 n = 1
-mail = "example_login" + str(n) + "@mail.com"
+mail = "example_register" + str(n) + "@mail.com"
 interests = [ { "category": "music", "value": "La 25"} ]
 
 class TestRegistration(unittest.TestCase):
