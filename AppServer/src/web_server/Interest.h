@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_INTEREST_H_
 #define WEB_SERVER_INTEREST_H_
 
+/** Include area. */
 #include <string>
 #include <ostream>
 

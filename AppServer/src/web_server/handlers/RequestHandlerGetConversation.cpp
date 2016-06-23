@@ -1,9 +1,19 @@
+/** Include area. */
 #include "RequestHandlerGetConversation.h"
 #include "Response.h"
 #include "User.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler get conversation will handle the uri "/getconversation".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerGetConversation::RequestHandlerGetConversation(UsersContainer &users) :
 users(users),
 RequestHandler("/getconversation") {
@@ -12,6 +22,7 @@ RequestHandler("/getconversation") {
 /** Parse the /getconversation uri input, and saves it in the app-server
  *  database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerGetConversation::run(Request &request){
 	Log::instance()->append("Received a get conversation request", Log::INFO);
@@ -71,7 +82,7 @@ void RequestHandlerGetConversation::run(Request &request){
 	std::cout << "Response getconversation" << std::endl;
 	std::cout << responseStream.str() << std::endl;
 
-	//Sends response to the client containing its data
+	/* Sends response to the client containing its data */
 	Response response(ACCEPTED_STATUS, responseStream.str());
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

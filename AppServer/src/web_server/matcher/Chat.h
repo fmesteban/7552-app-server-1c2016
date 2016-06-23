@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_MATCHER_CHAT_H_
 #define WEB_SERVER_MATCHER_CHAT_H_
 
+/** Include area. */
 #include <vector>
 #include <string>
 #include "ChatMessage.h"

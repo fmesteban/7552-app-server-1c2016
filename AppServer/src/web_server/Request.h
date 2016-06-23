@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_REQUEST_H_
 #define WEB_SERVER_REQUEST_H_
 
+/** Include area. */
 #include <map>
 #include <string>
 #include "mongoose.h"

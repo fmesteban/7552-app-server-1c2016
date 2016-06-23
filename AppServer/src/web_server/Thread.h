@@ -1,6 +1,7 @@
 #ifndef THREAD_H_
 #define THREAD_H_
 
+/** Include area. */
 #include <pthread.h>
 
 /** pthread Wrapper

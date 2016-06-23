@@ -1,6 +1,11 @@
+/** Include area. */
 #include "Response.h"
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
 
 /** Builds an empty Response.
  * 	After, user must call parseMessage to have a well formed response.
@@ -13,6 +18,9 @@ Response::Response(){
 
 /** Builds an empty Response.
  * 	Useful when user sends responses.
+ *
+ * 	\param st Is the status of the created response.
+ * 	\param msg Is the body of the created response.
  */
 Response::Response(httpStatus st, std::string msg){
 	status = st;
@@ -22,7 +30,8 @@ Response::Response(httpStatus st, std::string msg){
 
 /** Extracts body and response code from a http message.
  *
- * TODO: if needed, parse needed headers, etc...*/
+ *	\param httpMessage Mongoose HTTP message.
+ */
 void Response::parseMessage(struct http_message &httpMessage){
 	body = std::string(httpMessage.body.p, httpMessage.body.len);
 	status = httpMessage.resp_code;
@@ -31,6 +40,7 @@ void Response::parseMessage(struct http_message &httpMessage){
 
 /** Returns a reference to the data field.
  *
+ *	\return A refference to the internal body string.
  */
 std::string &Response::getBody(){
 	return body;
@@ -39,6 +49,7 @@ std::string &Response::getBody(){
 
 /** Returns response http status code.
  *
+ *	\return the http status code.
  */
 httpStatus Response::getStatus(){
 	return status;

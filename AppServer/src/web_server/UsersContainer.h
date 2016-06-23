@@ -1,10 +1,10 @@
 #ifndef WEB_SERVER_USERSCONTAINER_H_
 #define WEB_SERVER_USERSCONTAINER_H_
 
+/** Include area. */
 #include "WebClient.h"
 #include "User.h"
 #include "Database.h"
-
 #include <json/json.h>
 #include <string>
 #include <map>

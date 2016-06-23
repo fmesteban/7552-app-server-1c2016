@@ -1,3 +1,4 @@
+/** Include area. */
 #include "UsersContainer.h"
 #include <string>
 #include <iostream>
@@ -8,7 +9,20 @@
 #include <cstdlib>
 #include "Match.h"
 
+
+/** Constants. */
+#define USERS_CONTAINER_RANDOM_USERS_NUMBER 15
+
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Constructor of users container.
+ *
+ */
 UsersContainer::UsersContainer(){
+	/* loads the users from shared server */
 	client.getUsers(usersById);
 
 	/* Add users to db. This way we can change of shared server without problems */
@@ -33,15 +47,17 @@ UsersContainer::UsersContainer(){
 	}
 }
 
-/**
- * Returns the reference to the Database
+/** Returns the reference to the Database.
+ *
+ * 	\return A refference to the database.
  */
 Database &UsersContainer::getDB(){
 	return db;
 }
 
-/**
- * Loads matches saved in DB
+/** Loads matches saved in DB.
+ *
+ *	\return True on success, False otherwise.
  */
 bool UsersContainer::loadMatches(){
 	std::string matches_str;
@@ -102,9 +118,13 @@ bool UsersContainer::loadMatches(){
 	return true;
 }
 
+
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
- *  Returns the error message from the shared server.
+ *
+ *  \param newUser Is the profile from the new user.
+ *
+ *  \return The error message from the shared server.
  */
 int UsersContainer::add(User &newUser){
 	std::stringstream ss;
@@ -124,8 +144,14 @@ int UsersContainer::add(User &newUser){
 	return status_pair.second;
 }
 
+
 /** Loads user from db, and sends an edit profile request to
  *  shared server.
+ *
+ *  \param newProfile Contains the new data for user.
+ *
+ *  \return -1 if user was not found in DB, or web client's return
+ *  otherwise.
  */
 int UsersContainer::edit(User &newProfile){
 	std::stringstream ss;
@@ -143,8 +169,12 @@ int UsersContainer::edit(User &newProfile){
 	return client.sendEditProfile(ss.str(), userID);
 }
 
+
 /** Loads user id from db, and gets its data from shared server.
  *
+ *	\param email is the email from the user who wants to login.
+ *
+ *	\return the same return of shared server.
  */
 std::string UsersContainer::login(const std::string &email){
 	std::string userID;
@@ -153,8 +183,11 @@ std::string UsersContainer::login(const std::string &email){
 	return client.sendLogin(userID);
 }
 
-/*
- * Returns the ID of user from the email
+/** Returns the ID of user from the email
+ *
+ *	\param email Is the email from an user.
+ *
+ *	\return The user's ID if email is in DB, -1 otherwise.
  */
 int UsersContainer::getID(const std::string &email){
 	std::string userID;
@@ -164,15 +197,23 @@ int UsersContainer::getID(const std::string &email){
 	return std::stringstream(userID) >> ID ? ID : 0;
 }
 
-/*
+
+/** Gets a user from shared server.
  * 
+ * 	\param id Is the identifier of user to get.
+ *
+ * 	\return user json as string.
  */
 std::string UsersContainer::get(const int id){
 	return client.sendLogin(std::to_string(id));
 }
 
-/**
- * Returns a User* that matches the ID
+/** Returns a User pointer that matches the ID.
+ *
+ * 	\param id Is the identifier of user to get.
+ *
+ *	\return The user with identifier \id if it is in container, or NULL
+ *	otherwise.
  */
 User *UsersContainer::getUser(int userID){
 	std::map<int, User*>::iterator elem = usersById.find(userID);
@@ -182,8 +223,11 @@ User *UsersContainer::getUser(int userID){
 		return elem->second;
 }
 
-#define USERS_CONTAINER_RANDOM_USERS_NUMBER 15
 
+/** Fills a list of random user pointers.
+ *
+ * 	\param randomUsers Is the list to fill.
+ */
 void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
 	if (usersById.size() == 0)
 		return;
@@ -196,6 +240,12 @@ void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
 	}
 }
 
+
+/** Adds a match to the internal matches array, and to
+ *  corresponding users.
+ *
+ *	\param match Is the new match.
+ */
 void UsersContainer::addMatch(Match *match){
 	allMatches.push_back(match);
 	User &userA = match->getUserA();
@@ -204,6 +254,10 @@ void UsersContainer::addMatch(Match *match){
 	userB.addMatch(userA.getID(), match);
 }
 
+
+/** Persist current state and releases reserver resources.
+ *
+ */
 UsersContainer::~UsersContainer(){
 	std::string key("matches");
 	std::ostringstream value;

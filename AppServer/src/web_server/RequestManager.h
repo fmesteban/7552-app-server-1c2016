@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_REQUESTMANAGER_H_
 #define WEB_SERVER_REQUESTMANAGER_H_
 
+/** Include area. */
 #include <handlers/RequestHandlerGetConversation.h>
 #include <map>
 #include <string>

@@ -1,8 +1,18 @@
+/** Include area. */
 #include "RequestHandlerLogin.h"
 #include "Response.h"
 #include <iostream>
 #include <string>
 
+
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler login will handle the uri "/login".
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerLogin::RequestHandlerLogin(UsersContainer &users) :
 users(users),
 RequestHandler("/login") {
@@ -11,6 +21,7 @@ RequestHandler("/login") {
 /** Should send the data of the user to the shared server. This should return
  *  all the fields of the user.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerLogin::run(Request &request){
 	Log::instance()->append("Received a login request", Log::INFO);

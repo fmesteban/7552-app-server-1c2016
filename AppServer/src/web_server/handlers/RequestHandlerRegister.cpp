@@ -1,3 +1,4 @@
+/** Include area. */
 #include "RequestHandlerRegister.h"
 #include "Response.h"
 #include "User.h"
@@ -5,14 +6,24 @@
 #include <string>
 
 
+/*------------------------------------------------------------------------
+ * 	Member Functions Implementations
+ * ---------------------------------------------------------------------*/
+
+/** Request handler register handles the uri "/register"
+ *
+ * 	\param users Is the server users container.
+ */
 RequestHandlerRegister::RequestHandlerRegister(UsersContainer &users) :
 users(users),
 RequestHandler("/register") {
 }
 
+
 /** Parse the /register uri input, and saves it in the app-server
  * 	database.
  *
+ *	\param request Is the request sent by client.
  */
 void RequestHandlerRegister::run(Request &request){
 	Log::instance()->append("Received a register request", Log::INFO);

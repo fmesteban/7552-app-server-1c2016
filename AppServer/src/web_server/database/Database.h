@@ -1,9 +1,9 @@
 #ifndef WEB_SERVER_DATABASE_DATABASE_H_
 #define WEB_SERVER_DATABASE_DATABASE_H_
 
+/** Include area. */
 #include <cstdio>
 #include <string>
-
 #include "rocksdb/db.h"
 #include "rocksdb/slice.h"
 #include "rocksdb/options.h"
