@@ -20,7 +20,6 @@ RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &sugg
 /** Associates the RequestHandlers with theirs URI.
  */
 void RequestManager::insertDefaultHandlers(){
-	addHandler(reqExample.getUri(), &reqExample);
 	addHandler(reqRegister.getUri(), &reqRegister);
 	addHandler(reqLogin.getUri(), &reqLogin);
 	addHandler(reqEditProfile.getUri(), &reqEditProfile);

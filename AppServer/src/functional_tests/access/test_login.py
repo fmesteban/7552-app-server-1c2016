@@ -46,7 +46,7 @@ class TestLogin(unittest.TestCase):
 
 	def test_incorrect_method(self):
 		data = json.dumps({"email": mail, "password": "test"})
-		r = requests.post("http://localhost:8000/updateprofile", data = data)
+		r = requests.put("http://localhost:8000/updateprofile", data = data)
 		self.assertEqual(r.status_code, 400)
 
 if __name__ == '__main__':
