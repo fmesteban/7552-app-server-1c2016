@@ -17,27 +17,22 @@ class TestPossibleMatches(unittest.TestCase):
 		data = json.dumps({"name": "TestUser"+str(n), "alias": "usuario_suggestions"+str(n), "password": "test", "email": "example_suggestions" + str(n) + "@mail.com",
 		 "age": "25", "interests": interests, "sex": "Male", "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
 
 		data = json.dumps({"name": "TestUser"+str(n), "alias": "usuario_suggestions"+str(n+1), "password": "test", "email": "example_suggestions" + str(n+1) + "@mail.com",
 		 "age": "25", "interests": interests, "sex": "Male", "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
 
 		data = json.dumps({"name": "TestUser"+str(n), "alias": "usuario_suggestions"+str(n+2), "password": "test", "email": "example_suggestions" + str(n+2) + "@mail.com",
 		 "age": "25", "interests": interests, "sex": "Male", "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
 
 		data = json.dumps({"name": "TestUser"+str(n), "alias": "usuario_suggestions"+str(n+3), "password": "test", "email": "example_suggestions" + str(n+3) + "@mail.com",
 		 "age": "25", "interests": interests, "sex": "Male", "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
 
 		data = json.dumps({"name": "TestUser"+str(n), "alias": "usuario_suggestions"+str(n+4), "password": "test", "email": "example_suggestions" + str(n+4) + "@mail.com",
 		 "age": "25", "interests": interests, "sex": "Male", "location": { "latitude": -34.6975, "longitude": -58.3770 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
-		self.assertEqual(r.status_code, 201)
 
 	def test_get_suggestions(self):
 

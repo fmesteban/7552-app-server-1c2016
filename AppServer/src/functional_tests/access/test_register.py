@@ -5,7 +5,7 @@ from subprocess import call
 import inspect, os
 
 n = 1
-mail = "example_login" + str(n) + "@mail.com"
+mail = "example_register" + str(n) + "@mail.com"
 interests = [ { "category": "music", "value": "La 25"} ]
 
 class TestRegistration(unittest.TestCase):
@@ -16,8 +16,8 @@ class TestRegistration(unittest.TestCase):
 		r = requests.post("http://localhost:8000/register", data = data)
 		self.assertEqual(r.status_code, 201)
 
-	def test_create_existing_user(self):
-		data = json.dumps({"name": "TestRegister", "alias": "usuario_register", "password": "test", "email": "example_register1@domain.com", "age": "20",
+		#Create existing user
+		data = json.dumps({"name": "TestRegister", "alias": "usuario_register" + str(n), "password": "test", "email": mail, "age": "20",
 		"interests": interests, "sex": "Male", "location": { "latitude": 45, "longitude": 46 }, "photo_profile": "base64photo" })
 		r = requests.post("http://localhost:8000/register", data = data)
 		self.assertEqual(r.status_code, 500)
