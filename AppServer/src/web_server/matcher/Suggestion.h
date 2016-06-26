@@ -14,6 +14,7 @@ private:
 	bool _someoneDisliked;
 	bool sentToA;
 	bool sentToB;
+
 public:
 	Suggestion(User &userA, User &userB);
 	bool isMatch();

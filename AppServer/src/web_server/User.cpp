@@ -7,6 +7,8 @@
 #include <cstdio>
 #include <ctime>
 #include <utility>
+#include <map>
+#include <list>
 #include "Suggestion.h"
 #include "Match.h"
 
@@ -351,7 +353,8 @@ std::map<int, Match*> &User::getMatches(){
  *	\param message Is the message as string.
  *	\param time Is a timestamp as string.
  */
-void User::sendMsg(int idDest, const std::string &message, const std::string &time){
+void User::sendMsg(int idDest, const std::string &message,
+		const std::string &time){
 	std::map<int, Match*>::iterator iterMatches = matches.find(idDest);
 	if(iterMatches != matches.end()){
 		iterMatches->second->pushChatMessage(*this, message, time);
@@ -370,12 +373,12 @@ void User::printChat(std::ostream &os, int idAnother){
 	std::map<int, Match*>::iterator iterMatches = matches.find(idAnother);
 	if(iterMatches != matches.end()){
 		Match *match = iterMatches->second;
-		User &anotherUser = match->getUserA() == *this ? match->getUserB() : match->getUserA();
+		User &anotherUser = match->getUserA() ==
+				*this ? match->getUserB() : match->getUserA();
 		match->getChat().printTo(os, anotherUser);
 	}else{
 		os << "[]";
 	}
-
 }
 
 

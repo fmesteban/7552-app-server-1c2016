@@ -4,6 +4,7 @@
 #include "User.h"
 #include <iostream>
 #include <string>
+#include <list>
 
 
 /*------------------------------------------------------------------------
@@ -81,7 +82,8 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	int count_i;
 	std::stringstream(count) >> count_i;
 
-	std::list<int> suggestions = suggestionsGenerator.getPossibleMatches(userID, count_i);
+	std::list<int> suggestions =
+			suggestionsGenerator.getPossibleMatches(userID, count_i);
 
 	std::string result;
 	if (suggestions.size() == 0){

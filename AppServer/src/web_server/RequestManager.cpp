@@ -14,7 +14,8 @@
  *	\param users Is a refference to the server users container.
  *	\param suggestionsGenerator Is a refference to the suggestions generator.
  */
-RequestManager::RequestManager(UsersContainer &users, SuggestionsGenerator &suggestionsGenerator) :
+RequestManager::RequestManager(UsersContainer &users,
+		SuggestionsGenerator &suggestionsGenerator) :
 	users(users),
 	reqRegister(users),
 	reqLogin(users),

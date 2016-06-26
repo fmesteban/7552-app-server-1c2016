@@ -14,7 +14,8 @@
  *
  * 	\param users Is the server users container.
  */
-RequestHandlerGetConversation::RequestHandlerGetConversation(UsersContainer &users) :
+RequestHandlerGetConversation::RequestHandlerGetConversation(
+		UsersContainer &users) :
 users(users),
 RequestHandler("/getconversation") {
 }

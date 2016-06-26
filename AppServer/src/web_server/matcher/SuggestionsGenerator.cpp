@@ -2,6 +2,7 @@
 #include "SuggestionsGenerator.h"
 #include <map>
 #include <list>
+#include <string>
 
 
 /*------------------------------------------------------------------------
@@ -14,7 +15,6 @@
  */
 SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 	usersContainer(usersContainer) {
-
 	Log::instance()->append(
 			"Building suggestions.",
 			Log::INFO);
@@ -24,10 +24,10 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 		Log::instance()->append(
 				"There was an error loading suggestions from RocksDB.",
 				Log::INFO);
-	}
-	else {
+	}else {
 		Log::instance()->append(
-			"Loaded " + std::to_string(suggestions.size()) + " suggestions correctly from RocksDB.",
+			"Loaded " + std::to_string(suggestions.size()) +
+			" suggestions correctly from RocksDB.",
 			Log::INFO);
 	}
 }
@@ -39,9 +39,11 @@ SuggestionsGenerator::SuggestionsGenerator(UsersContainer& usersContainer) :
 bool SuggestionsGenerator::loadSuggestions(){
 	std::string suggestions_str;
 
-	usersContainer.getDB().getValue(std::string("suggestions"), suggestions_str);
+	usersContainer.getDB().getValue(
+			std::string("suggestions"), suggestions_str);
 
-	std::cerr << "Suggestions loaded from DB\n" << suggestions_str << std::endl;
+	std::cerr << "Suggestions loaded from DB\n" <<
+			suggestions_str << std::endl;
 
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
@@ -67,7 +69,8 @@ bool SuggestionsGenerator::loadSuggestions(){
 		std::stringstream(userB_str) >> userBID ? userBID : 0;
 		std::string AlikesB = suggestion.get("AlikesB", "unavailable").asString();
 		std::string BlikesA = suggestion.get("BlikesA", "unavailable").asString();
-		std::string _someoneDisliked = suggestion.get("_someoneDisliked", "unavailable").asString();
+		std::string _someoneDisliked =
+				suggestion.get("_someoneDisliked", "unavailable").asString();
 		std::string sentToA = suggestion.get("sentToA", "unavailable").asString();
 		std::string sentToB = suggestion.get("sentToB", "unavailable").asString();
 		if(userA_str == "unavailable" ||
@@ -156,8 +159,8 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 }
 
 
-/** Returns a list of possible matches for the user up to a maximum cant. The list
- *  contains only the ID of each other user that implies a match.
+/** Returns a list of possible matches for the user up to a maximum cant. The
+ *  list contains only the ID of each other user that implies a match.
  *
  *  \param user Is the user ID to want matches.
  *  \param cant The maximum number of new matches (The final size of result list
@@ -183,7 +186,6 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 
 	/* we will calculate "cant" suggestions */
 	for (int i = 1; i <= cant; ++i){
-
 		/* temporal values for best suggestion */
 		User *currentBestSuggestedUser;
 		float currentBestSuggestedUserPoints = 0;
@@ -212,7 +214,9 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		result.push_back(currentBestSuggestedUser->getID());
 
 		Log::instance()->append(
-			"Suggesting user " + std::to_string(currentBestSuggestedUser->getID()) + " to the requester user: " + std::to_string(user) + ".",
+			"Suggesting user " +
+			std::to_string(currentBestSuggestedUser->getID()) +
+			" to the requester user: " + std::to_string(user) + ".",
 			Log::INFO);
 
 		/* save suggestion */

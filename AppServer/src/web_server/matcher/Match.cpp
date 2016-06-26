@@ -1,5 +1,6 @@
 /** Include area. */
 #include "Match.h"
+#include <string>
 
 
 /*------------------------------------------------------------------------
@@ -42,7 +43,8 @@ User &Match::getUserB(){
  *	\param message Is the message as string.
  *	\param Is the timestamp represented as string.
  */
-void Match::pushChatMessage(User &userSrc, const std::string &message, const std::string &time){
+void Match::pushChatMessage(User &userSrc,
+		const std::string &message, const std::string &time){
 	chat.pushMessage(userSrc, message, time);
 }
 

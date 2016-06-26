@@ -31,7 +31,8 @@ UsersContainer::UsersContainer(){
 		iterLoadedUsers->second->saveIn(db);
 
 	Log::instance()->append(
-			"Loaded " + std::to_string(usersById.size()) + " users correctly from shared server.",
+			"Loaded " + std::to_string(usersById.size()) +
+			" users correctly from shared server.",
 			Log::INFO);
 
 	bool matchesLoaded = loadMatches();
@@ -39,10 +40,10 @@ UsersContainer::UsersContainer(){
 		Log::instance()->append(
 				"There was an error loading matches from RocksDB.",
 				Log::INFO);
-	}
-	else {
+	}else {
 		Log::instance()->append(
-				"Loaded " + std::to_string(allMatches.size()) + " matches correctly from RocksDB.",
+				"Loaded " + std::to_string(allMatches.size()) +
+				" matches correctly from RocksDB.",
 				Log::INFO);
 	}
 }

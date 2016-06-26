@@ -7,6 +7,7 @@
 #include "Request.h"
 #include "Response.h"
 #include <json/json.h>
+#include "Configuration.h"
 
 
 /*------------------------------------------------------------------------
@@ -55,8 +56,7 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
  *
  */
 WebClient::WebClient() :
-						remoteHost("shared-server.herokuapp.com:80"){
-//						remoteHost("localhost:5000"){
+						remoteHost(Configuration::getInstance().urlShared){
 	Log::instance()->append(
 			"Initiating connection with " + remoteHost,
 			Log::INFO);
@@ -172,8 +172,7 @@ int WebClient::sendEditProfile(const std::string& putData,
 			Log::instance()->append(
 					"Received OK from shared server.",
 					Log::INFO);
-		}
-		else if(responseFromShared.getStatus() == 500){
+		}else if (responseFromShared.getStatus() == 500){
 			Log::instance()->append(
 					"Received internal server error from shared server.",
 					Log::INFO);
