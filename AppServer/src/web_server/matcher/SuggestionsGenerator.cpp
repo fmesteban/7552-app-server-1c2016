@@ -42,8 +42,9 @@ bool SuggestionsGenerator::loadSuggestions(){
 	usersContainer.getDB().getValue(
 			std::string("suggestions"), suggestions_str);
 
-	std::cerr << "Suggestions loaded from DB\n" <<
-			suggestions_str << std::endl;
+	Log::instance()->append(
+			"Suggestions loaded from DB:\n" + suggestions_str,
+			Log::INFO);
 
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
@@ -77,7 +78,11 @@ bool SuggestionsGenerator::loadSuggestions(){
 		   userB_str == "unavailable" ||
 		   AlikesB == "unavailable" ||
 		   BlikesA == "unavailable" ||
-		   _someoneDisliked == "unavailable" )
+		   _someoneDisliked == "unavailable" ){
+			Log::instance()->append(
+					"Found unavailable entry on suggestions saved on server.",
+					Log::ERROR);
+		}
 			continue;
 
 		User* userA = usersContainer.getUser(userAID);
@@ -158,7 +163,6 @@ float SuggestionsGenerator::calculatePoints(User &userA, User &userB){
 	return points;
 }
 
-
 /** Returns a list of possible matches for the user up to a maximum cant. The
  *  list contains only the ID of each other user that implies a match.
  *
@@ -214,9 +218,7 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		result.push_back(currentBestSuggestedUser->getID());
 
 		Log::instance()->append(
-			"Suggesting user " +
-			std::to_string(currentBestSuggestedUser->getID()) +
-			" to the requester user: " + std::to_string(user) + ".",
+			"Suggesting user " + currentBestSuggestedUser->getEmail() + "(" + std::to_string(currentBestSuggestedUser->getID()) + ")" + " to the requester user: " + userRef->getEmail() + "(" + std::to_string(user) + ").",
 			Log::INFO);
 
 		/* save suggestion */
@@ -229,6 +231,10 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 
 		Log::instance()->append("Suggestion saved.", Log::INFO);
 	}
+
+	Log::instance()->append(
+			"Suggested " + std::to_string(result.size()) + " users to " + userRef->getEmail() + "(" + std::to_string(userRef->getID()) + ")",
+			Log::ERROR);
 
 	return result;
 }

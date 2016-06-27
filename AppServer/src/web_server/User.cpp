@@ -78,7 +78,6 @@ void User::setId(int id){
 	this->id = id;
 }
 
-
 /** Gets the user id, as int.
  *
  *	\return The identifier as int.
@@ -86,7 +85,6 @@ void User::setId(int id){
 int User::getID(){
 	return id;
 }
-
 
 /** Gets the users longitude.
  *
@@ -96,7 +94,6 @@ float User::getLongitude(){
 	return longitude;
 }
 
-
 /** Gets the users latitude.
  *
  *	\return The latitude.
@@ -105,7 +102,6 @@ float User::getLatitude(){
 	return latitude;
 }
 
-
 /** Gets the user's interests.
  *
  *	\return a refference to user's array of interests.
@@ -113,7 +109,6 @@ float User::getLatitude(){
 std::vector<Interest*> &User::getInterests(){
 	return interests;
 }
-
 
 /** Sets the user id, passed as std::string.
  *
@@ -126,7 +121,6 @@ void User::setId(const std::string& id){
 	ss >> idAsInt;
 	setId(idAsInt);
 }
-
 
 /** Overloads the operator<<. User must know how print itself.
  *
@@ -176,7 +170,6 @@ void User::printInterests(std::ostream &os) const{
 	os << "],";
 }
 
-
 /** Returns a reference to user's email.
  *
  *	\return a reference to user's email.
@@ -184,7 +177,6 @@ void User::printInterests(std::ostream &os) const{
 const std::string &User::getEmail() const{
 	return email;
 }
-
 
 /** Adds a suggestion to user's suggestions map.
  *
@@ -194,7 +186,6 @@ void User::addSuggestion(Suggestion* newSuggestion){
 	sugestions.insert(std::pair<int,Suggestion*>(
 			newSuggestion->getAnotherID(*this),newSuggestion));
 }
-
 
 /** Updates User's data with \newProfile data.
  *
@@ -267,7 +258,6 @@ bool User::couldMatch(User &another){
 	return sexualOrientationCouldMatch && (!sameUser) && (!alreadySuggested);
 }
 
-
 /** Returns the user sex as string.
  *
  *	\return string representing the user sex.
@@ -279,6 +269,13 @@ std::string User::getSex(){
 	return "women";
 }
 
+/** Returns the email of the user as string.
+ *
+ * \return string representing the user email.
+ */
+std::string User::getEmail(){
+	return email;
+}
 
 /**	This instance puts a dislike to the user with id \idAnother.
  *
@@ -289,7 +286,6 @@ void User::dislike(int idAnother){
 	if (iter != sugestions.end())
 		iter->second->markAsDisliked();
 }
-
 
 /** Gets the suggestion between this instance and the user with id \idAnother.
  *

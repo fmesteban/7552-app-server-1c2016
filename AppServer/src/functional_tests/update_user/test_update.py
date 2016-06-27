@@ -5,7 +5,7 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 1
+n = 2
 mail = "example_update" + str(n) + "@mail.com"
 interests = [ { "category": "music", "value": "El hacedor de viudas"} ]
 alias = "usuario_update" + str(n)

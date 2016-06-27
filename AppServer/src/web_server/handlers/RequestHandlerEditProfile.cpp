@@ -43,7 +43,7 @@ void RequestHandlerEditProfile::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-				"Received a BAD (malformed) REQUEST. Rejected.",
+				"Received a BAD (malformed) REQUEST. It was not a valid JSON request. Rejected.",
 				Log::INFO);
 		return;
 	}
@@ -73,7 +73,7 @@ void RequestHandlerEditProfile::run(Request &request){
 			RequestHandler::sendResponse(response,
 					request.getNetworkConnection());
 			Log::instance()->append(
-					"Received a BAD (incomplete) REQUEST. Rejected.",
+					"Received a BAD (incomplete) REQUEST. Some of the fields were missing. Rejected.",
 					Log::INFO);
 			return;
 	}
@@ -101,11 +101,18 @@ void RequestHandlerEditProfile::run(Request &request){
 			continue;
 		newProfile.addInterest(category, value);
 	}
+
+	std::string logMessage = "This is the new profile of the user " + email + "(" + std::to_string(newProfile.getID()) + "):\n";
+	std::stringstream logAux;
+	logAux << logMessage << newProfile;
+
+	Log::instance()->append(logAux.str(), Log::ERROR);
+
 	/* Edits the pre-existent user in users container */
 	int response_status = users.edit(newProfile);
 	if (response_status == -1){
 		Log::instance()->append(
-				"Unknown ERROR on APP SERVER.",
+				"ERROR on APP SERVER.",
 				Log::ERROR);
 		response_status = 500;
 	}

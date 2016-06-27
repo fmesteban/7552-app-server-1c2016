@@ -18,7 +18,6 @@ Interest::Interest(const std::string &category, const std::string &value) :
 	value(value) {
 }
 
-
 /** Gets a the category of interest.
  *
  * 	\return A refference to the internal category string.
@@ -27,7 +26,6 @@ std::string &Interest::getCategory(){
 	return category;
 }
 
-
 /** Gets a the value of interest.
  *
  * 	\return A refference to the internal value string.
@@ -35,7 +33,6 @@ std::string &Interest::getCategory(){
 std::string &Interest::getValue(){
 	return value;
 }
-
 
 /** Overloads the operator << from std::ostream
  *
