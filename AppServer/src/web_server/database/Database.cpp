@@ -21,9 +21,8 @@ kDBPath("./debug_db") {
 	/** open DB */
 	s = rocksdb::DB::Open(options, kDBPath, &db);
 	assert(s.ok());
-	Log::instance()->append("DB openes correctly.", Log::INFO);
+	Log::instance()->append("DB opened correctly.", Log::INFO);
 }
-
 
 /** Adds a key-value pair in the database.
  *
@@ -34,7 +33,6 @@ void Database::putKeyValue(const std::string& key, const std::string& value){
 	s = db->Put(rocksdb::WriteOptions(), key, value);
 	assert(s.ok());
 }
-
 
 /**	Gets a value of the database, for the corresponding key.
  *
@@ -52,7 +50,6 @@ bool Database::getValue(const std::string& key, std::string& value){
 				", value: " + value +" in DB.", Log::INFO);
 	return !s.IsNotFound();
 }
-
 
 /**	Releases the memory used by DB and destroys the logger.
  *

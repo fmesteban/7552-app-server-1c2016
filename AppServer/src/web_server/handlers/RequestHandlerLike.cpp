@@ -45,7 +45,7 @@ void RequestHandlerLike::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-				"Received a BAD (malformed) REQUEST. Rejected.",
+				"Received a BAD (malformed) REQUEST. It was not a valid JSON request. Rejected.",
 				Log::INFO);
 		return;
 	}
@@ -65,11 +65,18 @@ void RequestHandlerLike::run(Request &request){
 	int idSrc = users.getID(emailSrc);
 	int idDst = users.getID(emailDst);
 	if (idSrc == -1 || idDst == -1){
+		if(idSrc == -1){
+			Log::instance()->append(
+				"User with email: " + emailSrc + "was not found. Rejected.",
+				Log::INFO);
+		}
+		else {
+			Log::instance()->append(
+				"User with email: " + emailDst + "was not found. Rejected.",
+				Log::INFO);			
+		}
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append(
-				"Some user was not found. Rejected.",
-				Log::INFO);
 		return;
 	}
 

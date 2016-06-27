@@ -6,7 +6,6 @@
 #include <string>
 #include <ctime>
 
-
 /*------------------------------------------------------------------------
  * 	Member Functions Implementations
  * ---------------------------------------------------------------------*/
@@ -19,7 +18,6 @@ RequestHandlerSendConversation::RequestHandlerSendConversation(UsersContainer &u
 users(users),
 RequestHandler("/sendconversation") {
 }
-
 
 /** Parse the /sendconversation uri input, and saves it in the app-server
  *  database.
@@ -45,7 +43,7 @@ void RequestHandlerSendConversation::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"Received a BAD (malformed) REQUEST. Rejected.",
+			"Received a BAD (malformed) REQUEST. It was not a valid JSON request. Rejected.",
 			Log::INFO);
 		return;
 	}
@@ -53,16 +51,30 @@ void RequestHandlerSendConversation::run(Request &request){
 	std::string emailSrc = root["conversation"]["emailSrc"].asString();
 	std::string emailDst = root["conversation"]["emailDst"].asString();
 
-
+	if(emailSrc == "unavailable" || emailDst == "unavailable"){
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
+		Log::instance()->append(
+			"Received a BAD (incomplete) REQUEST. Some fields were missing. Rejected.",
+			Log::INFO);
+		return;
+	}
 
 	int idSrc = users.getID(emailSrc);
 	int idDest = users.getID(emailDst);
 	if (idSrc == -1 || idDest == -1){
+		if(idSrc == -1){
+			Log::instance()->append(
+				"User with email: " + emailSrc + "was not found. Rejected.",
+				Log::INFO);
+		}
+		else {
+			Log::instance()->append(
+				"User with email: " + emailDst + "was not found. Rejected.",
+				Log::INFO);	
+		}
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
-		Log::instance()->append(
-				"Some user was not found. Rejected.",
-				Log::INFO);
 		return;
 	}
 
@@ -80,6 +92,10 @@ void RequestHandlerSendConversation::run(Request &request){
 		const Json::Value& msg = *it;
 		std::string message = msg["msg"].asString();
 		userSrc->sendMsg(idDest, message, ssNow.str());
+
+		Log::instance()->append(
+			"User " + emailSrc + " sends to user " + emailDst + "the following:\n" + message,
+			Log::INFO);
 	}
 	
 	/* Sends response to the client containing its data */

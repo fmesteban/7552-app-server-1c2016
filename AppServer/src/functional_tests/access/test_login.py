@@ -5,7 +5,7 @@ import json
 from subprocess import call
 import inspect, os
 
-n = 1
+n = 2
 mail = "example_login" + str(n) + "@mail.com"
 
 class TestLogin(unittest.TestCase):

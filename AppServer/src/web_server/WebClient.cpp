@@ -8,7 +8,6 @@
 #include "Response.h"
 #include <json/json.h>
 
-
 /*------------------------------------------------------------------------
  * 	Member Functions Implementations
  * ---------------------------------------------------------------------*/
@@ -25,7 +24,6 @@ static void evHandler(struct mg_connection *networkConnection,
 	self->eventHandler(networkConnection, eventCode, eventData);
 }
 
-
 /** Handles an http response.
  *
  *	\param networkConnection Mongoose network connection struct.
@@ -39,8 +37,9 @@ void WebClient::eventHandler(struct mg_connection *networkConnection,
 
 	if (eventCode == MG_EV_CONNECT){
 		if (* (int *) eventData != 0) {
-			std::cerr << "connect() failed: " <<
-					strerror(* (int *) eventData) << std::endl;
+			Log::instance()->append(
+					"Couldn't connect to shared server.",
+					Log::ERROR);
 			keepAlive = false;
 		}
 	} else if (eventCode == MG_EV_HTTP_REPLY){
@@ -63,7 +62,6 @@ WebClient::WebClient() :
 	mg_mgr_init(&mgr, this);
 	keepAlive = true;
 }
-
 
 /**	Sends a http post request to add a new user
  *  Returns a pair with the ID of the new user (-1 if error) and the
@@ -248,7 +246,6 @@ std::string WebClient::sendLogin(const std::string& userID){
 	return "{}";
 }
 
-
 /** Loads the users of shared to a passed map.
  *
  * 	\param usersById Map to fill.
@@ -316,7 +313,6 @@ void WebClient::insertDefaultHeaders(Request &request){
 	request.insertHeader("Content-Type", "application/json");
 }
 
-
 /** Parse a get users request, and adds the result to a users map.
  *
  * 	\param usersById Map to fill.
@@ -331,7 +327,7 @@ void WebClient::parseUsersMap(
 	bool parsingSuccessful = reader.parse(body, root);
 	if (!parsingSuccessful){
 		Log::instance()->append(
-				"Received an malformed response from shared after send a GET users.",
+				"Received a malformed response from shared after send a GET users.",
 				Log::INFO);
 		return;
 	}
@@ -368,7 +364,6 @@ void WebClient::parseUsersMap(
 		usersById.insert(std::pair<int,User*>(id, newUser));
 	}
 }
-
 
 /** Releases reserver resources.
  *

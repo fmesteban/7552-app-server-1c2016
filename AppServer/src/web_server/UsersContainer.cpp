@@ -63,8 +63,6 @@ bool UsersContainer::loadMatches(){
 	std::string matches_str;
 	db.getValue(std::string("matches"), matches_str);
 
-	std::cerr << "Matches loaded from DB\n" << matches_str << std::endl;
-
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;
@@ -118,7 +116,6 @@ bool UsersContainer::loadMatches(){
 	return true;
 }
 
-
 /** Forms a json with specified values, and delegates the send
  *  in the web client. Adds a user to the system.
  *
@@ -157,7 +154,8 @@ int UsersContainer::edit(User &newProfile){
 	std::stringstream ss;
 
 	std::string userID;
-	if(!db.getValue(newProfile.getEmail(), userID))
+	std::string email = newProfile.getEmail();
+	if(!db.getValue(email, userID))
 		return -1;
 
 	ss.clear();
@@ -168,7 +166,6 @@ int UsersContainer::edit(User &newProfile){
 
 	return client.sendEditProfile(ss.str(), userID);
 }
-
 
 /** Loads user id from db, and gets its data from shared server.
  *
@@ -197,7 +194,6 @@ int UsersContainer::getID(const std::string &email){
 	return std::stringstream(userID) >> ID ? ID : 0;
 }
 
-
 /** Gets a user from shared server.
  * 
  * 	\param id Is the identifier of user to get.
@@ -223,7 +219,6 @@ User *UsersContainer::getUser(int userID){
 		return elem->second;
 }
 
-
 /** Fills a list of random user pointers.
  *
  * 	\param randomUsers Is the list to fill.
@@ -240,7 +235,6 @@ void UsersContainer::getRandomUsers(std::list<User*> &randomUsers){
 	}
 }
 
-
 /** Adds a match to the internal matches array, and to
  *  corresponding users.
  *
@@ -253,7 +247,6 @@ void UsersContainer::addMatch(Match *match){
 	userA.addMatch(userB.getID(), match);
 	userB.addMatch(userA.getID(), match);
 }
-
 
 /** Persist current state and releases reserver resources.
  *
@@ -271,8 +264,9 @@ UsersContainer::~UsersContainer(){
 		delete allMatches[allMatches.size() - 1];
 	}
 	value << "]}";
-	std::cout << "Matches to be saved on DB" << std::endl;
-	std::cout << value.str() << std::endl;
+	Log::instance()->append(
+			"Matches to be saved on DB:\n" + value.str(),
+			Log::INFO);
 	db.putKeyValue(key, value.str());
 	allMatches.clear();
 

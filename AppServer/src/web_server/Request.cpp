@@ -25,7 +25,6 @@ Request::Request(
 	networkConnection(networkConnection) {
 }
 
-
 /** Constructs an empty request.
  * 	Useful when user sends requests.
  *
@@ -35,7 +34,6 @@ Request::Request(struct mg_connection &networkConnection):
 	networkConnection(networkConnection) {
 }
 
-
 /** Sets the http method (i.e. POST, GET)
  *
  *	\param method Is a refference to be copied in the internal method string.
@@ -44,7 +42,6 @@ void Request::setMethod(const std::string &method){
 	this->method = method;
 }
 
-
 /**	Sets the http uri (without url)
  *
  *	\param uri Is a refference to be copied in the internal uri string.
@@ -52,7 +49,6 @@ void Request::setMethod(const std::string &method){
 void Request::setUri(const std::string &uri){
 	this->uri = uri;
 }
-
 
 /** Adds a http header.
  *
@@ -63,7 +59,6 @@ void Request::insertHeader(const std::string &name, const std::string &value){
 	headers.insert(std::pair<std::string,std::string>(name,value));
 }
 
-
 /** Gets the http method (i.e. POST, GET)
  *
  *	\return A refference to internal method string.
@@ -72,7 +67,6 @@ std::string& Request::getMethod(){
 	return method;
 }
 
-
 /**	Gets the http uri (without url)
  *
  *	\return A refference to internal uri string.
@@ -80,7 +74,6 @@ std::string& Request::getMethod(){
 std::string& Request::getUri(){
 	return uri;
 }
-
 
 /**	Gets the http body (field data)
  *
