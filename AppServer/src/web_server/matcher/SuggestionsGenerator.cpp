@@ -218,7 +218,10 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 		result.push_back(currentBestSuggestedUser->getID());
 
 		Log::instance()->append(
-			"Suggesting user " + currentBestSuggestedUser->getEmail() + "(" + std::to_string(currentBestSuggestedUser->getID()) + ")" + " to the requester user: " + userRef->getEmail() + "(" + std::to_string(user) + ").",
+			"Suggesting user " + currentBestSuggestedUser->getEmail() +
+			"(" + std::to_string(currentBestSuggestedUser->getID()) + ")" +
+			" to the requester user: " + userRef->getEmail() +
+			"(" + std::to_string(user) + ").",
 			Log::INFO);
 
 		/* save suggestion */
@@ -233,7 +236,8 @@ std::list<int> SuggestionsGenerator::getPossibleMatches(int user, int cant) {
 	}
 
 	Log::instance()->append(
-			"Suggested " + std::to_string(result.size()) + " users to " + userRef->getEmail() + "(" + std::to_string(userRef->getID()) + ")",
+			"Suggested " + std::to_string(result.size()) + " users to " +
+			userRef->getEmail() + "(" + std::to_string(userRef->getID()) + ")",
 			Log::ERROR);
 
 	return result;

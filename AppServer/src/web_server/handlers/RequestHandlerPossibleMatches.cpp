@@ -45,7 +45,8 @@ void RequestHandlerPossibleMatches::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"Received a BAD (malformed) REQUEST. It was not a valid JSON request. Rejected.",
+			"Received a BAD (malformed) REQUEST. "
+			"It was not a valid JSON request. Rejected.",
 			Log::INFO);
 		return;
 	}

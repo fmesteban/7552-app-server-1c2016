@@ -44,7 +44,8 @@ void RequestHandlerSendConversation::run(Request &request){
 		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
 		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
-			"Received a BAD (malformed) REQUEST. It was not a valid JSON request. Rejected.",
+			"Received a BAD (malformed) REQUEST. "
+			"It was not a valid JSON request. Rejected.",
 			Log::INFO);
 		return;
 	}
@@ -68,8 +69,7 @@ void RequestHandlerSendConversation::run(Request &request){
 			Log::instance()->append(
 				"User with email: " + emailSrc + "was not found. Rejected.",
 				Log::INFO);
-		}
-		else {
+		}else {
 			Log::instance()->append(
 				"User with email: " + emailDst + "was not found. Rejected.",
 				Log::INFO);	
@@ -95,7 +95,8 @@ void RequestHandlerSendConversation::run(Request &request){
 		userSrc->sendMsg(idDest, message, ssNow.str());
 
 		Log::instance()->append(
-			"User " + emailSrc + " sends to user " + emailDst + "the following:\n" + message,
+			"User " + emailSrc + " sends to user " + emailDst +
+			"the following:\n" + message,
 			Log::INFO);
 	}
 	
