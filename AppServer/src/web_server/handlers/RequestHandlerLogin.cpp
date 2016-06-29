@@ -60,6 +60,7 @@ void RequestHandlerLogin::run(Request &request){
 	}
 
 	/* Gets the pre-existent user from users container */
+	//TODO: APPEND THE TOKEN TO USER STRING!!!!
 	std::string userAsString = users.login(email);
 	int status = ACCEPTED_STATUS;
 
@@ -69,7 +70,13 @@ void RequestHandlerLogin::run(Request &request){
 		status = 500;
 	}
 
+	/* Generates a token and appends it to response */
+	Json::Value rootResponse;
+	Json::Reader readerResponse;
+	readerResponse.parse(userAsString, rootResponse);
+	rootResponse["token"] = users.getUser(users.getID(email))->generateToken();
+
 	/* Sends response to the client containing its data */
-	Response response(status, userAsString);
+	Response response(status, rootResponse.toStyledString());
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

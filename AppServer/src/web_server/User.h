@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <list>
+#include <ctime>
 
 
 /* forward declarations */
@@ -30,6 +31,9 @@ private:
 	void printInterests(std::ostream &os) const;
 	std::map<int, Suggestion*> sugestions;
 	std::map<int, Match*> matches;
+	std::string token;
+	std::time_t lastTokenTime;
+	void resetTokenTime();
 
 public:
 	User(const std::string &name,
@@ -66,6 +70,10 @@ public:
 	void edit(User& newProfile);
 	void setId(int id);
 	void setId(const std::string& id);
+
+	bool hasAValidToken(const std::string &token);
+	void revalidateToken();
+	std::string generateToken();
 
 	~User();
 };

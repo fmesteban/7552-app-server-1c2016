@@ -110,7 +110,11 @@ void RequestHandlerRegister::run(Request &request){
 	/* Adds the built user to users container */
 	int status_code = users.add(*newUser);
 
+	/* Generates the response with a token */
+	std::stringstream respSS;
+	respSS << "{ \"token\": \"" << newUser->generateToken() << "\" }";
+
 	/* Sends response to the client */
-	Response response(status_code, ACCEPTED_MSG);
+	Response response(status_code, respSS.str());
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
 }

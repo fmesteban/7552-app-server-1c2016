@@ -14,6 +14,40 @@
 
 
 /*------------------------------------------------------------------------
+ * 	Constants
+ * ---------------------------------------------------------------------*/
+
+/** Length of generated tokens. */
+#define TOKEN_LENGTH 32
+
+/** Maximum time elapsed between two client requests. */
+#define SESION_TIME_LIMIT 60
+
+
+/*------------------------------------------------------------------------
+ * 	Useful Internal Functions
+ * ---------------------------------------------------------------------*/
+
+/**	Copied from http://stackoverflow.com/questions/440133
+ *
+ *	\param s Destination char array.
+ *	\param len The length of the output array.
+ */
+static void generateRandomStr(char *s, const int len) {
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+
+    for (int i = 0; i < len; ++i) {
+        s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+
+    s[len] = 0;
+}
+
+
+/*------------------------------------------------------------------------
  * 	Member Functions Implementations
  * ---------------------------------------------------------------------*/
 
@@ -391,6 +425,48 @@ void User::loadNotShownSuggestions(std::list<int> &result){
 			iterSug->second->setWasSentToUser(*this, true);
 		}
 	}
+}
+
+
+/**
+ *
+ */
+void User::resetTokenTime(){
+	lastTokenTime = time(NULL);
+}
+
+
+/**
+ *
+ */
+bool User::hasAValidToken(const std::string &token){
+	if (token != this->token)
+		return false;
+
+	if (difftime(time(NULL), lastTokenTime) > SESION_TIME_LIMIT)
+		return false;
+
+	return true;
+}
+
+
+/**
+ *
+ */
+void User::revalidateToken(){
+	resetTokenTime();
+}
+
+
+/**
+ *
+ */
+std::string User::generateToken(){
+	char cToken[TOKEN_LENGTH + 1];
+	generateRandomStr(cToken, TOKEN_LENGTH);
+	token = cToken;
+	resetTokenTime();
+	return token;
 }
 
 

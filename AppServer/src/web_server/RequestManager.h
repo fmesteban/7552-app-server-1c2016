@@ -16,6 +16,7 @@
 #include "RequestHandlerSendConversation.h"
 #include "RequestHandlerLike.h"
 #include "RequestHandlerDislike.h"
+#include "RequestHandlerCheckToken.h"
 
 class RequestManager {
 private:
@@ -31,6 +32,7 @@ private:
 	RequestHandlerSendConversation reqSendConversation;
 	RequestHandlerLike reqLike;
 	RequestHandlerDislike reqDislike;
+	RequestHandlerCheckToken reqCheckToken;
 	void insertDefaultHandlers();
 public:
 	explicit RequestManager(

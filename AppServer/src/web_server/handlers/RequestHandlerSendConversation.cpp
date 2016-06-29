@@ -102,4 +102,7 @@ void RequestHandlerSendConversation::run(Request &request){
 	/* Sends response to the client containing its data */
 	Response response(ACCEPTED_STATUS, "{}");
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
+
+	/* Updates token time */
+	userSrc->revalidateToken();
 }

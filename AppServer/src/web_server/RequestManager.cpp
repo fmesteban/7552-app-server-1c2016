@@ -25,7 +25,8 @@ RequestManager::RequestManager(UsersContainer &users,
 	reqGetConversation(users),
 	reqSendConversation(users),
 	reqLike(users),
-	reqDislike(users) {
+	reqDislike(users),
+	reqCheckToken(users) {
 	insertDefaultHandlers();
 }
 
@@ -42,6 +43,7 @@ void RequestManager::insertDefaultHandlers(){
 	addHandler(reqSendConversation.getUri(), &reqSendConversation);
 	addHandler(reqLike.getUri(), &reqLike);
 	addHandler(reqDislike.getUri(), &reqDislike);
+	addHandler(reqCheckToken.getUri(), &reqCheckToken);
 }
 
 

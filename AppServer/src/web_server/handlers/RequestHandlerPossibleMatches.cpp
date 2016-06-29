@@ -100,4 +100,7 @@ void RequestHandlerPossibleMatches::run(Request &request){
 	
 	Response response(ACCEPTED_STATUS, result);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
+
+	/* Updates token time */
+	users.getUser(users.getID(email))->revalidateToken();
 }

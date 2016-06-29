@@ -13,6 +13,7 @@ typedef int httpStatus;
 #define SERVER_ERROR_STATUS 500 
 #define OK_STATUS 200
 #define ACCEPTED_STATUS 201
+#define FAILED_PRECONDITION_STATUS 412
 
 #define BAD_REQUEST_MSG "Bad Request"
 #define SERVER_ERROR_MSG "Internal Server Error"

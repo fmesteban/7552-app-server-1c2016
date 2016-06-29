@@ -120,4 +120,7 @@ void RequestHandlerEditProfile::run(Request &request){
 	/* Sends response to the client */
 	Response response(response_status, ACCEPTED_MSG);
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
+
+	/* Updates token time */
+	users.getUser(users.getID(email))->revalidateToken();
 }

@@ -97,4 +97,7 @@ void RequestHandlerDislike::run(Request &request){
 	/* Sends response to the client */
 	Response response(ACCEPTED_STATUS, "{}");
 	RequestHandler::sendResponse(response, request.getNetworkConnection());
+
+	/* Updates token time */
+	userSrc->revalidateToken();
 }
