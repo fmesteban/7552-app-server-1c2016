@@ -123,8 +123,6 @@ SuggestionsGenerator::~SuggestionsGenerator(){
 	}
 
 	value << "]}";
-	std::cout << "Suggestions to be saved on DB" << std::endl;
-	std::cout << value.str() << std::endl;
 	usersContainer.getDB().putKeyValue(key, value.str());
 }
 

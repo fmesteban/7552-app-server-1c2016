@@ -67,9 +67,12 @@ void RequestHandlerLogin::run(Request &request){
 	int status = ACCEPTED_STATUS;
 
 	if (userAsString == ""){
+		Response response(BAD_REQUEST_STATUS, BAD_REQUEST_MSG);
+		RequestHandler::sendResponse(response, request.getNetworkConnection());
 		Log::instance()->append(
 				"User with email " + email + " was not found.", Log::ERROR);
 		status = 500;
+		return;
 	}
 
 	/* Generates a token and appends it to response */

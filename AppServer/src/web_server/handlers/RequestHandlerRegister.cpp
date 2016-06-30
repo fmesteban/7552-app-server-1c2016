@@ -36,8 +36,6 @@ void RequestHandlerRegister::run(Request &request){
 		return;
 	}
 
-	std::cout << request.getBody() << std::endl;
-
 	/* Loads the request into a JSON Value object */
 	Json::Value root;
 	Json::Reader reader;

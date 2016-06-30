@@ -11,7 +11,9 @@ Configuration::Configuration(const std::string &fileName) :
 	}
 
 	std::string encoding = root.get("encoding", "UTF-8").asString();
-	std::cout << encoding << std::endl;
+	Log::instance()->append(
+			"The encoding set is " + encoding ,
+			Log::INFO);
 
 	urlShared = root["url_shared"].asString();
 
